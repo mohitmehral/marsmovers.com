@@ -12,6 +12,7 @@
             text-align: center;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         header {
             background: #ff6f61;
@@ -35,9 +36,18 @@
             font-size: 1.2em;
         }
         .rocket {
-            font-size: 1em;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5em;
             white-space: pre;
             animation: moveRocket 5s linear infinite;
+        }
+        @keyframes moveRocket {
+            0% { transform: translate(-50%, 100%); }
+            50% { transform: translate(-50%, -50%); }
+            100% { transform: translate(-50%, -50%); }
         }
         .mars {
             font-size: 3em;
@@ -52,10 +62,6 @@
         footer p {
             margin: 0;
         }
-        @keyframes moveRocket {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
     </style>
 </head>
 <body>
@@ -67,19 +73,25 @@
         <p>Welcome to Mars Movers, the premier moving service on the Red Planet! Whether you're relocating your Martian mansion or just need a lift to Olympus Mons, we've got you covered.</p>
         <div class="rocket">
             <pre>
-              ^
-              |
-              |
-             / \
-            /___\
-            |   |
-            |___|
-           /     \
-          /_______\
-         |         |
-         |  MARS   |
-         |  MOVERS |
-         |_________|
+             /\
+            /  \
+           /    \
+          |      |
+          |  M   |
+          |  A   |
+          |  R   |
+          |  S   |
+          |  M   |
+          |  O   |
+          |  V   |
+          |  E   |
+          |  R   |
+          |  S   |
+          |______|
+          /      \
+         /        \
+        /          \
+       |____________|
             </pre>
         </div>
         <p class="mars">🚀🌕</p>
@@ -93,7 +105,4 @@
         <p>Ready to make your move? <a href="mailto:info@marsmovers.com" style="color: #ff6f61;">Contact us</a> today!</p>
     </div>
     <footer>
-        <p>&copy; 2024 Mars Movers. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+        <p>&copy; 2024 Mars Movers. All rights
