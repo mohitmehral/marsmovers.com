@@ -36,10 +36,13 @@
             border-radius: 10px;
             width: 90%;
             max-width: 800px;
+            position: relative;
+            overflow: hidden;
         }
         .text {
             flex: 1;
             padding-right: 20px;
+            text-align: left;
         }
         .text h2 {
             font-size: 2em;
@@ -51,13 +54,14 @@
             flex: 0;
             font-size: 1.5em;
             white-space: pre;
-            animation: moveRocket 5s linear infinite;
-            position: relative;
+            position: absolute;
+            bottom: -100%; /* start off-screen */
+            right: 0;
+            animation: moveRocket 5s forwards;
         }
         @keyframes moveRocket {
-            0% { transform: translateY(100vh); }
-            50% { transform: translateY(-50vh); }
-            100% { transform: translateY(-50vh); }
+            0% { bottom: -100%; }
+            100% { bottom: 50%; }
         }
         footer {
             background: #ff6f61;
@@ -84,6 +88,8 @@
             }
             .rocket {
                 font-size: 1em;
+                bottom: -50%; /* adjust starting position for smaller screens */
+                animation: moveRocket 5s forwards;
             }
         }
     </style>
@@ -99,4 +105,38 @@
             <p>Why choose Mars Movers?</p>
             <ul>
                 <li>Fast and efficient space shuttles.</li>
-                <li
+                <li>Friendly Martian crew.</li>
+                <li>Zero-gravity moving – your stuff practically floats!</li>
+                <li>Complimentary Mars bars with every move.</li>
+            </ul>
+            <p>Ready to make your move? <a href="mailto:info@marsmovers.com" style="color: #ff6f61;">Contact us</a> today!</p>
+        </div>
+        <div class="rocket">
+            <pre>
+             /\
+            /  \
+           /    \
+          |      |
+          |  M   |
+          |  A   |
+          |  R   |
+          |  S   |
+          |  M   |
+          |  O   |
+          |  V   |
+          |  E   |
+          |  R   |
+          |  S   |
+          |______|
+          /      \
+         /        \
+        /          \
+       |____________|
+            </pre>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Mars Movers. All rights reserved.</p>
+    </footer>
+</body>
+</html>
