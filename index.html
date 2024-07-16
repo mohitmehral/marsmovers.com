@@ -20,10 +20,27 @@
             padding: 20px 0;
             width: 100%;
             text-align: center;
+            position: relative;
         }
         header h1 {
             margin: 0;
             font-size: 3em;
+            display: inline-block;
+        }
+        .mars {
+            width: 70px; /* Increased size */
+            height: 70px; /* Increased size */
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg') no-repeat center center;
+            background-size: cover;
+            border-radius: 50%;
+            animation: rotateMars 24.6s linear infinite;
+        }
+        @keyframes rotateMars {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         .container {
             display: flex;
@@ -50,15 +67,63 @@
         }
         .rocket {
             position: absolute;
-            bottom: 0;
+            bottom: 60px;
             right: 10px;
             font-size: 1em;
             white-space: pre;
-            animation: moveRocket 5s forwards;
+            animation: moveRocket 5s forwards, bounce 2s infinite;
         }
         @keyframes moveRocket {
             0% { bottom: -100%; }
-            100% { bottom: 20px; } /* Adjust this value to align the rocket with the text */
+            100% { bottom: 60px; }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .fire {
+            position: absolute;
+            bottom: 35px;
+            left: 60%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: -20px;
+            background: linear-gradient(to top, red, yellow);
+            opacity: 0.75;
+            animation: flicker 0.1s infinite;
+        }
+        .fire::before,
+        .fire::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            opacity: inherit;
+            animation: inherit;
+        }
+        .fire::before {
+            left: -10px;
+            height: 2px;
+        }
+        .fire::after {
+            right: -50px;
+            height: 2px;
+        }
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scaleY(1); }
+            50% { transform: translateX(-50%) scaleY(1.5); }
+            100% { transform: translateX(-50%) scaleY(1); }
+        }
+        .highlight {
+            animation: pulse 1.5s infinite;
+            color: #ff6f61;
+        }
+        @keyframes pulse {
+            0% { color: #ff6f61; }
+            50% { color: #ffffff; }
+            100% { color: #ff6f61; }
         }
         footer {
             background: #ff6f61;
@@ -74,6 +139,10 @@
         @media (max-width: 600px) {
             header h1 {
                 font-size: 2em;
+            }
+            .mars {
+                width: 50px;
+                height: 50px;
             }
             .container {
                 flex-direction: column;
@@ -93,7 +162,15 @@
             .rocket {
                 font-size: 0.8em;
                 right: 10px;
-                animation: moveRocket 5s forwards;
+                animation: moveRocket 5s forwards, bounce 2s infinite;
+            }
+            .fire {
+                width: 15px;
+                height: 10px;
+            }
+            .fire::before,
+            .fire::after {
+                height: 10px;
             }
         }
     </style>
@@ -101,6 +178,7 @@
 <body>
     <header>
         <h1>Mars Movers</h1>
+        <div class="mars"></div>
     </header>
     <div class="container">
         <div class="text">
@@ -113,7 +191,8 @@
                 <li>Zero-gravity moving – your <br> stuff practically floats!</li>
                 <li>Complimentary Mars bars <br>with every move.</li>
             </ul>
-            <p>Ready to make your move? <br> <a href="mailto:apnok365@gmail.com" style="color: #ff6f61;">Contact us</a> today!</p>
+            <p class="highlight">Ready to leave Earth behind? <br><br><a href="mailto:apnok365@gmail.com" style="color: #ff6f61;">Book your trip to Mars now!</a></p>
+
         </div>
         <div class="rocket">
             <pre>
@@ -137,6 +216,7 @@
         /          \
        |____________|
             </pre>
+            <div class="fire"></div>
         </div>
     </div>
     <footer>
