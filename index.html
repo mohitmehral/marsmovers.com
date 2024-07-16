@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <title>Marsmovers</title>
-   </head>
-   <body>
-      <h1>I am ready for sale ⭐️</h1>
-      <p>You must have residenceship for the Mars 🎉</p>
-   </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars Movers - Moving You to a New World</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1b1b38;
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #ff6f61;
+            padding: 20px 0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .container h2 {
+            font-size: 2em;
+        }
+        .container p {
+            font-size: 1.2em;
+        }
+        .rocket {
+            font-size: 1em;
+            white-space: pre;
+            animation: moveRocket 5s linear infinite;
+        }
+        .mars {
+            font-size: 3em;
+        }
+        footer {
+            background: #ff6f61;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        footer p {
+            margin: 0;
+        }
+        @keyframes moveRocket {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mars Movers</h1>
+    </header>
+    <div class="container">
+        <h2>Moving You to a New World!</h2>
+        <p>Welcome to Mars Movers, the premier moving service on the Red Planet! Whether you're relocating your Martian mansion or just need a lift to Olympus Mons, we've got you covered.</p>
+        <div class="rocket">
+            <pre>
+              ^
+              |
+              |
+             / \
+            /___\
+            |   |
+            |___|
+           /     \
+          /_______\
+         |         |
+         |  MARS   |
+         |  MOVERS |
+         |_________|
+            </pre>
+        </div>
+        <p class="mars">🚀🌕</p>
+        <p>Why choose Mars Movers?</p>
+        <ul>
+            <li>Fast and efficient space shuttles.</li>
+            <li>Friendly Martian crew.</li>
+            <li>Zero-gravity moving – your stuff practically floats!</li>
+            <li>Complimentary Mars bars with every move.</li>
+        </ul>
+        <p>Ready to make your move? <a href="mailto:info@marsmovers.com" style="color: #ff6f61;">Contact us</a> today!</p>
+    </div>
+    <footer>
+        <p>&copy; 2024 Mars Movers. All rights reserved.</p>
+    </footer>
+</body>
 </html>
