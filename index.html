@@ -27,9 +27,8 @@
         }
         .container {
             display: flex;
-            flex-direction: row;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin: 20px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
@@ -37,31 +36,29 @@
             width: 90%;
             max-width: 800px;
             position: relative;
-            overflow: hidden;
         }
         .text {
             flex: 1;
-            padding-right: 20px;
-            text-align: left;
+            padding-right: 60px; /* Add padding to prevent text overlap with rocket */
+            text-align: justify;
         }
         .text h2 {
             font-size: 2em;
         }
-        .text p {
+        .text p, .text ul {
             font-size: 1.2em;
         }
         .rocket {
-            flex: 0;
-            font-size: 1.5em;
-            white-space: pre;
             position: absolute;
-            bottom: -100%; /* start off-screen */
-            right: 0;
+            bottom: 0;
+            right: 10px;
+            font-size: 1em;
+            white-space: pre;
             animation: moveRocket 5s forwards;
         }
         @keyframes moveRocket {
             0% { bottom: -100%; }
-            100% { bottom: 50%; }
+            100% { bottom: 20px; } /* Adjust this value to align the rocket with the text */
         }
         footer {
             background: #ff6f61;
@@ -86,9 +83,15 @@
                 padding-right: 0;
                 text-align: center;
             }
-            .rocket {
+            .text h2 {
+                font-size: 1.5em;
+            }
+            .text p, .text ul {
                 font-size: 1em;
-                bottom: -50%; /* adjust starting position for smaller screens */
+            }
+            .rocket {
+                font-size: 0.8em;
+                right: 10px;
                 animation: moveRocket 5s forwards;
             }
         }
@@ -101,7 +104,7 @@
     <div class="container">
         <div class="text">
             <h2>Moving You to a New World!</h2>
-            <p>Welcome to Mars Movers, the premier moving service on the Red Planet! Whether you're relocating your Martian mansion or just need a lift to Olympus Mons, we've got you covered.</p>
+            <p>Welcome to Mars Movers, the premier moving service on the <BR> Red Planet! Whether you're relocating your Martian mansion or <BR> just need a lift to Olympus Mons, we've got you covered.</p>
             <p>Why choose Mars Movers?</p>
             <ul>
                 <li>Fast and efficient space shuttles.</li>
