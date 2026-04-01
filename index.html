@@ -42,7 +42,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 #mars-scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 /* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 100px;overflow:hidden}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 140px;overflow:hidden}
 .hero-inner{position:relative;z-index:2;max-width:700px}
 .hero-tag{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#ff5014;margin-bottom:24px;font-weight:600}
 .hero h1{font-family:'Inter',sans-serif;font-size:clamp(2.6rem,7vw,5.5rem);font-weight:800;line-height:1.08;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 0 80px rgba(255,80,20,.2)}
@@ -297,8 +297,8 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 
   // Rovers
   var rovers=[
-    {x:0.15,spd:0.12,dir:1,size:1},
-    {x:0.65,spd:0.08,dir:-1,size:0.7}
+    {x:0.35,spd:0.15,dir:1,size:1},
+    {x:0.55,spd:0.10,dir:-1,size:0.6}
   ];
 
   function terrainY(x,w,h){
@@ -474,21 +474,28 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
     for(var f=0;f<=w;f+=6){mx.lineTo(f,h*0.9+Math.sin(f*0.012)*12+Math.sin(f*0.005)*18+Math.sin(f*0.03)*4);}
     mx.lineTo(w,h);mx.closePath();mx.fill();
 
-    // Rovers — on foreground terrain
-    rovers.forEach(function(rv){
-      rv.x+=rv.spd*rv.dir*0.0003;
-      if(rv.x>0.55)rv.dir=-1;
-      if(rv.x<0.08)rv.dir=1;
-      var rx=rv.x*w;
-      var ry=h*0.9+Math.sin(rx/w*Math.PI*5)*8+Math.sin(rx/w*Math.PI*12)*4-4;
-      drawRover(rx,ry,rv.size,rv.dir);
-      // Wheel tracks behind rover
-      mx.strokeStyle='rgba(100,60,30,0.15)';mx.lineWidth=1;
-      mx.beginPath();
-      var trackStart=rx-rv.dir*60;
-      mx.moveTo(trackStart,ry+3);mx.lineTo(rx-rv.dir*15,ry+3);
-      mx.stroke();
-    });
+    // Rovers — big one on foreground, small one near habitat on back terrain
+    // Big rover — foreground, right side
+    var rv1=rovers[0];
+    rv1.x+=rv1.spd*rv1.dir*0.0003;
+    if(rv1.x>0.85){rv1.dir=-1;rv1.x=0.85;}
+    if(rv1.x<0.35){rv1.dir=1;rv1.x=0.35;}
+    var rx1=rv1.x*w;
+    var ry1=h*0.9+Math.sin(rx1/w*Math.PI*5)*8+Math.sin(rx1/w*Math.PI*12)*4-4;
+    drawRover(rx1,ry1,rv1.size,rv1.dir);
+    mx.strokeStyle='rgba(100,60,30,0.15)';mx.lineWidth=1;
+    mx.beginPath();mx.moveTo(rx1-rv1.dir*60,ry1+3);mx.lineTo(rx1-rv1.dir*15,ry1+3);mx.stroke();
+
+    // Small rover — back terrain near habitat
+    var rv2=rovers[1];
+    rv2.x+=rv2.spd*rv2.dir*0.0003;
+    if(rv2.x>0.88){rv2.dir=-1;rv2.x=0.15;}
+    if(rv2.x<0.15){rv2.dir=1;rv2.x=0.88;}
+    var rx2=rv2.x*w;
+    var ry2=terrainY(rx2,w,h)-2;
+    drawRover(rx2,ry2,rv2.size,rv2.dir);
+    mx.strokeStyle='rgba(100,60,30,0.1)';mx.lineWidth=0.8;
+    mx.beginPath();mx.moveTo(rx2-rv2.dir*30,ry2+2);mx.lineTo(rx2-rv2.dir*8,ry2+2);mx.stroke();
 
     // Dust particles
     dust.forEach(function(d){

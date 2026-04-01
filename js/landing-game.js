@@ -53,6 +53,7 @@ var config = {
 
 var game = new Phaser.Game(config);
 var ship, terrain, pad, padMarkerL, padMarkerR, stars, thrustParticles, keys, W, H, zoneLabelText;
+var coins = [], coinTimer = 0, coinScore = 0, coinGfxList = [];
 
 function preload() {
   // All graphics created procedurally — no assets to load
@@ -151,9 +152,11 @@ function create() {
   // Input
   keys = scene.input.keyboard.addKeys({
     up: Phaser.Input.Keyboard.KeyCodes.UP,
+    down: Phaser.Input.Keyboard.KeyCodes.DOWN,
     left: Phaser.Input.Keyboard.KeyCodes.LEFT,
     right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
     w: Phaser.Input.Keyboard.KeyCodes.W,
+    s: Phaser.Input.Keyboard.KeyCodes.S,
     a: Phaser.Input.Keyboard.KeyCodes.A,
     d: Phaser.Input.Keyboard.KeyCodes.D,
     space: Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -328,6 +331,7 @@ function update(time, delta) {
 
   // Input
   var thrustOn = gameState.thrusting || keys.up.isDown || keys.w.isDown || keys.space.isDown;
+  var thrustDown = keys.down.isDown || keys.s.isDown;
   var rotL = gameState.rotLeft || keys.left.isDown || keys.a.isDown;
   var rotR = gameState.rotRight || keys.right.isDown || keys.d.isDown;
 
@@ -337,7 +341,7 @@ function update(time, delta) {
   gameState.angle = Math.max(-90, Math.min(90, gameState.angle));
   ship.setAngle(gameState.angle);
 
-  // Thrust
+  // Thrust UP
   var flame = ship.getData('flame');
   if (thrustOn && gameState.fuel > 0) {
     var rad = Phaser.Math.DegToRad(gameState.angle - 90);
@@ -346,7 +350,6 @@ function update(time, delta) {
     gameState.fuel -= z.fuelBurn;
     gameState.fuel = Math.max(0, gameState.fuel);
 
-    // Draw flame
     flame.setVisible(true);
     flame.clear();
     var fl = 8 + Math.random() * 10;
@@ -354,13 +357,18 @@ function update(time, delta) {
     flame.fillTriangle(-8, 22, 8, 22, 0, 22 + fl);
     flame.fillStyle(0xff5014, 0.5);
     flame.fillTriangle(-5, 22, 5, 22, 0, 22 + fl * 0.7);
-    // Side thruster glow
     flame.fillStyle(0xffaa00, 0.3);
     flame.fillTriangle(-10, 22, -6, 22, -8, 22 + fl * 0.4);
     flame.fillTriangle(6, 22, 10, 22, 8, 22 + fl * 0.4);
 
-    // Trigger sound
     if (window.playThrustSound) window.playThrustSound(true);
+  } else if (thrustDown && gameState.fuel > 0) {
+    // Thrust DOWN — push ship downward faster (costs fuel)
+    gameState.vy += z.thrust * 0.5 * dt;
+    gameState.fuel -= z.fuelBurn * 0.5;
+    gameState.fuel = Math.max(0, gameState.fuel);
+    flame.setVisible(false);
+    if (window.playThrustSound) window.playThrustSound(false);
   } else {
     flame.setVisible(false);
     if (window.playThrustSound) window.playThrustSound(false);
@@ -415,6 +423,61 @@ function update(time, delta) {
   else if (gameState.wind > 0) windArrow.textContent = gameState.wind > 0.7 ? '⟫' : '›';
   else windArrow.textContent = gameState.wind < -0.7 ? '⟪' : '‹';
 
+  // === BONUS COINS ===
+  coinTimer += dt;
+  // Spawn coins: first at 20s, then every 8-15s
+  var firstSpawn = coins.length === 0 ? 20 : (8 + Math.random() * 7);
+  if (coinTimer > firstSpawn) {
+    coinTimer = 0;
+    // Rarity: 60% = 5pts, 25% = 10pts, 10% = 20pts, 5% = 100pts
+    var roll = Math.random();
+    var val = roll < 0.05 ? 100 : roll < 0.15 ? 20 : roll < 0.40 ? 10 : 5;
+    var cx = Math.random() * (W - 80) + 40;
+    var cy = 40 + Math.random() * (H * 0.5);
+    var scene = game.scene.scenes[0];
+    var coinGfx = scene.add.graphics();
+    coinGfx.setDepth(4);
+    coins.push({ x: cx, y: cy, val: val, gfx: coinGfx, age: 0, maxAge: 6 + Math.random() * 4 });
+  }
+  // Update & draw coins
+  for (var ci = coins.length - 1; ci >= 0; ci--) {
+    var coin = coins[ci];
+    coin.age += dt;
+    // Bob up and down
+    var bobY = coin.y + Math.sin(coin.age * 3) * 5;
+    // Fade out near end
+    var fadeAlpha = coin.age > coin.maxAge - 1.5 ? (coin.maxAge - coin.age) / 1.5 : 1;
+    if (fadeAlpha <= 0) { coin.gfx.destroy(); coins.splice(ci, 1); continue; }
+    // Draw coin
+    coin.gfx.clear();
+    var cSize = coin.val >= 100 ? 16 : coin.val >= 20 ? 13 : 10;
+    var cColor = coin.val >= 100 ? 0xffd700 : coin.val >= 20 ? 0xffaa00 : coin.val >= 10 ? 0xff8800 : 0xffcc44;
+    // Glow
+    coin.gfx.fillStyle(cColor, 0.15 * fadeAlpha);
+    coin.gfx.fillCircle(coin.x, bobY, cSize + 6);
+    // Coin body
+    coin.gfx.fillStyle(cColor, 0.9 * fadeAlpha);
+    coin.gfx.fillCircle(coin.x, bobY, cSize);
+    // Inner shine
+    coin.gfx.fillStyle(0xffffff, 0.3 * fadeAlpha);
+    coin.gfx.fillCircle(coin.x - 2, bobY - 2, cSize * 0.4);
+    // Value text
+    coin.gfx.fillStyle(0x000000, 0.8 * fadeAlpha);
+    // Collision with ship
+    var dx = ship.x - coin.x, dy = ship.y - coin.y;
+    if (Math.sqrt(dx * dx + dy * dy) < cSize + 20) {
+      coinScore += coin.val;
+      // Show floating text
+      if (window.showCoinPopup) window.showCoinPopup(coin.x, coin.y, coin.val);
+      coin.gfx.destroy();
+      coins.splice(ci, 1);
+      continue;
+    }
+  }
+  // Update coin HUD
+  var coinEl = document.getElementById('h-coins');
+  if (coinEl) coinEl.textContent = coinScore;
+
   // Check landing / crash
   var terrainY = getTerrainY(ship.x);
   var shipBottom = ship.y + 30;
@@ -433,10 +496,10 @@ function update(time, delta) {
         gameState.level++;
         localStorage.setItem('mm_level', gameState.level);
       }
-      if (window.onLanded) window.onLanded(absVy, absVx, absAngle, gameState.fuel, z);
+      if (window.onLanded) window.onLanded(absVy, absVx, absAngle, gameState.fuel, z, coinScore);
     } else {
       gameState.crashed = true;
-      if (window.onCrashed) window.onCrashed(absVy, absVx, absAngle, z);
+      if (window.onCrashed) window.onCrashed(absVy, absVx, absAngle, z, coinScore);
     }
   }
 }
@@ -463,6 +526,11 @@ window.startMission = function() {
   if (padMarkerR) { padMarkerR.setPosition(padX + z.padW/2 + 5, pad.y - 8); }
 
   resetState();
+  // Clear coins
+  coins.forEach(function(c){ if(c.gfx) c.gfx.destroy(); });
+  coins = []; coinTimer = 0; coinScore = 0;
+  var coinEl = document.getElementById('h-coins');
+  if (coinEl) coinEl.textContent = '0';
 };
 
 // Reset to zone 1

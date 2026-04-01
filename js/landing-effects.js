@@ -177,6 +177,36 @@ function updateRankDisplay() {
   }
 }
 
+// === COIN POPUP ===
+window.showCoinPopup = function(x, y, val) {
+  var popup = document.createElement('div');
+  var color = val >= 100 ? '#ffd700' : val >= 20 ? '#ffaa00' : '#ffcc44';
+  popup.style.cssText = 'position:absolute;left:'+x+'px;top:'+y+'px;z-index:25;font-family:Courier New,monospace;font-size:'+(val>=100?'1.4rem':'1rem')+';font-weight:700;color:'+color+';pointer-events:none;text-shadow:0 0 10px '+color+';';
+  popup.textContent = '+' + val;
+  document.getElementById('game-container').appendChild(popup);
+  var start = Date.now();
+  function anim() {
+    var t = (Date.now() - start) / 1000;
+    if (t > 1.2) { popup.remove(); return; }
+    popup.style.top = (y - t * 50) + 'px';
+    popup.style.opacity = 1 - t / 1.2;
+    if (val >= 100) popup.style.transform = 'scale(' + (1 + t * 0.5) + ')';
+    requestAnimationFrame(anim);
+  }
+  anim();
+  // Play coin sound
+  if (audioCtx) {
+    var osc = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = val >= 100 ? 880 : val >= 20 ? 660 : 520;
+    g.gain.value = 0.06;
+    osc.connect(g); g.connect(audioCtx.destination);
+    g.gain.setTargetAtTime(0, audioCtx.currentTime + 0.15, 0.05);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+  }
+};
+
 // === WEB AUDIO SOUND ENGINE ===
 var audioCtx = null;
 var thrustOsc = null;
@@ -346,7 +376,7 @@ function getGrade(vy, angle) {
 }
 
 // === RESULT HANDLERS ===
-window.onLanded = function(vy, vx, angle, fuel, zone) {
+window.onLanded = function(vy, vx, angle, fuel, zone, coinBonus) {
   window.playThrustSound(false);
   playSuccess();
 
@@ -355,9 +385,8 @@ window.onLanded = function(vy, vx, angle, fuel, zone) {
   spawnDust(cx, cy);
 
   var grade = getGrade(vy, angle);
-  // Zone multiplier: higher zone = more points
   var zoneMultiplier = zone ? (ZONES.indexOf(zone) + 1) : gameState.level;
-  var pts = Math.floor(calcScore(vy, vx, angle, fuel) * (1 + zoneMultiplier * 0.3));
+  var pts = Math.floor(calcScore(vy, vx, angle, fuel) * (1 + zoneMultiplier * 0.3)) + (coinBonus || 0);
 
   gameState.totalPts += pts;
   localStorage.setItem('mm_pts', gameState.totalPts);
@@ -404,7 +433,7 @@ window.onLanded = function(vy, vx, angle, fuel, zone) {
   updateDailyDisplay();
 };
 
-window.onCrashed = function(vy, vx, angle, zone) {
+window.onCrashed = function(vy, vx, angle, zone, coinBonus) {
   window.playThrustSound(false);
   playExplosion();
 
@@ -416,6 +445,14 @@ window.onCrashed = function(vy, vx, angle, zone) {
 
   screenShake(document.getElementById('game-container'), 12, 500);
   ship.setVisible(false);
+
+  // Keep half of coins on crash
+  var keptCoins = Math.floor((coinBonus || 0) * 0.5);
+  if (keptCoins > 0) {
+    gameState.totalPts += keptCoins;
+    localStorage.setItem('mm_pts', gameState.totalPts);
+    document.getElementById('nav-pts').textContent = 'Mission Points: ' + gameState.totalPts;
+  }
 
   var zoneName = zone ? zone.name : 'Mars';
   document.getElementById('result-title').innerHTML = zoneName + ' — Ship <em>Destroyed</em>';
