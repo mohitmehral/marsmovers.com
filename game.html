@@ -99,13 +99,16 @@ canvas{display:block;width:100%;height:100%}
 
   <!-- DISTANCE BAR -->
   <div class="dist-bar" id="dist-bar" style="opacity:0">
-    <div class="dist-lbl">Earth</div>
+    <div style="text-align:left;min-width:55px">
+      <div class="dist-km" id="dist-speed">1.0x</div>
+      <div class="dist-lbl">Speed</div>
+    </div>
     <div class="dist-track">
       <div class="dist-fill" id="dist-fill"></div>
       <div class="dist-ship" id="dist-ship">🚀</div>
       <div class="dist-mars">🔴</div>
     </div>
-    <div style="text-align:right">
+    <div style="text-align:right;min-width:55px">
       <div class="dist-km" id="dist-km">225M km</div>
       <div class="dist-lbl">to Mars</div>
     </div>

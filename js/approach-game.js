@@ -16,7 +16,7 @@ var LEVELS = [
 var TOTAL_DIST = 225; // million km
 
 // === GAME STATE ===
-var ship, rocks, bullets, stars, particles;
+var ship, rocks, bullets, stars, particles, ammoCoins;
 var score, lives, level, frame, kills, ammo, running, raf;
 var levelTimer, levelFrame, gameTime;
 var totalPts = parseInt(localStorage.getItem('mm_pts') || '0');
@@ -46,7 +46,7 @@ resize();
 // === INIT ===
 function initGame() {
   ship = { x: W / 2, y: H - 100, spd: 5, dx: 0, dy: 0, inv: 0 };
-  rocks = []; bullets = []; stars = []; particles = [];
+  rocks = []; bullets = []; stars = []; particles = []; ammoCoins = [];
   score = 0; lives = 3; level = 0; frame = 0; kills = 0; ammo = 12; gameTime = 0;
   levelTimer = 0; levelFrame = 0;
   for (var i = 0; i < 160; i++) {
@@ -198,7 +198,6 @@ function updateHUD() {
 
 // === DISTANCE BAR ===
 function updateDist() {
-  // Total frames across all levels
   var totalDur = 0, elapsed = 0;
   for (var i = 0; i < LEVELS.length; i++) {
     totalDur += LEVELS[i].dur * 60;
@@ -210,6 +209,7 @@ function updateDist() {
   document.getElementById('dist-ship').style.left = pct + '%';
   var kmLeft = Math.floor(TOTAL_DIST * (1 - pct / 100));
   document.getElementById('dist-km').textContent = kmLeft + 'M km';
+  document.getElementById('dist-speed').textContent = LEVELS[Math.min(level, 4)].speedMult.toFixed(1) + 'x';
 }
 
 // === MAIN LOOP ===
@@ -268,7 +268,7 @@ function loop() {
   // Bullets
   for (var bi = bullets.length - 1; bi >= 0; bi--) {
     var b = bullets[bi]; b.y += b.vy;
-    if (b.y < -10) { bullets.splice(bi, 1); continue; }
+    if (b.y < -10) { bullets.splice(bi, 1); ammo = Math.max(0, ammo - 1); continue; }
     drawBullet(b);
     for (var ri = rocks.length - 1; ri >= 0; ri--) {
       var a = rocks[ri];
@@ -335,6 +335,56 @@ function loop() {
   glow.style.width = gs + 'px'; glow.style.height = gs + 'px';
   glow.style.bottom = (-200 + totalPct * 2.5) + 'px';
   glow.style.opacity = (0.2 + totalPct * 0.008).toFixed(2);
+
+  // === AMMO COINS ===
+  // Spawn every 15-25 seconds, values: 20, 30, 40 ammo
+  if (frame % (60 * 18) === 0 && frame > 300) {
+    var coinVal = [20, 30, 40][Math.floor(Math.random() * 3)];
+    ammoCoins.push({
+      x: Math.random() * (W - 60) + 30,
+      y: -20,
+      vy: 0.8 + Math.random() * 0.5,
+      val: coinVal,
+      age: 0
+    });
+  }
+  // Update & draw ammo coins
+  for (var ci = ammoCoins.length - 1; ci >= 0; ci--) {
+    var ac = ammoCoins[ci];
+    ac.y += ac.vy;
+    ac.age++;
+    if (ac.y > H + 20) { ammoCoins.splice(ci, 1); continue; }
+    // Bob
+    var bobX = ac.x + Math.sin(ac.age * 0.05) * 8;
+    // Draw
+    var cSize = ac.val >= 40 ? 16 : ac.val >= 30 ? 14 : 12;
+    // Glow
+    ctx.fillStyle = 'rgba(50,200,255,0.12)';
+    ctx.beginPath(); ctx.arc(bobX, ac.y, cSize + 8, 0, Math.PI * 2); ctx.fill();
+    // Body
+    ctx.fillStyle = ac.val >= 40 ? 'rgba(50,220,255,0.9)' : ac.val >= 30 ? 'rgba(80,200,240,0.85)' : 'rgba(100,180,220,0.8)';
+    ctx.beginPath(); ctx.arc(bobX, ac.y, cSize, 0, Math.PI * 2); ctx.fill();
+    // Shine
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.beginPath(); ctx.arc(bobX - 3, ac.y - 3, cSize * 0.35, 0, Math.PI * 2); ctx.fill();
+    // Label
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold ' + (cSize * 0.7) + 'px Courier New';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('+' + ac.val, bobX, ac.y + 1);
+    // Collision with ship
+    var adx = ship.x - bobX, ady = ship.y - ac.y;
+    if (Math.sqrt(adx * adx + ady * ady) < cSize + 20) {
+      ammo = Math.min(ammo + ac.val, 99);
+      ammoCoins.splice(ci, 1);
+      spawnPx(bobX, ac.y, 8, '#44ccff');
+      snd(880, 0.1, 0.05, 'sine');
+      setTimeout(function() { snd(1100, 0.08, 0.04, 'sine'); }, 80);
+      // Floating text
+      showAmmoPopup(bobX, ac.y, ac.val);
+      continue;
+    }
+  }
 
   drawStarship();
   updateHUD();
@@ -421,3 +471,22 @@ canvas.addEventListener('touchmove', function(e) {
 canvas.addEventListener('touchend', function(e) {
   e.preventDefault(); if (running) { ship.dx = 0; ship.dy = 0; }
 }, { passive: false });
+
+
+// === AMMO POPUP ===
+function showAmmoPopup(x, y, val) {
+  var el = document.createElement('div');
+  el.style.cssText = 'position:absolute;left:' + x + 'px;top:' + y + 'px;z-index:25;font-family:Courier New,monospace;font-size:1.1rem;font-weight:700;color:#44ccff;pointer-events:none;text-shadow:0 0 10px #44ccff;text-align:center;';
+  el.textContent = '+' + val + ' AMMO';
+  document.getElementById('game-wrap').appendChild(el);
+  var start = Date.now();
+  function anim() {
+    var t = (Date.now() - start) / 1000;
+    if (t > 1.5) { el.remove(); return; }
+    el.style.top = (y - t * 40) + 'px';
+    el.style.opacity = 1 - t / 1.5;
+    el.style.transform = 'scale(' + (1 + t * 0.3) + ')';
+    requestAnimationFrame(anim);
+  }
+  anim();
+}
