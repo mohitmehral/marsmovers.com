@@ -37,10 +37,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .btn-cta{background:#ff5014;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:10px 22px;transition:background .2s;text-decoration:none;display:inline-block}
 .btn-cta:hover{background:#ff7040}
 
+/* MARS HERO SCENE */
+#mars-scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
 /* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 20px 60px}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:0 20px 80px;overflow:hidden}
+.hero-inner{position:relative;z-index:2}
 .hero-tag{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:#ff5014;margin-bottom:20px}
-.hero h1{font-size:clamp(2.8rem,8vw,6.5rem);font-weight:700;line-height:1.02;margin-bottom:20px;letter-spacing:-.02em}
+.hero h1{font-size:clamp(2.8rem,8vw,6.5rem);font-weight:700;line-height:1.02;margin-bottom:20px;letter-spacing:-.02em;text-shadow:0 0 60px rgba(255,80,20,.3)}
 .hero h1 em{color:#ff5014;font-style:normal}
 .hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);max-width:500px;line-height:1.85;margin-bottom:44px}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
@@ -141,12 +145,15 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 
 <!-- HERO -->
 <div class="hero">
-  <p class="hero-tag">Citizen Astronaut Training Platform · Est. 2024</p>
-  <h1>Train for Mars.<br><em>Earn Your Seat.</em></h1>
-  <p class="hero-sub">Play Mars survival games. Master real space science. Climb the Mission Roster. The top 1,000 pilots secure their place on the first civilian Mars mission.</p>
-  <div class="hero-btns">
-    <a href="landing.html" class="btn-cta" style="padding:15px 40px;font-size:.82rem">Start Training →</a>
-    <a href="#roster" class="btn-outline">View Mission Roster</a>
+  <canvas id="mars-scene"></canvas>
+  <div class="hero-inner">
+    <p class="hero-tag">Citizen Astronaut Training Platform · Est. 2024</p>
+    <h1>Train for Mars.<br><em>Earn Your Seat.</em></h1>
+    <p class="hero-sub">Play Mars survival games. Master real space science. Climb the Mission Roster. The top 1,000 pilots secure their place on the first civilian Mars mission.</p>
+    <div class="hero-btns">
+      <a href="landing.html" class="btn-cta" style="padding:15px 40px;font-size:.82rem">Start Training →</a>
+      <a href="#roster" class="btn-outline">View Mission Roster</a>
+    </div>
   </div>
 </div>
 
@@ -276,6 +283,45 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 </footer>
 
 <script>
+// Mars Hero Scene — red planet horizon, dust, atmospheric glow
+(function(){
+  var mc=document.getElementById('mars-scene'),mx=mc.getContext('2d');
+  var dust=[];
+  function mresize(){mc.width=mc.offsetWidth;mc.height=mc.offsetHeight;}
+  mresize();window.addEventListener('resize',mresize);
+  for(var i=0;i<60;i++)dust.push({x:Math.random()*2000,y:Math.random()*200,r:Math.random()*2+0.5,vx:Math.random()*0.4+0.1,o:Math.random()*0.3+0.1});
+  function drawMars(){
+    var w=mc.width,h=mc.height;
+    mx.clearRect(0,0,w,h);
+    var sky=mx.createLinearGradient(0,0,0,h);
+    sky.addColorStop(0,'#000000');
+    sky.addColorStop(0.4,'#0a0204');
+    sky.addColorStop(0.6,'#1a0808');
+    sky.addColorStop(0.75,'#3d1510');
+    sky.addColorStop(0.85,'#6b2a15');
+    sky.addColorStop(1,'#8b3a1a');
+    mx.fillStyle=sky;mx.fillRect(0,0,w,h);
+    var glow=mx.createRadialGradient(w*0.5,h*0.82,0,w*0.5,h*0.82,w*0.6);
+    glow.addColorStop(0,'rgba(255,100,30,0.15)');
+    glow.addColorStop(0.5,'rgba(255,60,20,0.06)');
+    glow.addColorStop(1,'rgba(0,0,0,0)');
+    mx.fillStyle=glow;mx.fillRect(0,0,w,h);
+    mx.fillStyle='#2a0e06';mx.beginPath();mx.moveTo(0,h);
+    for(var t=0;t<=w;t+=8){mx.lineTo(t,h*0.82+Math.sin(t*0.008)*20+Math.sin(t*0.003)*35+Math.sin(t*0.02)*5);}
+    mx.lineTo(w,h);mx.closePath();mx.fill();
+    mx.fillStyle='#1a0804';mx.beginPath();mx.moveTo(0,h);
+    for(var f=0;f<=w;f+=6){mx.lineTo(f,h*0.9+Math.sin(f*0.012)*12+Math.sin(f*0.005)*18+Math.sin(f*0.03)*4);}
+    mx.lineTo(w,h);mx.closePath();mx.fill();
+    dust.forEach(function(d){
+      d.x+=d.vx;if(d.x>w+10){d.x=-10;d.y=Math.random()*200;}
+      mx.beginPath();mx.arc(d.x,d.y+h*0.65,d.r,0,Math.PI*2);
+      mx.fillStyle='rgba(200,120,60,'+d.o.toFixed(2)+')';mx.fill();
+    });
+    requestAnimationFrame(drawMars);
+  }
+  drawMars();
+})();
+
 // Starfield — pure canvas, no images
 (function(){
   var c=document.getElementById('starfield'),ctx=c.getContext('2d'),stars=[];

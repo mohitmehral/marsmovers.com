@@ -104,28 +104,41 @@ function create() {
   padMarkerL = scene.add.rectangle(padX - z.padW/2 - 5, pad.y - 8, 4, 16, 0x00ff88).setDepth(3);
   padMarkerR = scene.add.rectangle(padX + z.padW/2 + 5, pad.y - 8, 4, 16, 0x00ff88).setDepth(3);
 
-  // Ship
+  // Ship — Starship-style lander (bigger, cylindrical, fins)
   ship = scene.add.container(W / 2, 60);
   ship.setDepth(5);
 
-  // Ship body — triangle
   var body = scene.add.graphics();
+  // Main fuselage — tall rounded rectangle
+  body.fillStyle(0xd8d8d8, 1);
+  body.fillRoundedRect(-12, -32, 24, 52, 6);
+  // Dark panel stripe
+  body.fillStyle(0x222222, 0.6);
+  body.fillRect(-10, -20, 20, 8);
+  // Window strip — 3 small blue circles
+  body.fillStyle(0x66ccff, 0.9);
+  body.fillCircle(0, -24, 3);
+  body.fillCircle(0, -16, 2.5);
+  body.fillCircle(0, -8, 2.5);
+  // Nose cone accent
   body.fillStyle(0xff5014, 1);
-  body.beginPath();
-  body.moveTo(0, -16);
-  body.lineTo(10, 12);
-  body.lineTo(-10, 12);
-  body.closePath();
-  body.fillPath();
-  // Window
-  body.fillStyle(0x99ddff, 0.8);
-  body.fillCircle(0, -4, 3);
-  // Legs
-  body.lineStyle(1.5, 0xaaaaaa, 0.8);
-  body.lineBetween(-10, 12, -14, 18);
-  body.lineBetween(10, 12, 14, 18);
-  body.lineBetween(-14, 18, -16, 18);
-  body.lineBetween(14, 18, 16, 18);
+  body.fillTriangle(-8, -32, 8, -32, 0, -42);
+  // Side fins
+  body.fillStyle(0x999999, 0.9);
+  body.fillTriangle(-12, 10, -12, 22, -22, 24);
+  body.fillTriangle(12, 10, 12, 22, 22, 24);
+  // Bottom fin
+  body.fillStyle(0x888888, 0.8);
+  body.fillTriangle(-4, 20, 4, 20, 0, 28);
+  // Landing legs
+  body.lineStyle(2, 0x777777, 0.9);
+  body.lineBetween(-12, 20, -18, 30);
+  body.lineBetween(12, 20, 18, 30);
+  body.lineBetween(-18, 30, -22, 30);
+  body.lineBetween(18, 30, 22, 30);
+  // SpaceX-style black heat shield band
+  body.fillStyle(0x111111, 0.5);
+  body.fillRect(-12, 14, 24, 6);
   ship.add(body);
 
   // Thrust flame (hidden initially)
@@ -314,9 +327,13 @@ function update(time, delta) {
     flame.clear();
     var fl = 8 + Math.random() * 10;
     flame.fillStyle(0xffcc33, 0.9);
-    flame.fillTriangle(-5, 14, 5, 14, 0, 14 + fl);
+    flame.fillTriangle(-8, 22, 8, 22, 0, 22 + fl);
     flame.fillStyle(0xff5014, 0.5);
-    flame.fillTriangle(-3, 14, 3, 14, 0, 14 + fl * 0.6);
+    flame.fillTriangle(-5, 22, 5, 22, 0, 22 + fl * 0.7);
+    // Side thruster glow
+    flame.fillStyle(0xffaa00, 0.3);
+    flame.fillTriangle(-10, 22, -6, 22, -8, 22 + fl * 0.4);
+    flame.fillTriangle(6, 22, 10, 22, 8, 22 + fl * 0.4);
 
     // Trigger sound
     if (window.playThrustSound) window.playThrustSound(true);
@@ -355,7 +372,7 @@ function update(time, delta) {
   if (ship.x > W + 20) ship.x = -20;
 
   // Update HUD
-  var alt = Math.max(0, getTerrainY(ship.x) - ship.y - 18);
+  var alt = Math.max(0, getTerrainY(ship.x) - ship.y - 30);
   document.getElementById('h-alt').textContent = Math.floor(alt) + 'm';
   document.getElementById('h-vspd').textContent = gameState.vy.toFixed(1);
   document.getElementById('h-hspd').textContent = Math.abs(gameState.vx).toFixed(1);
@@ -376,7 +393,7 @@ function update(time, delta) {
 
   // Check landing / crash
   var terrainY = getTerrainY(ship.x);
-  var shipBottom = ship.y + 18;
+  var shipBottom = ship.y + 30;
 
   if (shipBottom >= terrainY) {
     var onPad = Math.abs(ship.x - pad.x) < 40;
@@ -386,7 +403,7 @@ function update(time, delta) {
 
     if (onPad && absVy < GOOD_VSPD && absAngle < GOOD_ANGLE) {
       gameState.landed = true;
-      ship.y = terrainY - 18;
+      ship.y = terrainY - 30;
       // Advance level on success
       if (gameState.level < 5) {
         gameState.level++;
