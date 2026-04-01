@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Mars Approach — Mars Movers</title>
-<meta name="description" content="Navigate asteroids, shoot debris, and approach Mars. Survive the field to begin your landing descent."/>
+<meta name="description" content="Navigate 5 asteroid zones, shoot debris, reach Mars orbit, then land. Complete all 6 levels in one run to earn your Star Pilot certificate."/>
 <meta name="robots" content="index,follow"/>
 <link rel="canonical" href="https://www.marsmovers.com/game.html"/>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
@@ -16,383 +16,159 @@ html,body{height:100%;overflow:hidden;font-family:'Courier New',Courier,monospac
 body{display:flex;flex-direction:column}
 nav{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(0,0,0,.95);border-bottom:1px solid rgba(255,80,20,.2);flex-shrink:0;z-index:10}
 .logo{color:#ff5014;font-size:.85rem;font-weight:700;letter-spacing:.2em;text-decoration:none;text-transform:uppercase}
-.nav-pts{font-size:.68rem;letter-spacing:.12em;color:#ff5014;font-weight:700}
+.nav-info{font-size:.65rem;letter-spacing:.12em;color:#ff5014;font-weight:700;text-align:center}
 .nav-back{color:rgba(255,255,255,.5);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
 .nav-back:hover{color:#ff5014}
 .game-wrap{flex:1;position:relative;overflow:hidden}
 canvas{display:block;width:100%;height:100%}
-.hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:space-between;padding:0 16px;pointer-events:none;z-index:5;gap:6px;flex-wrap:wrap}
-.hud-box{background:rgba(0,0,0,.8);border:1px solid rgba(255,80,20,.2);padding:6px 12px;min-width:60px}
-.hud-lbl{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.hud-val{font-size:.9rem;font-weight:700;color:#ff5014;font-variant-numeric:tabular-nums}
+
+/* HUD */
+.hud{position:absolute;top:10px;left:0;right:0;display:flex;justify-content:center;padding:0 12px;pointer-events:none;z-index:5;gap:4px;flex-wrap:wrap}
+.hud-box{background:rgba(0,0,0,.8);border:1px solid rgba(255,80,20,.2);padding:5px 10px;min-width:52px;text-align:center}
+.hud-lbl{font-size:.45rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.hud-val{font-size:.82rem;font-weight:700;color:#ff5014;font-variant-numeric:tabular-nums}
+
+/* DISTANCE BAR — bottom */
+.dist-bar{position:absolute;bottom:0;left:0;right:0;height:28px;z-index:5;pointer-events:none;background:rgba(0,0,0,.7);border-top:1px solid rgba(255,80,20,.15);display:flex;align-items:center;padding:0 16px;gap:10px}
+.dist-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;position:relative;overflow:visible}
+.dist-fill{height:100%;background:linear-gradient(to right,#ff5014,#ff8844);border-radius:3px;width:0%;transition:width .5s}
+.dist-ship{position:absolute;top:-6px;font-size:.9rem;transition:left .5s;left:0%}
+.dist-mars{position:absolute;right:-8px;top:-8px;font-size:1rem}
+.dist-lbl{font-size:.45rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.4);white-space:nowrap}
+.dist-km{font-size:.6rem;font-weight:700;color:#ff5014;letter-spacing:.08em}
+
+/* LEVEL BANNER */
+.level-banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:15;pointer-events:none;text-align:center;opacity:0;transition:opacity .3s}
+.level-banner.show{opacity:1}
+.level-banner .lb-zone{font-size:.55rem;letter-spacing:.35em;text-transform:uppercase;color:#ff5014;margin-bottom:6px}
+.level-banner .lb-name{font-size:clamp(1.2rem,3vw,2rem);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-shadow:0 0 30px rgba(255,80,20,.4)}
+.level-banner .lb-desc{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:6px;letter-spacing:.06em}
+
+/* MARS GLOW */
+.mars-glow{position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(180,60,20,.2),rgba(120,30,10,.05),transparent 70%);pointer-events:none;z-index:1;transition:all 2s}
+
+/* OVERLAYS */
 .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.92);z-index:20;text-align:center;padding:20px}
 .ov.hide{display:none}
-.ov-tag{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:#ff5014;margin-bottom:12px}
-.ov h2{font-size:clamp(1.4rem,4.5vw,2.8rem);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.ov-tag{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:#ff5014;margin-bottom:10px}
+.ov h2{font-size:clamp(1.3rem,4vw,2.5rem);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
 .ov h2 em{color:#ff5014;font-style:normal}
-.ov-sub{font-size:.82rem;color:rgba(255,255,255,.6);max-width:400px;line-height:1.8;margin-bottom:26px}
-.btn-go{background:#ff5014;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:14px 40px;transition:background .2s;margin-bottom:8px}
+.ov-sub{font-size:.8rem;color:rgba(255,255,255,.6);max-width:420px;line-height:1.8;margin-bottom:22px}
+.btn-go{background:#ff5014;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:14px 36px;transition:background .2s;margin-bottom:8px}
 .btn-go:hover{background:#ff7040}
-.btn-sec{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.3);cursor:pointer;font-family:inherit;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:10px 24px;transition:all .2s;text-decoration:none;display:inline-block;margin-top:6px}
+.btn-sec{background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.3);cursor:pointer;font-family:inherit;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:10px 22px;transition:all .2s;text-decoration:none;display:inline-block;margin-top:6px}
 .btn-sec:hover{border-color:#ff5014;color:#ff5014}
-.hint{font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.08em;margin-top:12px;line-height:1.7}
-.score-big{font-size:clamp(2.5rem,8vw,4.5rem);font-weight:700;color:#ff5014;line-height:1;margin:10px 0}
-.approach-bar{position:absolute;bottom:0;left:0;right:0;height:4px;z-index:5;pointer-events:none;background:rgba(255,255,255,.05)}
-.approach-fill{height:100%;background:linear-gradient(to right,#ff5014,#ff8844);width:0%;transition:width .3s}
-/* MARS GLOW — grows as you approach */
-.mars-glow{position:absolute;bottom:-200px;left:50%;transform:translateX(-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(180,60,20,.15),rgba(120,30,10,.05),transparent 70%);pointer-events:none;z-index:1;transition:all 1s}
+.hint{font-size:.62rem;color:rgba(255,255,255,.45);letter-spacing:.06em;margin-top:10px;line-height:1.7}
+.score-big{font-size:clamp(2rem,7vw,4rem);font-weight:700;color:#ff5014;line-height:1;margin:8px 0}
+
+/* CELEBRATION */
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.confetti-piece{position:fixed;top:-20px;width:8px;height:8px;z-index:100;pointer-events:none;animation:confetti 3s ease-in forwards}
+
+/* CERTIFICATE */
+.cert-box{border:2px solid rgba(255,200,50,.5);padding:28px 36px;background:rgba(255,200,50,.04);max-width:380px;width:100%;margin:16px 0}
+.cert-box .c-label{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,200,50,.5);margin-bottom:8px}
+.cert-box .c-name{font-size:1.3rem;font-weight:700;letter-spacing:.1em;color:#ffd700;margin-bottom:4px}
+.cert-box .c-sub{font-size:.65rem;color:rgba(255,255,255,.4);margin-bottom:14px}
+.cert-box .c-roster{font-size:1.8rem;font-weight:700;color:#ff5014;letter-spacing:.25em}
+.cert-box .c-stats{display:flex;gap:16px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.cert-box .c-stat{text-align:center}
+.cert-box .c-stat-n{font-size:.9rem;font-weight:700;color:#ff5014}
+.cert-box .c-stat-l{font-size:.42rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)}
 </style>
 </head>
 <body>
 <nav>
   <a href="/" class="logo">⬡ Mars Movers</a>
-  <span class="nav-pts" id="nav-pts">Mission Points: 0</span>
+  <div class="nav-info"><span id="nav-pts">0 pts</span> · <span id="nav-level">Level 1</span></div>
   <a href="/" class="nav-back">← Hub</a>
 </nav>
-<div class="game-wrap">
+<div class="game-wrap" id="game-wrap">
   <canvas id="c"></canvas>
   <div class="mars-glow" id="mars-glow"></div>
+
+  <!-- HUD -->
   <div class="hud" id="hud" style="opacity:0">
     <div class="hud-box"><div class="hud-lbl">Score</div><div class="hud-val" id="h-score">0</div></div>
-    <div class="hud-box"><div class="hud-lbl">Level</div><div class="hud-val" id="h-level">1</div></div>
+    <div class="hud-box"><div class="hud-lbl">Level</div><div class="hud-val" id="h-level">1/6</div></div>
+    <div class="hud-box"><div class="hud-lbl">Speed</div><div class="hud-val" id="h-speed">1.0x</div></div>
     <div class="hud-box"><div class="hud-lbl">Lives</div><div class="hud-val" id="h-lives">🚀🚀🚀</div></div>
     <div class="hud-box"><div class="hud-lbl">Ammo</div><div class="hud-val" id="h-ammo">10</div></div>
-    <div class="hud-box"><div class="hud-lbl">Destroyed</div><div class="hud-val" id="h-kills">0</div></div>
-    <div class="hud-box"><div class="hud-lbl">Best</div><div class="hud-val" id="h-best">0</div></div>
+    <div class="hud-box"><div class="hud-lbl">Kills</div><div class="hud-val" id="h-kills">0</div></div>
   </div>
-  <div class="approach-bar"><div class="approach-fill" id="approach-fill"></div></div>
 
-  <!-- START -->
+  <!-- DISTANCE BAR -->
+  <div class="dist-bar" id="dist-bar" style="opacity:0">
+    <div class="dist-lbl">Earth</div>
+    <div class="dist-track">
+      <div class="dist-fill" id="dist-fill"></div>
+      <div class="dist-ship" id="dist-ship">🚀</div>
+      <div class="dist-mars">🔴</div>
+    </div>
+    <div style="text-align:right">
+      <div class="dist-km" id="dist-km">225M km</div>
+      <div class="dist-lbl">to Mars</div>
+    </div>
+  </div>
+
+  <!-- LEVEL BANNER -->
+  <div class="level-banner" id="level-banner">
+    <div class="lb-zone" id="lb-zone">Zone 1 of 6</div>
+    <div class="lb-name" id="lb-name">Outer Belt</div>
+    <div class="lb-desc" id="lb-desc">Light debris — warm up your reflexes</div>
+  </div>
+
+  <!-- START OVERLAY -->
   <div class="ov" id="ov-start">
-    <p class="ov-tag">Phase 1 — Mars Approach</p>
-    <h2>Asteroid <em>Field</em></h2>
-    <p class="ov-sub">Navigate your Starship through the asteroid belt to reach Mars orbit. Dodge or shoot debris. Survive the approach and you'll auto-transition to the landing phase.</p>
-    <button class="btn-go" onclick="startGame()">Begin Approach</button>
-    <p class="hint">← → or A/D: Move &nbsp;·&nbsp; ↑↓ or W/S: Thrust &nbsp;·&nbsp; Space: Shoot<br>Mobile: tap screen halves to move, double-tap to shoot</p>
-  </div>
-
-  <!-- APPROACH COMPLETE -->
-  <div class="ov hide" id="ov-approach">
-    <p class="ov-tag">Phase 1 Complete</p>
-    <h2>Mars <em>Orbit Reached</em></h2>
-    <p class="ov-sub" id="approach-summary">You navigated the asteroid field. Preparing for descent...</p>
-    <div class="score-big" id="approach-score">0</div>
-    <p style="font-size:.7rem;color:rgba(255,100,50,.6);letter-spacing:.15em;margin-bottom:24px" id="approach-pts">+0 Mission Points</p>
-    <a href="landing.html" class="btn-go">Begin Descent →</a>
-    <button class="btn-sec" onclick="startGame()">Replay Approach</button>
+    <p class="ov-tag">Full Mission — 6 Levels — One Run</p>
+    <h2>Mars <em>Approach</em></h2>
+    <p class="ov-sub">Navigate 5 asteroid zones of increasing intensity. Survive them all and you'll enter Mars orbit for the final landing. Complete all 6 levels in one run to earn your Star Pilot certificate.</p>
+    <button class="btn-go" onclick="startGame()">Launch Mission</button>
+    <p class="hint">← → ↑ ↓ or WASD: Move &nbsp;·&nbsp; Space: Shoot &nbsp;·&nbsp; ~7 min total<br>Mobile: tap screen to move, double-tap to shoot</p>
   </div>
 
   <!-- DESTROYED -->
   <div class="ov hide" id="ov-over">
     <p class="ov-tag">Mission Failed</p>
     <h2>Ship <em>Destroyed</em></h2>
+    <p class="ov-sub" id="over-summary"></p>
     <div class="score-big" id="final-score">0</div>
-    <p style="font-size:.7rem;color:rgba(255,100,50,.6);letter-spacing:.15em;margin-bottom:24px" id="pts-earned">+0 Mission Points</p>
-    <button class="btn-go" onclick="startGame()">Retry Approach</button>
+    <p style="font-size:.7rem;color:rgba(255,100,50,.6);letter-spacing:.12em;margin-bottom:20px" id="pts-earned"></p>
+    <button class="btn-go" onclick="startGame()">Retry Mission</button>
+    <a href="/" class="btn-sec">← Mission Hub</a>
+  </div>
+
+  <!-- APPROACH COMPLETE — redirect to landing -->
+  <div class="ov hide" id="ov-land">
+    <p class="ov-tag">Levels 1-5 Complete — Entering Mars Orbit</p>
+    <h2>Begin <em>Descent</em></h2>
+    <p class="ov-sub">You've cleared the asteroid field. Mars is below you. Time to land the Starship.</p>
+    <div class="score-big" id="land-score">0</div>
+    <p style="font-size:.7rem;color:rgba(255,100,50,.6);letter-spacing:.12em;margin-bottom:20px" id="land-pts"></p>
+    <a href="landing.html" class="btn-go">Begin Landing →</a>
+  </div>
+
+  <!-- STAR PILOT CERTIFICATE — shown after completing landing from this flow -->
+  <div class="ov hide" id="ov-cert">
+    <p class="ov-tag">★ Star Pilot Certificate ★</p>
+    <h2>Mission <em>Complete</em></h2>
+    <div class="cert-box">
+      <div class="c-label">Mars Movers · Mission MM-2031</div>
+      <div class="c-name" id="cert-name">PILOT NAME</div>
+      <div class="c-sub">has completed the full Mars approach and landing in a single mission and is hereby granted</div>
+      <div class="c-roster" id="cert-roster">MM-0000</div>
+      <div class="c-stats">
+        <div class="c-stat"><div class="c-stat-n" id="cert-score">0</div><div class="c-stat-l">Score</div></div>
+        <div class="c-stat"><div class="c-stat-n" id="cert-kills">0</div><div class="c-stat-l">Destroyed</div></div>
+        <div class="c-stat"><div class="c-stat-n" id="cert-time">0</div><div class="c-stat-l">Time</div></div>
+        <div class="c-stat"><div class="c-stat-n" id="cert-lives">0</div><div class="c-stat-l">Lives Left</div></div>
+      </div>
+    </div>
+    <button class="btn-go" onclick="startGame()">New Mission</button>
     <a href="/" class="btn-sec">← Mission Hub</a>
   </div>
 </div>
 
-<script>
-var canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
-var W,H,ship,rocks,bullets,stars,particles,score,lives,level,running,raf,frame;
-var totalPts=parseInt(localStorage.getItem('mm_pts')||'0');
-var best=parseInt(localStorage.getItem('mm_best')||'0');
-var kills=0,ammo=10,approachPct=0;
-var APPROACH_TARGET=120; // seconds to reach Mars
-var keys={},lastTap=0;
-document.getElementById('h-best').textContent=best;
-document.getElementById('nav-pts').textContent='Mission Points: '+totalPts;
-
-// Audio
-var audioCtx=null;
-function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
-function playSound(freq,dur,vol,type){
-  initAudio();var o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type=type||'sine';o.frequency.value=freq;g.gain.value=vol||0.05;
-  o.connect(g);g.connect(audioCtx.destination);
-  g.gain.setTargetAtTime(0,audioCtx.currentTime+dur*0.7,dur*0.2);
-  o.start();o.stop(audioCtx.currentTime+dur);
-}
-
-function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
-window.addEventListener('resize',resize);
-resize();
-
-function initGame(){
-  ship={x:W/2,y:H-100,w:12,h:42,spd:5,dx:0,dy:0,inv:0};
-  rocks=[];bullets=[];stars=[];particles=[];
-  score=0;lives=3;level=1;frame=0;kills=0;ammo=10;approachPct=0;
-  for(var i=0;i<150;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.2,spd:Math.random()*.4+.1,o:Math.random()*.5+.2,layer:Math.floor(Math.random()*3)});
-  updateHUD();
-}
-
-function spawnRock(){
-  var r=Math.random()*22+8;
-  var fromSide=Math.random()<0.15;
-  var x,y,vx,vy;
-  if(fromSide){x=Math.random()<0.5?-r:W+r;y=Math.random()*H*0.5;vx=(x<0?1:-1)*(Math.random()+0.5);vy=Math.random()*1+0.5;}
-  else{x=Math.random()*(W-r*2)+r;y=-r;vx=(Math.random()-0.5)*0.8;vy=(Math.random()*1.5+0.8)+level*0.2;}
-  rocks.push({x:x,y:y,r:r,vx:vx,vy:vy,rot:0,rs:(Math.random()-0.5)*0.06,hp:r>20?2:1,sides:Math.floor(Math.random()*3)+6});
-}
-
-function drawStarship(x,y,inv){
-  if(inv>0&&Math.floor(frame/4)%2===0)return;
-  ctx.save();ctx.translate(x,y);
-  // Fuselage
-  ctx.fillStyle='#d0d0d0';
-  ctx.beginPath();
-  ctx.moveTo(-ship.w,-ship.h/2);ctx.quadraticCurveTo(-ship.w-2,-ship.h/2-8,0,-ship.h/2-16);
-  ctx.quadraticCurveTo(ship.w+2,-ship.h/2-8,ship.w,-ship.h/2);
-  ctx.lineTo(ship.w,ship.h/2);ctx.lineTo(-ship.w,ship.h/2);ctx.closePath();ctx.fill();
-  // Heat shield band
-  ctx.fillStyle='#222';ctx.fillRect(-ship.w,ship.h/2-10,ship.w*2,8);
-  // Nose
-  ctx.fillStyle='#ff5014';
-  ctx.beginPath();ctx.moveTo(-7,-ship.h/2);ctx.quadraticCurveTo(0,-ship.h/2-20,7,-ship.h/2);ctx.fill();
-  // Windows
-  ctx.fillStyle='rgba(100,200,255,.8)';
-  ctx.beginPath();ctx.arc(0,-ship.h/2+6,2.5,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.arc(0,-ship.h/2+13,2,0,Math.PI*2);ctx.fill();
-  // Fins
-  ctx.fillStyle='#999';
-  ctx.beginPath();ctx.moveTo(-ship.w,ship.h/2-6);ctx.lineTo(-ship.w-8,ship.h/2+4);ctx.lineTo(-ship.w,ship.h/2);ctx.fill();
-  ctx.beginPath();ctx.moveTo(ship.w,ship.h/2-6);ctx.lineTo(ship.w+8,ship.h/2+4);ctx.lineTo(ship.w,ship.h/2);ctx.fill();
-  // Engine flames
-  var fl=10+Math.random()*12;
-  ctx.fillStyle='rgba(255,200,50,.85)';
-  ctx.beginPath();ctx.moveTo(-7,ship.h/2);ctx.lineTo(7,ship.h/2);ctx.lineTo(0,ship.h/2+fl);ctx.closePath();ctx.fill();
-  ctx.fillStyle='rgba(255,100,20,.4)';
-  ctx.beginPath();ctx.moveTo(-4,ship.h/2);ctx.lineTo(4,ship.h/2);ctx.lineTo(0,ship.h/2+fl*0.6);ctx.closePath();ctx.fill();
-  // Side thrusters when moving
-  if(ship.dx!==0){
-    ctx.fillStyle='rgba(100,180,255,.5)';
-    var side=ship.dx>0?-1:1;
-    ctx.beginPath();ctx.moveTo(side*ship.w,0);ctx.lineTo(side*(ship.w+6),-2);ctx.lineTo(side*(ship.w+6),2);ctx.closePath();ctx.fill();
-  }
-  ctx.restore();
-}
-
-function drawRock(a){
-  ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.rot);
-  ctx.strokeStyle=a.hp>1?'rgba(200,140,80,.9)':'rgba(180,120,70,.7)';
-  ctx.fillStyle=a.hp>1?'rgba(90,55,30,.7)':'rgba(70,45,25,.5)';
-  ctx.lineWidth=a.hp>1?2:1.5;
-  ctx.beginPath();
-  for(var i=0;i<a.sides;i++){
-    var ang=(i/a.sides)*Math.PI*2;var jit=a.r*(.7+Math.sin(i*2.7)*.2);
-    i===0?ctx.moveTo(Math.cos(ang)*jit,Math.sin(ang)*jit):ctx.lineTo(Math.cos(ang)*jit,Math.sin(ang)*jit);
-  }
-  ctx.closePath();ctx.fill();ctx.stroke();
-  // Crack lines on damaged rocks
-  if(a.hp===1&&a.r>15){ctx.strokeStyle='rgba(255,100,50,.3)';ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(-a.r*0.3,-a.r*0.2);ctx.lineTo(a.r*0.2,a.r*0.3);ctx.stroke();}
-  ctx.restore();
-}
-
-function drawBullet(b){
-  ctx.save();ctx.translate(b.x,b.y);
-  ctx.fillStyle='rgba(100,200,255,.9)';ctx.fillRect(-1.5,-6,3,12);
-  ctx.fillStyle='rgba(100,200,255,.3)';ctx.fillRect(-3,-4,6,8);
-  ctx.restore();
-}
-
-function spawnParticles(x,y,count,color){
-  for(var i=0;i<count;i++){
-    var ang=Math.random()*Math.PI*2,spd=Math.random()*3+1;
-    particles.push({x:x,y:y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,life:30+Math.random()*20,maxLife:50,r:Math.random()*2+1,color:color||'#ff8844'});
-  }
-}
-
-function shoot(){
-  if(ammo<=0)return;
-  ammo--;
-  bullets.push({x:ship.x,y:ship.y-ship.h/2-6,vy:-10});
-  playSound(800,0.08,0.04,'square');
-}
-
-function hitShip(a){
-  var dx=ship.x-a.x,dy=ship.y-a.y;
-  return Math.sqrt(dx*dx+dy*dy)<a.r+16;
-}
-
-function updateHUD(){
-  document.getElementById('h-score').textContent=score;
-  document.getElementById('h-level').textContent=level;
-  document.getElementById('h-ammo').textContent=ammo;
-  document.getElementById('h-kills').textContent=kills;
-  var l='';
-  for(var i=0;i<3;i++)l+='<span style="opacity:'+(i<lives?1:.15)+'">🚀</span>';
-  document.getElementById('h-lives').innerHTML=l;
-}
-
-function loop(){
-  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
-  frame++;
-
-  // Stars — 3 layer parallax
-  stars.forEach(function(s){
-    s.y+=(s.layer+1)*0.15+0.1;if(s.y>H){s.y=-2;s.x=Math.random()*W;}
-    ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')';
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
-  });
-
-  score=Math.floor(frame/6);
-  level=Math.floor(score/60)+1;
-
-  // Approach progress
-  approachPct=Math.min(100,score/APPROACH_TARGET*100);
-  document.getElementById('approach-fill').style.width=approachPct+'%';
-  // Mars glow grows
-  var glow=document.getElementById('mars-glow');
-  var glowSize=200+approachPct*4;
-  glow.style.width=glowSize+'px';glow.style.height=glowSize+'px';
-  glow.style.bottom=(-200+approachPct*2)+'px';
-  glow.style.opacity=0.3+approachPct*0.007;
-
-  // Approach complete!
-  if(approachPct>=100){approachComplete();return;}
-
-  // Spawn rocks
-  var rate=Math.max(14,48-level*3);
-  if(frame%rate===0)spawnRock();
-  // Ammo refill every 10 seconds
-  if(frame%(60*10)===0&&ammo<15){ammo+=3;if(ammo>15)ammo=15;}
-
-  // Input
-  ship.dx=0;ship.dy=0;
-  if(keys['ArrowLeft']||keys['a'])ship.dx=-ship.spd;
-  if(keys['ArrowRight']||keys['d'])ship.dx=ship.spd;
-  if(keys['ArrowUp']||keys['w'])ship.dy=-ship.spd*0.7;
-  if(keys['ArrowDown']||keys['s'])ship.dy=ship.spd*0.7;
-  ship.x=Math.max(ship.w+8,Math.min(W-ship.w-8,ship.x+ship.dx));
-  ship.y=Math.max(60,Math.min(H-40,ship.y+ship.dy));
-  if(ship.inv>0)ship.inv--;
-
-  // Bullets
-  for(var bi=bullets.length-1;bi>=0;bi--){
-    var b=bullets[bi];b.y+=b.vy;
-    if(b.y<-10){bullets.splice(bi,1);continue;}
-    drawBullet(b);
-    // Bullet-rock collision
-    for(var ri=rocks.length-1;ri>=0;ri--){
-      var a=rocks[ri];
-      var dx=b.x-a.x,dy=b.y-a.y;
-      if(Math.sqrt(dx*dx+dy*dy)<a.r+4){
-        bullets.splice(bi,1);
-        a.hp--;
-        if(a.hp<=0){
-          spawnParticles(a.x,a.y,12,'#ff8844');
-          spawnParticles(a.x,a.y,6,'#ffcc44');
-          // Split big rocks
-          if(a.r>18){
-            for(var s=0;s<2;s++){
-              rocks.push({x:a.x+(s===0?-10:10),y:a.y,r:a.r*0.5,vx:(Math.random()-0.5)*2,vy:a.vy*0.8+Math.random(),rot:0,rs:(Math.random()-0.5)*0.1,hp:1,sides:6});
-            }
-          }
-          rocks.splice(ri,1);kills++;score+=10;
-          playSound(200,0.15,0.06,'sawtooth');
-        } else {
-          spawnParticles(a.x,a.y,5,'#ffaa44');
-          playSound(300,0.08,0.03,'triangle');
-        }
-        break;
-      }
-    }
-  }
-
-  // Rocks
-  for(var i=rocks.length-1;i>=0;i--){
-    var a=rocks[i];
-    a.x+=a.vx;a.y+=a.vy;a.rot+=a.rs;
-    if(a.y>H+a.r+20||a.x<-a.r-50||a.x>W+a.r+50){rocks.splice(i,1);continue;}
-    drawRock(a);
-    if(ship.inv===0&&hitShip(a)){
-      rocks.splice(i,1);lives--;ship.inv=80;
-      spawnParticles(ship.x,ship.y,8,'#ff3333');
-      playSound(120,0.3,0.08,'sawtooth');
-      updateHUD();
-      if(lives<=0){endGame();return;}
-    }
-  }
-
-  // Particles
-  for(var pi=particles.length-1;pi>=0;pi--){
-    var p=particles[pi];p.x+=p.vx;p.y+=p.vy;p.life--;p.vx*=0.97;p.vy*=0.97;
-    if(p.life<=0){particles.splice(pi,1);continue;}
-    var alpha=(p.life/p.maxLife).toFixed(2);
-    ctx.fillStyle=p.color.replace(')',','+alpha+')').replace('rgb','rgba');
-    ctx.globalAlpha=parseFloat(alpha);
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=1;
-  }
-
-  drawStarship(ship.x,ship.y,ship.inv);
-  updateHUD();
-  raf=requestAnimationFrame(loop);
-}
-
-function startGame(){
-  document.getElementById('ov-start').classList.add('hide');
-  document.getElementById('ov-over').classList.add('hide');
-  document.getElementById('ov-approach').classList.add('hide');
-  document.getElementById('hud').style.opacity='1';
-  document.getElementById('approach-fill').style.width='0%';
-  var glow=document.getElementById('mars-glow');
-  glow.style.width='200px';glow.style.height='200px';glow.style.bottom='-200px';glow.style.opacity='0.3';
-  resize();initGame();running=true;
-  if(raf)cancelAnimationFrame(raf);
-  loop();
-}
-
-function endGame(){
-  running=false;cancelAnimationFrame(raf);
-  var pts=score*10+kills*25;
-  totalPts+=pts;localStorage.setItem('mm_pts',totalPts);
-  if(score>best){best=score;localStorage.setItem('mm_best',best);document.getElementById('h-best').textContent=best;}
-  document.getElementById('nav-pts').textContent='Mission Points: '+totalPts;
-  document.getElementById('final-score').textContent=score;
-  document.getElementById('pts-earned').textContent='+'+pts+' Mission Points ('+kills+' asteroids destroyed)';
-  document.getElementById('ov-over').classList.remove('hide');
-  playSound(80,0.5,0.1,'sawtooth');
-  gtag('event','approach_failed',{score:score,kills:kills,level:level});
-}
-
-function approachComplete(){
-  running=false;cancelAnimationFrame(raf);
-  var pts=score*10+kills*25+500; // 500 bonus for completing approach
-  totalPts+=pts;localStorage.setItem('mm_pts',totalPts);
-  if(score>best){best=score;localStorage.setItem('mm_best',best);document.getElementById('h-best').textContent=best;}
-  document.getElementById('nav-pts').textContent='Mission Points: '+totalPts;
-  document.getElementById('approach-score').textContent=score;
-  document.getElementById('approach-pts').textContent='+'+pts+' Mission Points (includes +500 approach bonus)';
-  document.getElementById('approach-summary').textContent='Asteroids destroyed: '+kills+' · Lives remaining: '+lives+' · Approach time: '+Math.floor(score/10)+'s';
-  document.getElementById('ov-approach').classList.remove('hide');
-  playSound(523,0.15,0.06);setTimeout(function(){playSound(659,0.15,0.06);},150);setTimeout(function(){playSound(784,0.2,0.06);},300);
-  gtag('event','approach_complete',{score:score,kills:kills,lives:lives});
-}
-
-// Keyboard
-document.addEventListener('keydown',function(e){
-  keys[e.key]=true;
-  if(e.key===' '&&running){e.preventDefault();shoot();}
-});
-document.addEventListener('keyup',function(e){keys[e.key]=false;});
-
-// Touch — tap halves to move, double-tap to shoot
-canvas.addEventListener('touchstart',function(e){
-  e.preventDefault();if(!running)return;
-  var now=Date.now();
-  if(now-lastTap<300){shoot();lastTap=0;return;}
-  lastTap=now;
-  var t=e.touches[0];
-  if(t.clientX<W*0.33)ship.dx=-ship.spd;
-  else if(t.clientX>W*0.67)ship.dx=ship.spd;
-  if(t.clientY<H*0.4)ship.dy=-ship.spd*0.7;
-  else if(t.clientY>H*0.7)ship.dy=ship.spd*0.7;
-},{passive:false});
-canvas.addEventListener('touchend',function(e){
-  e.preventDefault();if(running){ship.dx=0;ship.dy=0;}
-},{passive:false});
-</script>
+<script src="js/approach-game.js"></script>
 </body>
 </html>

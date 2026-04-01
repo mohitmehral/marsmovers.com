@@ -475,7 +475,61 @@ window.onLanded = function(vy, vx, angle, fuel, zone, coinBonus) {
   recordDailyLand();
   checkDailyMission(grade, fuel, angle, vy);
   updateDailyDisplay();
+
+  // Check if this landing completes a full approach+landing run
+  var approachData = localStorage.getItem('mm_approach_done');
+  if (approachData && grade !== 'CRASH') {
+    var ad = JSON.parse(approachData);
+    localStorage.removeItem('mm_approach_done');
+    // STAR PILOT — completed full mission in one flow!
+    setTimeout(function() { showStarPilotCert(ad, pts, grade); }, 1200);
+  }
 };
+
+// === STAR PILOT CELEBRATION ===
+function showStarPilotCert(approachData, landingPts, grade) {
+  // Confetti
+  var colors = ['#ff5014','#ffd700','#ff3333','#00ff88','#4488ff','#ff44ff'];
+  for (var i = 0; i < 60; i++) {
+    var c = document.createElement('div');
+    c.style.cssText = 'position:fixed;top:-20px;left:' + (Math.random() * 100) + '%;width:' + (Math.random() * 8 + 4) + 'px;height:' + (Math.random() * 8 + 4) + 'px;background:' + colors[Math.floor(Math.random() * colors.length)] + ';z-index:200;pointer-events:none;border-radius:' + (Math.random() > 0.5 ? '50%' : '0') + ';animation:starConfetti ' + (Math.random() * 2 + 2) + 's ease-in ' + (Math.random() * 1.5) + 's forwards;';
+    document.body.appendChild(c);
+    setTimeout(function(el) { el.remove(); }.bind(null, c), 5000);
+  }
+  // Inject confetti animation if not exists
+  if (!document.getElementById('star-confetti-css')) {
+    var style = document.createElement('style');
+    style.id = 'star-confetti-css';
+    style.textContent = '@keyframes starConfetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+    document.head.appendChild(style);
+  }
+  // Build certificate popup
+  var totalPtsEarned = approachData.pts + landingPts;
+  var roster = 'MM-' + String(Math.floor(Math.random() * 900) + 100).padStart(4, '0');
+  var popup = document.createElement('div');
+  popup.style.cssText = 'position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;font-family:Courier New,monospace;';
+  popup.innerHTML = '<p style="font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:#ffd700;margin-bottom:10px">★ ★ ★ Star Pilot Certificate ★ ★ ★</p>' +
+    '<h2 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;margin-bottom:16px;color:#fff">MISSION <span style="color:#ffd700">COMPLETE</span></h2>' +
+    '<div style="border:2px solid rgba(255,200,50,.5);padding:28px 36px;background:rgba(255,200,50,.04);max-width:400px;width:100%;margin-bottom:20px">' +
+    '<p style="font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,200,50,.5);margin-bottom:10px">Mars Movers · Full Mission · MM-2031</p>' +
+    '<p style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:6px">This certifies that</p>' +
+    '<p style="font-size:1.4rem;font-weight:700;color:#ffd700;letter-spacing:.1em;margin-bottom:6px">★ STAR PILOT ★</p>' +
+    '<p style="font-size:.65rem;color:rgba(255,255,255,.4);margin-bottom:16px">has completed the full Mars approach and landing in a single mission</p>' +
+    '<p style="font-size:2rem;font-weight:700;color:#ff5014;letter-spacing:.25em;margin-bottom:14px">' + roster + '</p>' +
+    '<div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">' +
+    '<div style="text-align:center"><div style="font-size:1rem;font-weight:700;color:#ff5014">' + (approachData.score + Math.floor(landingPts / 10)) + '</div><div style="font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)">Total Score</div></div>' +
+    '<div style="text-align:center"><div style="font-size:1rem;font-weight:700;color:#ff5014">' + approachData.kills + '</div><div style="font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)">Destroyed</div></div>' +
+    '<div style="text-align:center"><div style="font-size:1rem;font-weight:700;color:#ff5014">' + approachData.time + 's</div><div style="font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)">Flight Time</div></div>' +
+    '<div style="text-align:center"><div style="font-size:1rem;font-weight:700;color:#ff5014">' + grade + '</div><div style="font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4)">Landing Grade</div></div>' +
+    '</div></div>' +
+    '<p style="font-size:.75rem;color:#ffd700;letter-spacing:.15em;margin-bottom:20px">You deserve a seat on the first Starship 🚀</p>' +
+    '<button onclick="this.parentElement.remove()" style="background:#ffd700;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:14px 36px">Accept Certificate</button>';
+  document.body.appendChild(popup);
+  // Victory sound
+  playSuccess();
+  setTimeout(function() { playSuccess(); }, 500);
+  gtag('event', 'star_pilot', { roster: roster, score: approachData.score, kills: approachData.kills, grade: grade });
+}
 
 window.onCrashed = function(vy, vx, angle, zone, coinBonus) {
   window.playThrustSound(false);
