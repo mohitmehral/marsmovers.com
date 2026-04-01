@@ -8,13 +8,23 @@ var SAFE_ANGLE = 10;
 var GOOD_VSPD = 3.5;
 var GOOD_ANGLE = 20;
 
-// 5 MARS ZONES — each progressively harder
+// 5 MARS ZONES — each visually and mechanically distinct
 var ZONES = [
-  { name:'Jezero Crater',    fuel:100, wind:0.6,  padW:90, thrust:9.0, fuelBurn:0.12, rotSpd:2.8, terrain:'smooth', color:0x3d1a0a, sky:'#0a0505' },
-  { name:'Valles Marineris',  fuel:85,  wind:1.0,  padW:72, thrust:8.5, fuelBurn:0.14, rotSpd:2.5, terrain:'medium', color:0x4a1f0c, sky:'#0c0604' },
-  { name:'Olympus Mons Base', fuel:75,  wind:1.5,  padW:60, thrust:8.0, fuelBurn:0.16, rotSpd:2.3, terrain:'rough',  color:0x2e1208, sky:'#080303' },
-  { name:'Hellas Basin',      fuel:65,  wind:2.0,  padW:50, thrust:7.5, fuelBurn:0.18, rotSpd:2.0, terrain:'jagged', color:0x1e0d06, sky:'#060202' },
-  { name:'Polar Ice Cap',     fuel:55,  wind:2.5,  padW:42, thrust:7.0, fuelBurn:0.20, rotSpd:1.8, terrain:'extreme',color:0x1a2030, sky:'#040608' }
+  { name:'Jezero Crater',    fuel:100, wind:0.6,  padW:90, thrust:9.0, fuelBurn:0.12, rotSpd:2.8, terrain:'smooth', color:0x3d1a0a, sky:'#0a0505',
+    surfLine:0x6b3015, rockColor:0x4a2010, desc:'Flat ancient lake bed — easiest landing zone',
+    skyStops:['#000000','#0a0204','#1a0808','#3d1510','#6b2a15'] },
+  { name:'Valles Marineris',  fuel:85,  wind:1.0,  padW:72, thrust:8.5, fuelBurn:0.14, rotSpd:2.5, terrain:'medium', color:0x4a1f0c, sky:'#0c0604',
+    surfLine:0x8b4020, rockColor:0x5a2a12, desc:'Deep canyon walls — watch the crosswinds',
+    skyStops:['#000000','#08020a','#1a0510','#4a1520','#7b3525'] },
+  { name:'Olympus Mons Base', fuel:75,  wind:1.5,  padW:60, thrust:8.0, fuelBurn:0.16, rotSpd:2.3, terrain:'rough',  color:0x2e1208, sky:'#080303',
+    surfLine:0x553018, rockColor:0x3a1a0a, desc:'Volcanic slopes — rough terrain, thin air',
+    skyStops:['#000000','#050102','#120505','#2e1208','#4a2010'] },
+  { name:'Hellas Basin',      fuel:65,  wind:2.0,  padW:50, thrust:7.5, fuelBurn:0.18, rotSpd:2.0, terrain:'jagged', color:0x1e0d06, sky:'#060202',
+    surfLine:0x442210, rockColor:0x2a1008, desc:'Impact crater — jagged rocks, heavy gusts',
+    skyStops:['#000000','#040101','#0e0404','#1e0d06','#3a1a0c'] },
+  { name:'Polar Ice Cap',     fuel:55,  wind:2.5,  padW:42, thrust:7.0, fuelBurn:0.20, rotSpd:1.8, terrain:'extreme',color:0x1a2030, sky:'#040608',
+    surfLine:0x3a4a5a, rockColor:0x2a3545, desc:'Frozen wasteland — ice, storms, tiny pad',
+    skyStops:['#000000','#020308','#0a1020','#1a2030','#2a3545'] }
 ];
 
 function getZone(lvl) { return ZONES[Math.min(lvl - 1, ZONES.length - 1)]; }
@@ -408,14 +418,31 @@ function update(time, delta) {
   document.getElementById('h-alt').textContent = Math.floor(alt) + 'm';
   document.getElementById('h-vspd').textContent = gameState.vy.toFixed(1);
   document.getElementById('h-hspd').textContent = Math.abs(gameState.vx).toFixed(1);
-  document.getElementById('h-fuel').style.width = (gameState.fuel / z.fuel * 100) + '%';
+  var fuelPct = Math.floor(gameState.fuel / z.fuel * 100);
+  document.getElementById('h-fuel').style.width = fuelPct + '%';
+  var fuelPctEl = document.getElementById('h-fuel-pct');
+  if (fuelPctEl) fuelPctEl.textContent = fuelPct + '%';
   document.getElementById('h-angle').textContent = Math.floor(gameState.angle) + '°';
 
-  // Fuel color
+  // Fuel color + warning
   var fuelEl = document.getElementById('h-fuel');
-  if (gameState.fuel < 20) fuelEl.style.background = '#ff3333';
-  else if (gameState.fuel < 50) fuelEl.style.background = '#ffcc00';
-  else fuelEl.style.background = '#ff5014';
+  var fuelBox = document.getElementById('fuel-box');
+  if (fuelPct < 15) {
+    fuelEl.style.background = '#ff3333';
+    if (fuelPctEl) fuelPctEl.style.color = '#ff3333';
+    if (fuelBox) { fuelBox.classList.remove('fuel-low'); fuelBox.classList.add('fuel-critical'); }
+    if (window.playFuelWarning) window.playFuelWarning(2);
+  } else if (fuelPct < 30) {
+    fuelEl.style.background = '#ffcc00';
+    if (fuelPctEl) fuelPctEl.style.color = '#ffcc00';
+    if (fuelBox) { fuelBox.classList.add('fuel-low'); fuelBox.classList.remove('fuel-critical'); }
+    if (window.playFuelWarning) window.playFuelWarning(1);
+  } else {
+    fuelEl.style.background = '#ff5014';
+    if (fuelPctEl) fuelPctEl.style.color = '#ff5014';
+    if (fuelBox) { fuelBox.classList.remove('fuel-low','fuel-critical'); }
+    if (window.playFuelWarning) window.playFuelWarning(0);
+  }
 
   // Wind indicator
   var windArrow = document.getElementById('wind-arrow');

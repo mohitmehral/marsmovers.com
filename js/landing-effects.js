@@ -177,6 +177,48 @@ function updateRankDisplay() {
   }
 }
 
+// === FUEL WARNING SOUND ===
+var fuelWarnLevel = 0;
+var fuelWarnOsc = null;
+var fuelWarnGain = null;
+
+window.playFuelWarning = function(level) {
+  if (level === fuelWarnLevel) return;
+  fuelWarnLevel = level;
+  initAudio();
+  if (level === 0) {
+    if (fuelWarnGain) fuelWarnGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+    return;
+  }
+  if (!fuelWarnOsc) {
+    fuelWarnOsc = audioCtx.createOscillator();
+    fuelWarnGain = audioCtx.createGain();
+    fuelWarnOsc.type = 'square';
+    fuelWarnOsc.connect(fuelWarnGain);
+    fuelWarnGain.connect(audioCtx.destination);
+    fuelWarnOsc.start();
+  }
+  if (level === 1) {
+    fuelWarnOsc.frequency.value = 440;
+    fuelWarnGain.gain.setTargetAtTime(0.03, audioCtx.currentTime, 0.05);
+    // Beep pattern — on/off
+    var now = audioCtx.currentTime;
+    fuelWarnGain.gain.setValueAtTime(0.03, now);
+    fuelWarnGain.gain.setValueAtTime(0, now + 0.1);
+    fuelWarnGain.gain.setValueAtTime(0.03, now + 0.6);
+    fuelWarnGain.gain.setValueAtTime(0, now + 0.7);
+  } else if (level === 2) {
+    fuelWarnOsc.frequency.value = 660;
+    var now2 = audioCtx.currentTime;
+    fuelWarnGain.gain.setValueAtTime(0.05, now2);
+    fuelWarnGain.gain.setValueAtTime(0, now2 + 0.08);
+    fuelWarnGain.gain.setValueAtTime(0.05, now2 + 0.2);
+    fuelWarnGain.gain.setValueAtTime(0, now2 + 0.28);
+    fuelWarnGain.gain.setValueAtTime(0.05, now2 + 0.4);
+    fuelWarnGain.gain.setValueAtTime(0, now2 + 0.48);
+  }
+};
+
 // === COIN POPUP ===
 window.showCoinPopup = function(x, y, val) {
   var popup = document.createElement('div');
