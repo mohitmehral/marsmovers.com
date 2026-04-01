@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Mars Movers — Train for Mars. Earn Your Seat.</title>
+<title>Mars Movers — Mars Is More Than a Mission. Get Ready to Fly.</title>
 <meta name="description" content="Mars Movers is the citizen astronaut training platform. Play Mars survival games, earn mission points, and secure your seat on the first civilian Mars mission."/>
 <meta name="keywords" content="mars game, space game, mars mission, citizen astronaut, mars movers, earn seat to mars, asteroid dodge, space training"/>
 <meta name="author" content="Apnok"/>
@@ -11,19 +11,20 @@
 <link rel="canonical" href="https://www.marsmovers.com/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.marsmovers.com/"/>
-<meta property="og:title" content="Mars Movers — Train for Mars. Earn Your Seat."/>
+<meta property="og:title" content="Mars Movers — Mars Is More Than a Mission. Get Ready to Fly."/>
 <meta property="og:description" content="Play Mars survival games, earn mission points, and claim your spot on the Mars Mission Roster."/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Mars Movers — Train for Mars. Earn Your Seat."/>
+<meta name="twitter:title" content="Mars Movers — Mars Is More Than a Mission. Get Ready to Fly."/>
 <meta name="twitter:description" content="Play Mars survival games, earn mission points, and claim your spot on the Mars Mission Roster."/>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mars Movers","url":"https://www.marsmovers.com","description":"Citizen astronaut training platform. Play Mars survival games and earn your mission roster seat.","publisher":{"@type":"Organization","name":"Apnok","url":"https://www.marsmovers.com","contactPoint":{"@type":"ContactPoint","email":"ceo@apnok.com","contactType":"Customer Support"}}}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N9J8L4ZB0Q');</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5228411604893151" crossorigin="anonymous"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Courier New',Courier,monospace;background:#000;color:#fff;overflow-x:hidden}
+body{font-family:'Inter','Courier New',Courier,monospace;background:#000;color:#fff;overflow-x:hidden}
 
 /* CANVAS STARS BG */
 #starfield{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
@@ -41,13 +42,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 #mars-scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 /* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:0 20px 80px;overflow:hidden}
-.hero-inner{position:relative;z-index:2}
-.hero-tag{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:#ff5014;margin-bottom:20px}
-.hero h1{font-size:clamp(2.8rem,8vw,6.5rem);font-weight:700;line-height:1.02;margin-bottom:20px;letter-spacing:-.02em;text-shadow:0 0 60px rgba(255,80,20,.3)}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 100px;overflow:hidden}
+.hero-inner{position:relative;z-index:2;max-width:700px}
+.hero-tag{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#ff5014;margin-bottom:24px;font-weight:600}
+.hero h1{font-family:'Inter',sans-serif;font-size:clamp(2.6rem,7vw,5.5rem);font-weight:800;line-height:1.08;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 0 80px rgba(255,80,20,.2)}
 .hero h1 em{color:#ff5014;font-style:normal}
-.hero-sub{font-size:.95rem;color:rgba(255,255,255,.5);max-width:500px;line-height:1.85;margin-bottom:44px}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.hero-sub{font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,.55);max-width:520px;line-height:1.9;margin-bottom:44px;font-weight:300}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-start}
 .btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);cursor:pointer;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:12px 28px;transition:all .2s;text-decoration:none;display:inline-block}
 .btn-outline:hover{border-color:#ff5014;color:#ff5014}
 
@@ -121,6 +122,7 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 @media(max-width:768px){
   nav{padding:12px 18px}
   .nav-links{display:none}
+  .hero{padding:0 24px 60px}
   .section{padding:56px 18px}
   .stats-grid,.steps-grid{grid-template-columns:repeat(2,1fr)}
   .games-grid,.news-grid{grid-template-columns:1fr}
@@ -139,6 +141,7 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
     <a href="#games">Games</a>
     <a href="#roster">Roster</a>
     <a href="#intel">Intel</a>
+    <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014">❤️ Support</a>
   </div>
   <a href="landing.html" class="btn-cta">Play Now →</a>
 </nav>
@@ -147,9 +150,9 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 <div class="hero">
   <canvas id="mars-scene"></canvas>
   <div class="hero-inner">
-    <p class="hero-tag">Citizen Astronaut Training Platform · Est. 2024</p>
-    <h1>Train for Mars.<br><em>Earn Your Seat.</em></h1>
-    <p class="hero-sub">Play Mars survival games. Master real space science. Climb the Mission Roster. The top 1,000 pilots secure their place on the first civilian Mars mission.</p>
+    <p class="hero-tag">Only 1,000 Will Make It · Departure 2031</p>
+    <h1>Mars Is More<br>Than a Mission.<br><em>Get Ready to Fly.</em></h1>
+    <p class="hero-sub">Elon's building the rocket. We're picking the passengers. Prove you can land on Mars without turning into a fireball and your name goes on the flight manifest. Simple.</p>
     <div class="hero-btns">
       <a href="landing.html" class="btn-cta" style="padding:15px 40px;font-size:.82rem">Start Training →</a>
       <a href="#roster" class="btn-outline">View Mission Roster</a>
@@ -270,7 +273,7 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 <footer>
   <div class="footer-l">
     <p style="font-size:.88rem;font-weight:700;color:#ff5014;letter-spacing:.2em;margin-bottom:5px">⬡ MARS MOVERS</p>
-    <p>Train for Mars. Earn Your Seat.</p>
+    <p>Mars Is More Than a Mission. Get Ready to Fly.</p>
     <p>Contact: <a href="mailto:ceo@apnok.com">ceo@apnok.com</a></p>
     <p style="margin-top:6px">Powered by <a href="https://apnok.com" target="_blank" rel="noopener">Apnok</a> © 2024 · All rights reserved.</p>
   </div>
@@ -279,20 +282,166 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
     <a href="#roster">Roster</a>
     <a href="#intel">Intel</a>
     <a href="mailto:ceo@apnok.com">Contact</a>
+    <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014;border:1px solid rgba(255,80,20,.4);padding:4px 12px;border-radius:4px">❤️ Support the Mission</a>
   </div>
 </footer>
 
 <script>
-// Mars Hero Scene — red planet horizon, dust, atmospheric glow
+// Mars Hero Scene — horizon, rovers, habitat, launch pad, dust
 (function(){
   var mc=document.getElementById('mars-scene'),mx=mc.getContext('2d');
-  var dust=[];
+  var dust=[],frame=0;
   function mresize(){mc.width=mc.offsetWidth;mc.height=mc.offsetHeight;}
   mresize();window.addEventListener('resize',mresize);
   for(var i=0;i<60;i++)dust.push({x:Math.random()*2000,y:Math.random()*200,r:Math.random()*2+0.5,vx:Math.random()*0.4+0.1,o:Math.random()*0.3+0.1});
+
+  // Rovers
+  var rovers=[
+    {x:0.15,spd:0.12,dir:1,size:1},
+    {x:0.65,spd:0.08,dir:-1,size:0.7}
+  ];
+
+  function terrainY(x,w,h){
+    return h*0.82+Math.sin(x/w*Math.PI*5)*20+Math.sin(x/w*Math.PI*12)*10;
+  }
+
+  function drawRover(x,y,s,dir){
+    mx.save();mx.translate(x,y);mx.scale(s*dir,s);
+    // Wheels
+    mx.fillStyle='#444';mx.beginPath();mx.arc(-12,-2,5,0,Math.PI*2);mx.fill();
+    mx.beginPath();mx.arc(12,-2,5,0,Math.PI*2);mx.fill();
+    mx.fillStyle='#555';mx.beginPath();mx.arc(-12,-2,3,0,Math.PI*2);mx.fill();
+    mx.beginPath();mx.arc(12,-2,3,0,Math.PI*2);mx.fill();
+    // Body
+    mx.fillStyle='#c8c8c8';
+    mx.fillRect(-14,-10,28,8);
+    // Top box
+    mx.fillStyle='#aaa';
+    mx.fillRect(-8,-16,16,6);
+    // Solar panel
+    mx.fillStyle='#2244aa';
+    mx.fillRect(-18,-14,8,3);
+    mx.fillRect(10,-14,8,3);
+    // Mast
+    mx.strokeStyle='#999';mx.lineWidth=1;
+    mx.beginPath();mx.moveTo(0,-16);mx.lineTo(0,-24);mx.stroke();
+    // Camera head
+    mx.fillStyle='#ddd';mx.fillRect(-2,-26,4,3);
+    // Antenna
+    mx.strokeStyle='#888';mx.lineWidth=0.5;
+    mx.beginPath();mx.moveTo(4,-16);mx.lineTo(8,-28);mx.stroke();
+    mx.fillStyle='#ff3333';mx.beginPath();mx.arc(8,-28,1.5,0,Math.PI*2);mx.fill();
+    // Wheel tracks
+    mx.restore();
+  }
+
+  function drawHabitat(x,y,w,h){
+    mx.save();mx.translate(x,y);
+    // Main dome
+    mx.fillStyle='rgba(200,200,210,0.9)';
+    mx.beginPath();mx.ellipse(0,-20,40,22,0,Math.PI,0);mx.fill();
+    mx.fillStyle='rgba(180,180,190,0.8)';
+    mx.fillRect(-40,-2,80,4);
+    // Base
+    mx.fillStyle='#666';
+    mx.fillRect(-44,0,88,8);
+    // Windows — blink
+    var blink=Math.sin(frame*0.03)>0;
+    mx.fillStyle=blink?'rgba(100,200,255,0.8)':'rgba(60,120,180,0.5)';
+    mx.fillRect(-20,-14,8,6);
+    mx.fillRect(-6,-14,8,6);
+    mx.fillRect(10,-14,8,6);
+    // Airlock door
+    mx.fillStyle='#555';
+    mx.fillRect(30,-2,8,10);
+    mx.fillStyle='#777';
+    mx.fillRect(31,-1,6,8);
+    // Antenna array
+    mx.strokeStyle='#aaa';mx.lineWidth=1;
+    mx.beginPath();mx.moveTo(-30,-20);mx.lineTo(-30,-38);mx.stroke();
+    mx.beginPath();mx.moveTo(-34,-35);mx.lineTo(-26,-35);mx.stroke();
+    mx.beginPath();mx.moveTo(-34,-32);mx.lineTo(-26,-32);mx.stroke();
+    // Red light on top
+    var lightOn=Math.sin(frame*0.05)>0.3;
+    mx.fillStyle=lightOn?'rgba(255,50,20,0.9)':'rgba(255,50,20,0.2)';
+    mx.beginPath();mx.arc(0,-22,2,0,Math.PI*2);mx.fill();
+    // Solar panels on ground
+    mx.fillStyle='#223388';
+    mx.save();mx.translate(-65,2);mx.rotate(-0.1);
+    mx.fillRect(0,-2,20,4);mx.fillRect(0,-2,20,4);
+    mx.restore();
+    mx.save();mx.translate(55,2);mx.rotate(0.1);
+    mx.fillRect(0,-2,20,4);
+    mx.restore();
+    // Connecting tube to second module
+    mx.fillStyle='rgba(160,160,170,0.7)';
+    mx.fillRect(38,-1,25,6);
+    // Second smaller dome
+    mx.fillStyle='rgba(190,190,200,0.85)';
+    mx.beginPath();mx.ellipse(80,-12,22,14,0,Math.PI,0);mx.fill();
+    mx.fillStyle='#666';
+    mx.fillRect(58,0,44,6);
+    mx.fillStyle=blink?'rgba(255,200,50,0.7)':'rgba(200,150,30,0.3)';
+    mx.fillRect(72,-8,6,4);
+    mx.restore();
+  }
+
+  function drawLaunchPad(x,y){
+    mx.save();mx.translate(x,y);
+    // Pad base
+    mx.fillStyle='#555';
+    mx.fillRect(-30,0,60,5);
+    mx.fillStyle='#444';
+    mx.fillRect(-25,-2,50,4);
+    // Support legs
+    mx.strokeStyle='#666';mx.lineWidth=2;
+    mx.beginPath();mx.moveTo(-20,0);mx.lineTo(-25,8);mx.stroke();
+    mx.beginPath();mx.moveTo(20,0);mx.lineTo(25,8);mx.stroke();
+    // Rocket — Starship style
+    // Body
+    mx.fillStyle='#d0d0d0';
+    mx.beginPath();
+    mx.moveTo(-7,-2);mx.lineTo(-7,-65);mx.quadraticCurveTo(-7,-78,0,-82);
+    mx.quadraticCurveTo(7,-78,7,-65);mx.lineTo(7,-2);mx.closePath();
+    mx.fill();
+    // Dark band (heat shield)
+    mx.fillStyle='#222';
+    mx.fillRect(-7,-20,14,12);
+    // Nose tip
+    mx.fillStyle='#ff5014';
+    mx.beginPath();mx.moveTo(-5,-72);mx.quadraticCurveTo(0,-85,5,-72);mx.fill();
+    // Windows
+    mx.fillStyle='rgba(100,200,255,0.7)';
+    mx.beginPath();mx.arc(0,-60,2,0,Math.PI*2);mx.fill();
+    mx.beginPath();mx.arc(0,-52,1.8,0,Math.PI*2);mx.fill();
+    // Fins
+    mx.fillStyle='#999';
+    mx.beginPath();mx.moveTo(-7,-8);mx.lineTo(-14,2);mx.lineTo(-7,2);mx.closePath();mx.fill();
+    mx.beginPath();mx.moveTo(7,-8);mx.lineTo(14,2);mx.lineTo(7,2);mx.closePath();mx.fill();
+    // Engine glow — pulsing idle
+    var glow=0.15+Math.sin(frame*0.08)*0.1;
+    mx.fillStyle='rgba(255,150,50,'+glow.toFixed(2)+')';
+    mx.beginPath();mx.ellipse(0,4,5,3,0,0,Math.PI*2);mx.fill();
+    // Tower/gantry
+    mx.strokeStyle='#777';mx.lineWidth=1.5;
+    mx.beginPath();mx.moveTo(18,5);mx.lineTo(18,-70);mx.stroke();
+    mx.beginPath();mx.moveTo(16,-70);mx.lineTo(20,-70);mx.stroke();
+    mx.beginPath();mx.moveTo(16,-55);mx.lineTo(20,-55);mx.stroke();
+    // Arm connecting to rocket
+    mx.strokeStyle='#888';mx.lineWidth=1;
+    mx.beginPath();mx.moveTo(18,-55);mx.lineTo(8,-50);mx.stroke();
+    // Red warning light on tower
+    var tl=Math.sin(frame*0.06)>0;
+    mx.fillStyle=tl?'rgba(255,30,10,0.9)':'rgba(255,30,10,0.15)';
+    mx.beginPath();mx.arc(18,-72,2,0,Math.PI*2);mx.fill();
+    mx.restore();
+  }
+
   function drawMars(){
     var w=mc.width,h=mc.height;
+    frame++;
     mx.clearRect(0,0,w,h);
+    // Sky
     var sky=mx.createLinearGradient(0,0,0,h);
     sky.addColorStop(0,'#000000');
     sky.addColorStop(0.4,'#0a0204');
@@ -301,17 +450,47 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
     sky.addColorStop(0.85,'#6b2a15');
     sky.addColorStop(1,'#8b3a1a');
     mx.fillStyle=sky;mx.fillRect(0,0,w,h);
+    // Horizon glow
     var glow=mx.createRadialGradient(w*0.5,h*0.82,0,w*0.5,h*0.82,w*0.6);
     glow.addColorStop(0,'rgba(255,100,30,0.15)');
     glow.addColorStop(0.5,'rgba(255,60,20,0.06)');
     glow.addColorStop(1,'rgba(0,0,0,0)');
     mx.fillStyle=glow;mx.fillRect(0,0,w,h);
+    // Back terrain
     mx.fillStyle='#2a0e06';mx.beginPath();mx.moveTo(0,h);
-    for(var t=0;t<=w;t+=8){mx.lineTo(t,h*0.82+Math.sin(t*0.008)*20+Math.sin(t*0.003)*35+Math.sin(t*0.02)*5);}
+    for(var t=0;t<=w;t+=8){mx.lineTo(t,terrainY(t,w,h));}
     mx.lineTo(w,h);mx.closePath();mx.fill();
+
+    // Habitat — on back terrain, right side
+    var habX=w*0.72,habY=terrainY(habX,w,h);
+    drawHabitat(habX,habY,w,h);
+
+    // Launch pad — far right
+    var padX=w*0.92,padY=terrainY(padX,w,h);
+    drawLaunchPad(padX,padY);
+
+    // Foreground terrain
     mx.fillStyle='#1a0804';mx.beginPath();mx.moveTo(0,h);
     for(var f=0;f<=w;f+=6){mx.lineTo(f,h*0.9+Math.sin(f*0.012)*12+Math.sin(f*0.005)*18+Math.sin(f*0.03)*4);}
     mx.lineTo(w,h);mx.closePath();mx.fill();
+
+    // Rovers — on foreground terrain
+    rovers.forEach(function(rv){
+      rv.x+=rv.spd*rv.dir*0.0003;
+      if(rv.x>0.55)rv.dir=-1;
+      if(rv.x<0.08)rv.dir=1;
+      var rx=rv.x*w;
+      var ry=h*0.9+Math.sin(rx/w*Math.PI*5)*8+Math.sin(rx/w*Math.PI*12)*4-4;
+      drawRover(rx,ry,rv.size,rv.dir);
+      // Wheel tracks behind rover
+      mx.strokeStyle='rgba(100,60,30,0.15)';mx.lineWidth=1;
+      mx.beginPath();
+      var trackStart=rx-rv.dir*60;
+      mx.moveTo(trackStart,ry+3);mx.lineTo(rx-rv.dir*15,ry+3);
+      mx.stroke();
+    });
+
+    // Dust particles
     dust.forEach(function(d){
       d.x+=d.vx;if(d.x>w+10){d.x=-10;d.y=Math.random()*200;}
       mx.beginPath();mx.arc(d.x,d.y+h*0.65,d.r,0,Math.PI*2);

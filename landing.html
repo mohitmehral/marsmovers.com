@@ -60,11 +60,12 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:10px 2
 .r-stat-l{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:2px}
 
 /* MOBILE CONTROLS */
-.touch-controls{position:absolute;bottom:0;left:0;right:0;z-index:6;display:none;padding:10px 16px 20px;gap:10px}
-.touch-row{display:flex;gap:10px;justify-content:center}
-.touch-btn{background:rgba(255,80,20,.15);border:1px solid rgba(255,80,20,.3);color:#ff5014;font-family:inherit;font-size:1.4rem;font-weight:700;width:70px;height:56px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation;border-radius:4px}
-.touch-btn:active{background:rgba(255,80,20,.35)}
-.touch-btn.thrust{width:100%;max-width:220px;height:56px;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase}
+.touch-controls{position:absolute;bottom:0;left:0;right:0;z-index:6;display:none;padding:12px 12px 24px;gap:10px}
+.touch-row{display:flex;gap:10px;justify-content:center;width:100%}
+.touch-btn{background:rgba(255,80,20,.2);border:2px solid rgba(255,80,20,.4);color:#ff5014;font-family:inherit;font-size:1.8rem;font-weight:700;width:90px;height:72px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation;border-radius:8px}
+.touch-btn:active{background:rgba(255,80,20,.45)}
+.touch-btn.thrust{width:100%;max-width:280px;height:72px;font-size:.85rem;letter-spacing:.15em;text-transform:uppercase}
+.touch-btn.dir{flex:1;max-width:130px}
 
 @media(max-width:768px){
   .touch-controls{display:flex;flex-direction:column;align-items:center}
@@ -189,8 +190,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:10px 2
       <button class="touch-btn thrust" id="btn-thrust">▲ THRUST</button>
     </div>
     <div class="touch-row">
-      <button class="touch-btn" id="btn-left">◄</button>
-      <button class="touch-btn" id="btn-right">►</button>
+      <button class="touch-btn dir" id="btn-left">◄ LEFT</button>
+      <button class="touch-btn dir" id="btn-right">RIGHT ►</button>
     </div>
   </div>
 

@@ -280,8 +280,8 @@ function setupTouch() {
   var btnRight = document.getElementById('btn-right');
 
   function addTouchEvents(el, stateKey) {
-    el.addEventListener('touchstart', function(e) { e.preventDefault(); gameState[stateKey] = true; }, { passive: false });
-    el.addEventListener('touchend', function(e) { e.preventDefault(); gameState[stateKey] = false; }, { passive: false });
+    el.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); gameState[stateKey] = true; }, { passive: false });
+    el.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); gameState[stateKey] = false; }, { passive: false });
     el.addEventListener('touchcancel', function(e) { gameState[stateKey] = false; });
     el.addEventListener('mousedown', function(e) { e.preventDefault(); gameState[stateKey] = true; });
     el.addEventListener('mouseup', function(e) { gameState[stateKey] = false; });
@@ -291,6 +291,30 @@ function setupTouch() {
   addTouchEvents(btnThrust, 'thrusting');
   addTouchEvents(btnLeft, 'rotLeft');
   addTouchEvents(btnRight, 'rotRight');
+
+  // Also support full-screen touch zones as fallback
+  var canvas = document.querySelector('#game-container canvas');
+  if (canvas) {
+    canvas.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      for (var i = 0; i < e.touches.length; i++) {
+        var t = e.touches[i];
+        var x = t.clientX / W;
+        var y = t.clientY / H;
+        if (y < 0.6) gameState.thrusting = true;
+        if (x < 0.3) gameState.rotLeft = true;
+        if (x > 0.7) gameState.rotRight = true;
+      }
+    }, { passive: false });
+    canvas.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      if (e.touches.length === 0) {
+        gameState.thrusting = false;
+        gameState.rotLeft = false;
+        gameState.rotRight = false;
+      }
+    }, { passive: false });
+  }
 }
 
 function update(time, delta) {
@@ -421,6 +445,8 @@ function update(time, delta) {
 window.startMission = function() {
   document.getElementById('ov-start').classList.add('hide');
   document.getElementById('ov-result').classList.add('hide');
+  var certEl = document.getElementById('ov-cert');
+  if (certEl) certEl.classList.add('hide');
   document.getElementById('hud').style.opacity = '1';
   document.getElementById('wind-box').style.opacity = '1';
 
