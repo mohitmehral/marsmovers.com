@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Asteroid Dodge — Mars Movers Training</title>
+<meta name="description" content="Play Asteroid Dodge on Mars Movers. Earn mission points and climb the Mission Roster to secure your seat on the first civilian Mars mission."/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://www.marsmovers.com/game.html"/>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N9J8L4ZB0Q');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5228411604893151" crossorigin="anonymous"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Courier New',Courier,monospace;background:#000;color:#fff}
+body{display:flex;flex-direction:column}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:11px 24px;background:rgba(0,0,0,.95);border-bottom:1px solid rgba(255,80,20,.2);flex-shrink:0;z-index:10}
+.logo{color:#ff5014;font-size:.88rem;font-weight:700;letter-spacing:.2em;text-decoration:none;text-transform:uppercase}
+.nav-pts{font-size:.7rem;letter-spacing:.14em;color:#ff5014;font-weight:700}
+.nav-back{color:rgba(255,255,255,.45);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:color .2s}
+.nav-back:hover{color:#ff5014}
+
+.game-wrap{flex:1;position:relative;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+
+/* HUD */
+.hud{position:absolute;top:14px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;pointer-events:none;z-index:5;gap:8px}
+.hud-box{background:rgba(0,0,0,.75);border:1px solid rgba(255,80,20,.2);padding:7px 14px;min-width:70px}
+.hud-lbl{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px}
+.hud-val{font-size:1rem;font-weight:700;color:#ff5014;font-variant-numeric:tabular-nums}
+.lives-row{display:flex;gap:4px;align-items:center;font-size:.9rem}
+
+/* OVERLAYS */
+.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:20;text-align:center;padding:24px}
+.ov.hide{display:none}
+.ov-tag{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:#ff5014;margin-bottom:14px}
+.ov h2{font-size:clamp(1.6rem,5vw,3rem);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.ov h2 em{color:#ff5014;font-style:normal}
+.ov-sub{font-size:.82rem;color:rgba(255,255,255,.45);max-width:380px;line-height:1.85;margin-bottom:30px}
+.btn-go{background:#ff5014;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:15px 44px;transition:background .2s;margin-bottom:10px;display:block;width:100%;max-width:280px}
+.btn-go:hover{background:#ff7040}
+.btn-sec{background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);cursor:pointer;font-family:inherit;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:11px 28px;transition:all .2s;text-decoration:none;display:inline-block;margin-top:8px}
+.btn-sec:hover{border-color:#ff5014;color:#ff5014}
+.score-big{font-size:clamp(3rem,10vw,5.5rem);font-weight:700;color:#ff5014;line-height:1;margin:12px 0}
+.pts-earned{font-size:.82rem;letter-spacing:.15em;color:rgba(255,100,50,.65);margin-bottom:28px}
+
+/* CLAIM */
+.claim-wrap{display:flex;flex-direction:column;gap:9px;width:100%;max-width:300px;margin:0 auto 22px}
+.claim-in{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#fff;font-family:inherit;font-size:.82rem;padding:11px 14px;outline:none;text-align:center;letter-spacing:.1em;width:100%}
+.claim-in:focus{border-color:#ff5014}
+.claim-in::placeholder{color:rgba(255,255,255,.22)}
+
+/* CERTIFICATE */
+.cert{border:1px solid rgba(255,80,20,.4);padding:28px 40px;margin:20px 0;background:rgba(255,80,20,.04);max-width:360px;width:100%}
+.cert-label{font-size:.55rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:6px}
+.cert-name{font-size:1.3rem;font-weight:700;letter-spacing:.08em;margin-bottom:4px}
+.cert-sub{font-size:.7rem;color:rgba(255,255,255,.35);margin-bottom:14px}
+.cert-num{font-size:1.9rem;font-weight:700;color:#ff5014;letter-spacing:.2em}
+.cert-pts{font-size:.58rem;color:rgba(255,255,255,.22);margin-top:10px;letter-spacing:.1em}
+
+.hint{font-size:.65rem;color:rgba(255,255,255,.2);letter-spacing:.1em;margin-top:14px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">⬡ Mars Movers</a>
+  <span class="nav-pts" id="nav-pts">Mission Points: 0</span>
+  <a href="/" class="nav-back">← Mission Hub</a>
+</nav>
+
+<div class="game-wrap">
+  <canvas id="c"></canvas>
+
+  <!-- HUD -->
+  <div class="hud">
+    <div class="hud-box"><div class="hud-lbl">Score</div><div class="hud-val" id="h-score">0</div></div>
+    <div class="hud-box"><div class="hud-lbl">Level</div><div class="hud-val" id="h-level">1</div></div>
+    <div class="hud-box"><div class="hud-lbl">Lives</div><div class="lives-row" id="h-lives">🚀🚀🚀</div></div>
+    <div class="hud-box"><div class="hud-lbl">Best</div><div class="hud-val" id="h-best">0</div></div>
+  </div>
+
+  <!-- START -->
+  <div class="ov" id="ov-start">
+    <p class="ov-tag">Training Module 01</p>
+    <h2>Asteroid <em>Dodge</em></h2>
+    <p class="ov-sub">Navigate your ship through the asteroid field. Survive as long as possible. Every second earns mission points toward your Mars Roster seat.</p>
+    <button class="btn-go" onclick="startGame()">Launch Mission</button>
+    <p class="hint">← → Arrow Keys or A / D &nbsp;·&nbsp; Mobile: tap left / right</p>
+  </div>
+
+  <!-- GAME OVER -->
+  <div class="ov hide" id="ov-over">
+    <p class="ov-tag">Mission Report</p>
+    <h2>Ship <em>Destroyed</em></h2>
+    <div class="score-big" id="final-score">0</div>
+    <div class="pts-earned" id="pts-earned">+0 Mission Points</div>
+    <div class="claim-wrap" id="claim-wrap">
+      <input class="claim-in" id="pilot-name" type="text" placeholder="Enter Pilot Name" maxlength="22"/>
+      <button class="btn-go" style="margin:0" onclick="claimSeat()">Claim Roster Seat</button>
+    </div>
+    <button class="btn-sec" onclick="startGame()">Retry Mission</button>
+    <a href="/" class="btn-sec">← Mission Hub</a>
+  </div>
+
+  <!-- CLAIMED -->
+  <div class="ov hide" id="ov-cert">
+    <p class="ov-tag">Boarding Certificate</p>
+    <h2>Seat <em>Secured</em></h2>
+    <div class="cert">
+      <div class="cert-label">Mars Movers · Mission MM-2031</div>
+      <div class="cert-name" id="cert-name">PILOT</div>
+      <div class="cert-sub">is hereby assigned to</div>
+      <div class="cert-num" id="cert-num">MM-0000</div>
+      <div class="cert-pts">TOTAL MISSION POINTS: <span id="cert-pts">0</span></div>
+    </div>
+    <button class="btn-go" onclick="startGame()">Train Again</button>
+    <a href="/" class="btn-sec">← Mission Hub</a>
+  </div>
+</div>
+
+<script>
+var canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+var W,H,ship,rocks,stars,score,lives,level,running,raf,frame,totalPts;
+var keys={};
+var best=parseInt(localStorage.getItem('mm_best')||'0');
+totalPts=parseInt(localStorage.getItem('mm_pts')||'0');
+document.getElementById('h-best').textContent=best;
+document.getElementById('nav-pts').textContent='Mission Points: '+totalPts;
+
+function resize(){
+  W=canvas.width=canvas.offsetWidth;
+  H=canvas.height=canvas.offsetHeight;
+}
+window.addEventListener('resize',function(){resize();if(!running)drawIdle();});
+resize();
+
+function initGame(){
+  ship={x:W/2,y:H-90,w:18,h:32,spd:6,dx:0,inv:0};
+  rocks=[];stars=[];score=0;lives=3;level=1;frame=0;
+  for(var i=0;i<120;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.3+.2,spd:Math.random()*.6+.15,o:Math.random()});
+  updateHUD();
+}
+
+function spawnRock(){
+  var r=Math.random()*20+10;
+  rocks.push({x:Math.random()*(W-r*2)+r,y:-r,r:r,spd:(Math.random()*1.8+.9)+level*.25,rot:0,rs:(Math.random()-.5)*.07,pts:Math.floor(Math.random()*4)+5});
+}
+
+function drawShip(){
+  if(ship.inv>0&&Math.floor(frame/5)%2===0)return;
+  ctx.save();ctx.translate(ship.x,ship.y);
+  // Body
+  ctx.fillStyle='#ff5014';
+  ctx.beginPath();ctx.moveTo(0,-ship.h/2);ctx.lineTo(ship.w/2,ship.h/2);ctx.lineTo(-ship.w/2,ship.h/2);ctx.closePath();ctx.fill();
+  // Window
+  ctx.fillStyle='rgba(150,220,255,.7)';
+  ctx.beginPath();ctx.arc(0,-4,4,0,Math.PI*2);ctx.fill();
+  // Flame
+  var fl=8+Math.random()*8;
+  ctx.fillStyle='rgba(255,200,50,.85)';
+  ctx.beginPath();ctx.moveTo(-6,ship.h/2);ctx.lineTo(6,ship.h/2);ctx.lineTo(0,ship.h/2+fl);ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+function drawRock(a){
+  ctx.save();ctx.translate(a.x,a.y);ctx.rotate(a.rot);
+  ctx.strokeStyle='rgba(180,120,70,.9)';ctx.fillStyle='rgba(70,45,25,.65)';ctx.lineWidth=1.5;
+  ctx.beginPath();
+  var sides=7;
+  for(var i=0;i<sides;i++){
+    var ang=(i/sides)*Math.PI*2;
+    var jit=a.r*(.72+Math.sin(i*2.3)*.18);
+    i===0?ctx.moveTo(Math.cos(ang)*jit,Math.sin(ang)*jit):ctx.lineTo(Math.cos(ang)*jit,Math.sin(ang)*jit);
+  }
+  ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.restore();
+}
+
+function hit(a){
+  var dx=ship.x-a.x,dy=ship.y-a.y;
+  return Math.sqrt(dx*dx+dy*dy)<a.r+10;
+}
+
+function updateHUD(){
+  document.getElementById('h-score').textContent=score;
+  document.getElementById('h-level').textContent=level;
+  var l='';
+  for(var i=0;i<3;i++)l+='<span style="opacity:'+(i<lives?1:.12)+'">🚀</span>';
+  document.getElementById('h-lives').innerHTML=l;
+}
+
+function loop(){
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+
+  // Stars
+  stars.forEach(function(s){
+    s.y+=s.spd;if(s.y>H){s.y=0;s.x=Math.random()*W;}
+    ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')';
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  });
+
+  frame++;
+  score=Math.floor(frame/6);
+  level=Math.floor(score/80)+1;
+
+  var rate=Math.max(16,52-level*4);
+  if(frame%rate===0)spawnRock();
+
+  // Ship move
+  if(keys['ArrowLeft']||keys['a'])ship.dx=-ship.spd;
+  else if(keys['ArrowRight']||keys['d'])ship.dx=ship.spd;
+  else ship.dx=0;
+  ship.x=Math.max(ship.w,Math.min(W-ship.w,ship.x+ship.dx));
+  if(ship.inv>0)ship.inv--;
+
+  // Rocks
+  for(var i=rocks.length-1;i>=0;i--){
+    var a=rocks[i];
+    a.y+=a.spd;a.rot+=a.rs;
+    if(a.y>H+a.r){rocks.splice(i,1);continue;}
+    drawRock(a);
+    if(ship.inv===0&&hit(a)){
+      rocks.splice(i,1);lives--;ship.inv=80;updateHUD();
+      if(lives<=0){endGame();return;}
+    }
+  }
+
+  drawShip();
+  document.getElementById('h-score').textContent=score;
+  document.getElementById('h-level').textContent=level;
+  raf=requestAnimationFrame(loop);
+}
+
+function drawIdle(){
+  ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);
+}
+
+function startGame(){
+  document.getElementById('ov-start').classList.add('hide');
+  document.getElementById('ov-over').classList.add('hide');
+  document.getElementById('ov-cert').classList.add('hide');
+  document.getElementById('claim-wrap').style.display='flex';
+  document.getElementById('pilot-name').value='';
+  resize();initGame();running=true;
+  if(raf)cancelAnimationFrame(raf);
+  loop();
+}
+
+function endGame(){
+  running=false;cancelAnimationFrame(raf);
+  var pts=score*10;
+  totalPts+=pts;
+  localStorage.setItem('mm_pts',totalPts);
+  if(score>best){best=score;localStorage.setItem('mm_best',best);document.getElementById('h-best').textContent=best;}
+  document.getElementById('nav-pts').textContent='Mission Points: '+totalPts;
+  document.getElementById('final-score').textContent=score;
+  document.getElementById('pts-earned').textContent='+'+pts+' Mission Points Earned';
+  document.getElementById('ov-over').classList.remove('hide');
+  gtag('event','game_over',{score:score,points:pts,level:level});
+}
+
+function claimSeat(){
+  var name=document.getElementById('pilot-name').value.trim();
+  if(!name){document.getElementById('pilot-name').focus();return;}
+  var num='MM-'+String(Math.floor(Math.random()*900)+100).padStart(4,'0');
+  document.getElementById('cert-name').textContent=name.toUpperCase();
+  document.getElementById('cert-num').textContent=num;
+  document.getElementById('cert-pts').textContent=totalPts;
+  document.getElementById('ov-over').classList.add('hide');
+  document.getElementById('ov-cert').classList.remove('hide');
+  gtag('event','claim_seat',{pilot:name,roster:num,total_pts:totalPts});
+}
+
+// Keyboard
+document.addEventListener('keydown',function(e){keys[e.key]=true;});
+document.addEventListener('keyup',function(e){keys[e.key]=false;});
+
+// Touch
+var tw=null;
+document.getElementById('c').addEventListener('touchstart',function(e){
+  e.preventDefault();
+  if(!running)return;
+  tw=e.touches[0].clientX;
+  ship.dx=tw<W/2?-ship.spd:ship.spd;
+},{passive:false});
+document.getElementById('c').addEventListener('touchmove',function(e){
+  e.preventDefault();
+  if(!running)return;
+  tw=e.touches[0].clientX;
+  ship.dx=tw<W/2?-ship.spd:ship.spd;
+},{passive:false});
+document.getElementById('c').addEventListener('touchend',function(e){
+  e.preventDefault();
+  if(running)ship.dx=0;
+},{passive:false});
+
+drawIdle();
+</script>
+</body>
+</html>
