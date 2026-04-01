@@ -422,6 +422,8 @@ window.onLanded = function(vy, vx, angle, fuel, zone, coinBonus) {
   }
 
   setTimeout(function() {
+    var btn = document.getElementById('result-main-btn');
+    if (btn) { btn.textContent = 'Next Zone \u2192'; }
     document.getElementById('ov-result').classList.remove('hide');
   }, 800);
 
@@ -470,6 +472,8 @@ window.onCrashed = function(vy, vx, angle, zone, coinBonus) {
   if (nextInfo) { nextInfo.textContent = 'Retry Zone ' + gameState.level; nextInfo.style.display = 'block'; }
 
   setTimeout(function() {
+    var btn = document.getElementById('result-main-btn');
+    if (btn) { btn.textContent = 'Retry Zone ' + gameState.level; }
     document.getElementById('ov-result').classList.remove('hide');
   }, 1000);
 
