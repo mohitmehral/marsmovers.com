@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Mars Movers — Mars Is More Than a Mission. Get Ready to Fly.</title>
-<meta name="description" content="Mars Movers is the citizen astronaut training platform. Play Mars survival games, earn mission points, and secure your seat on the first civilian Mars mission."/>
-<meta name="keywords" content="mars game, space game, mars mission, citizen astronaut, mars movers, earn seat to mars, asteroid dodge, space training"/>
+<title>Mars Movers — Play. Land. Fly With Us.</title>
+<meta name="description" content="Mars Movers — Play. Land. Fly With Us. The first flight to Mars picks the best pilots. Play Mars approach and landing games, earn mission points, and secure your seat on Flight MM-2031."/>
+<meta name="keywords" content="mars game, space game, mars landing game, asteroid game, mars mission, citizen astronaut, mars movers, fly to mars, space pilot game, mars flight, browser game, free space game"/>
 <meta name="author" content="Apnok"/>
 <meta name="robots" content="index, follow"/>
+<meta name="theme-color" content="#ff5014"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"/>
 <link rel="canonical" href="https://www.marsmovers.com/"/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.marsmovers.com/"/>
-<meta property="og:title" content="Mars Movers — Mars Is More Than a Mission. Get Ready to Fly."/>
-<meta property="og:description" content="Play Mars survival games, earn mission points, and claim your spot on the Mars Mission Roster."/>
+<meta property="og:title" content="Mars Movers — Play. Land. Fly With Us."/>
+<meta property="og:description" content="The first flight to Mars picks the best pilots. Play Mars approach and landing games, earn your seat on Flight MM-2031."/>
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Mars Movers — Mars Is More Than a Mission. Get Ready to Fly."/>
-<meta name="twitter:description" content="Play Mars survival games, earn mission points, and claim your spot on the Mars Mission Roster."/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mars Movers","url":"https://www.marsmovers.com","description":"Citizen astronaut training platform. Play Mars survival games and earn your mission roster seat.","publisher":{"@type":"Organization","name":"Apnok","url":"https://www.marsmovers.com","contactPoint":{"@type":"ContactPoint","email":"ceo@apnok.com","contactType":"Customer Support"}}}</script>
+<meta name="twitter:title" content="Mars Movers — Play. Land. Fly With Us."/>
+<meta name="twitter:description" content="The first flight to Mars picks the best pilots. Play Mars games and earn your seat."/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mars Movers","url":"https://www.marsmovers.com","description":"Play Mars approach and landing games. Earn mission points and secure your seat on the first civilian Mars flight.","publisher":{"@type":"Organization","name":"Apnok","url":"https://www.marsmovers.com","contactPoint":{"@type":"ContactPoint","email":"ceo@apnok.com","contactType":"Customer Support"}},"potentialAction":{"@type":"PlayAction","target":"https://www.marsmovers.com/game.html"}}</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N9J8L4ZB0Q');</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
@@ -41,11 +43,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* MARS HERO SCENE */
 #mars-scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
-/* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 140px;overflow:hidden}
+/* HERO GAMES — inline game cards in hero */
+.hero-games{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:520px;margin-top:32px}
+.hero-game{background:rgba(255,80,20,.08);border:1px solid rgba(255,80,20,.3);padding:16px 18px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:14px;transition:all .25s}
+.hero-game:hover{background:rgba(255,80,20,.18);border-color:rgba(255,80,20,.6);transform:translateY(-2px)}
+.hero-game .hg-icon{font-size:1.8rem;flex-shrink:0}
+.hero-game .hg-text h4{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.hero-game .hg-text p{font-size:.6rem;color:rgba(255,255,255,.5);line-height:1.5}
+.hero-game .hg-live{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:#00ff66}
+.hero-game .hg-arrow{color:#ff5014;font-size:1.2rem;margin-left:auto;flex-shrink:0;opacity:.6;transition:opacity .2s}
+.hero-game:hover .hg-arrow{opacity:1}
+@media(max-width:768px){.hero-games{grid-template-columns:1fr}}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 260px;overflow:hidden}
 .hero-inner{position:relative;z-index:2;max-width:700px}
 .hero-tag{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#ff5014;margin-bottom:24px;font-weight:600}
-.hero h1{font-family:'Inter',sans-serif;font-size:clamp(2.6rem,7vw,5.5rem);font-weight:800;line-height:1.08;margin-bottom:24px;letter-spacing:-.03em;text-shadow:0 0 80px rgba(255,80,20,.2)}
+.hero h1{font-family:'Inter',sans-serif;font-size:clamp(2rem,5.5vw,4rem);font-weight:800;line-height:1.12;margin-bottom:20px;letter-spacing:-.03em;text-shadow:0 0 80px rgba(255,80,20,.2)}
 .hero h1 em{color:#ff5014;font-style:normal}
 .hero-sub{font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,.7);max-width:520px;line-height:1.9;margin-bottom:44px;font-weight:300}
 .hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-start}
@@ -74,9 +86,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 /* GAMES */
 .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:960px;margin:0 auto}
-.game-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:32px 24px;transition:all .3s;text-decoration:none;display:block;color:#fff}
-.game-card:hover{background:rgba(255,80,20,.08);border-color:rgba(255,80,20,.4);transform:translateY(-4px)}
+.game-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,80,20,.15);padding:24px 20px;transition:all .3s;text-decoration:none;display:block;color:#fff;position:relative}
+.game-card:hover{background:rgba(255,80,20,.12);border-color:rgba(255,80,20,.5);transform:translateY(-4px)}
 .game-card.locked{opacity:.45;cursor:not-allowed;pointer-events:none}
+.game-card .live-dot{display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:6px;animation:livePulse 1.5s infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
 .game-icon{font-size:2.2rem;margin-bottom:18px}
 .game-badge{display:inline-block;background:#ff5014;color:#000;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;margin-bottom:14px}
 .game-card h3{font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
@@ -151,12 +165,29 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
   <canvas id="mars-scene"></canvas>
   <div class="hero-inner">
     <p class="hero-tag">Only 1,000 Will Make It · Departure 2031</p>
-    <h1>Mars Is More<br>Than a Mission.<br><em>Get Ready to Fly.</em></h1>
-    <p class="hero-sub">Elon's building the rocket. We're picking the passengers. Prove you can land on Mars without turning into a fireball and your name goes on the flight manifest. Simple.</p>
-    <div class="hero-btns">
-      <a href="#games" class="btn-cta" style="padding:15px 40px;font-size:.82rem">Start Training →</a>
-      <a href="#roster" class="btn-outline">View Mission Roster</a>
+    <h1>Mars Is More<br>Than a Mission.<br><em>Play. Land. Fly With Us.</em></h1>
+    <p class="hero-sub">The first flight to Mars won't pick the richest. It'll pick the best pilots. That's you — if you can land it.</p>
+    <div class="hero-games">
+      <a href="game.html" class="hero-game">
+        <div class="hg-icon">☄️</div>
+        <div class="hg-text">
+          <div class="hg-live"><span style="display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:4px;animation:livePulse 1.5s infinite"></span>Live</div>
+          <h4>Mars Approach</h4>
+          <p>5 asteroid levels → auto landing</p>
+        </div>
+        <div class="hg-arrow">›</div>
+      </a>
+      <a href="landing.html" class="hero-game">
+        <div class="hg-icon">🛸</div>
+        <div class="hg-text">
+          <div class="hg-live"><span style="display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:4px;animation:livePulse 1.5s infinite"></span>Live</div>
+          <h4>Mars Landing</h4>
+          <p>Real physics · 5 zones · land the ship</p>
+        </div>
+        <div class="hg-arrow">›</div>
+      </a>
     </div>
+    <p style="font-size:.6rem;color:rgba(255,255,255,.4);margin-top:14px;letter-spacing:.06em;line-height:1.7">⌨️ Arrow keys to move · Space to shoot · Land slow &amp; level to win · Mobile: tap to move, double-tap to shoot</p>
   </div>
 </div>
 
@@ -273,7 +304,7 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
 <footer>
   <div class="footer-l">
     <p style="font-size:.88rem;font-weight:700;color:#ff5014;letter-spacing:.2em;margin-bottom:5px">⬡ MARS MOVERS</p>
-    <p>Mars Is More Than a Mission. Get Ready to Fly.</p>
+    <p>Mars Is More Than a Mission. Play. Land. Fly With Us.</p>
     <p>Contact: <a href="mailto:ceo@apnok.com">ceo@apnok.com</a></p>
     <p style="margin-top:6px">Powered by <a href="https://apnok.com" target="_blank" rel="noopener">Apnok</a> © 2024 · All rights reserved.</p>
   </div>
@@ -461,9 +492,7 @@ footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(2
     for(var t=0;t<=w;t+=8){mx.lineTo(t,terrainY(t,w,h));}
     mx.lineTo(w,h);mx.closePath();mx.fill();
 
-    // Habitat — on back terrain, right side
-    var habX=w*0.72,habY=terrainY(habX,w,h);
-    drawHabitat(habX,habY,w,h);
+    // Back terrain done
 
     // Launch pad — far right
     var padX=w*0.92,padY=terrainY(padX,w,h);

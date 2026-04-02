@@ -21,7 +21,7 @@ var score, lives, level, frame, kills, ammo, running, raf;
 var levelTimer, levelFrame, gameTime;
 var totalPts = parseInt(localStorage.getItem('mm_pts') || '0');
 var best = parseInt(localStorage.getItem('mm_best') || '0');
-var keys = {}, lastTap = 0;
+var keys = {}, lastTap = 0, touchDx = 0, touchDy = 0;
 
 document.getElementById('nav-pts').textContent = totalPts + ' pts';
 if (best > 0) document.getElementById('h-kills').textContent = best;
@@ -261,6 +261,9 @@ function loop() {
   if (keys['ArrowRight'] || keys['d']) ship.dx = ship.spd;
   if (keys['ArrowUp'] || keys['w']) ship.dy = -ship.spd * 0.7;
   if (keys['ArrowDown'] || keys['s']) ship.dy = ship.spd * 0.7;
+  // Apply touch input
+  if (touchDx !== 0) ship.dx = touchDx;
+  if (touchDy !== 0) ship.dy = touchDy;
   ship.x = Math.max(20, Math.min(W - 20, ship.x + ship.dx));
   ship.y = Math.max(60, Math.min(H - 40, ship.y + ship.dy));
   if (ship.inv > 0) ship.inv--;
@@ -454,22 +457,23 @@ canvas.addEventListener('touchstart', function(e) {
   if (now - lastTap < 300) { shoot(); lastTap = 0; return; }
   lastTap = now;
   var t = e.touches[0];
-  if (t.clientX < W * 0.33) ship.dx = -ship.spd;
-  else if (t.clientX > W * 0.67) ship.dx = ship.spd;
-  if (t.clientY < H * 0.4) ship.dy = -ship.spd * 0.7;
-  else if (t.clientY > H * 0.7) ship.dy = ship.spd * 0.7;
+  touchDx = 0; touchDy = 0;
+  if (t.clientX < W * 0.33) touchDx = -ship.spd;
+  else if (t.clientX > W * 0.67) touchDx = ship.spd;
+  if (t.clientY < H * 0.4) touchDy = -ship.spd * 0.7;
+  else if (t.clientY > H * 0.7) touchDy = ship.spd * 0.7;
 }, { passive: false });
 canvas.addEventListener('touchmove', function(e) {
   e.preventDefault(); if (!running) return;
   var t = e.touches[0];
-  ship.dx = 0; ship.dy = 0;
-  if (t.clientX < W * 0.33) ship.dx = -ship.spd;
-  else if (t.clientX > W * 0.67) ship.dx = ship.spd;
-  if (t.clientY < H * 0.4) ship.dy = -ship.spd * 0.7;
-  else if (t.clientY > H * 0.7) ship.dy = ship.spd * 0.7;
+  touchDx = 0; touchDy = 0;
+  if (t.clientX < W * 0.33) touchDx = -ship.spd;
+  else if (t.clientX > W * 0.67) touchDx = ship.spd;
+  if (t.clientY < H * 0.4) touchDy = -ship.spd * 0.7;
+  else if (t.clientY > H * 0.7) touchDy = ship.spd * 0.7;
 }, { passive: false });
 canvas.addEventListener('touchend', function(e) {
-  e.preventDefault(); if (running) { ship.dx = 0; ship.dy = 0; }
+  e.preventDefault(); touchDx = 0; touchDy = 0;
 }, { passive: false });
 
 
