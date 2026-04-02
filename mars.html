@@ -68,7 +68,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .wow-src{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:8px}
 
 /* JOURNEY */
-.journey-canvas{width:100%;height:600px;border:1px solid rgba(255,80,20,.1);margin-bottom:32px;background:#020202}
+.journey-canvas{width:100%;height:80vh;min-height:500px;max-height:800px;border:1px solid rgba(255,80,20,.1);margin-bottom:32px;background:#010101;border-radius:4px}
 .journey-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
 .j-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:20px 16px;text-align:center}
 .j-stat-n{font-size:1.3rem;font-weight:800;color:#ff5014;margin-bottom:4px}
@@ -106,7 +106,7 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
   .facts-grid{grid-template-columns:repeat(2,1fr)}
   .wow-grid{grid-template-columns:1fr}
   .journey-stats{grid-template-columns:repeat(2,1fr)}
-  .journey-canvas{height:420px}
+  .journey-canvas{height:60vh;min-height:380px}
   footer{padding:28px 18px;flex-direction:column;align-items:flex-start}
 }
 </style>
@@ -411,175 +411,7 @@ setInterval(function(){document.getElementById('live-dist').textContent=getMarsD
   draw();
 })();
 
-// Journey animation — ship reaches Mars, bigger, smoother
-(function(){
-  var c=document.getElementById('journey-canvas'),ctx=c.getContext('2d');
-  function resize(){c.width=c.offsetWidth;c.height=c.offsetHeight;}
-  resize();window.addEventListener('resize',resize);
-  var frame=0;
-  function draw(){
-    var w=c.width,h=c.height;
-    frame++;
-    ctx.fillStyle='#030303';ctx.fillRect(0,0,w,h);
-
-    // Background stars
-    ctx.fillStyle='rgba(255,255,255,0.15)';
-    for(var si=0;si<50;si++){
-      var sx2=((si*137.5)%w),sy2=((si*97.3)%h);
-      ctx.beginPath();ctx.arc(sx2,sy2,0.6,0,Math.PI*2);ctx.fill();
-    }
-
-    var cx=w*0.38,cy=h*0.5;
-
-    // === ORBIT RINGS — solid, visible ===
-    // Mercury orbit (decorative)
-    var mercR=Math.min(w,h)*0.08;
-    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
-    ctx.beginPath();ctx.ellipse(cx,cy,mercR,mercR*0.35,0,0,Math.PI*2);ctx.stroke();
-
-    // Venus orbit (decorative)
-    var venR=Math.min(w,h)*0.14;
-    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
-    ctx.beginPath();ctx.ellipse(cx,cy,venR,venR*0.35,0,0,Math.PI*2);ctx.stroke();
-
-    // Earth orbit — visible blue
-    var eR=Math.min(w,h)*0.22;
-    ctx.strokeStyle='rgba(80,130,255,0.2)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.ellipse(cx,cy,eR,eR*0.35,0,0,Math.PI*2);ctx.stroke();
-    // Orbit label
-    ctx.fillStyle='rgba(80,130,255,0.25)';ctx.font='8px Courier New';ctx.textAlign='left';
-    ctx.fillText('Earth Orbit · 150M km',cx+eR+6,cy-4);
-
-    // Mars orbit — visible red
-    var mR=Math.min(w,h)*0.38;
-    ctx.strokeStyle='rgba(255,80,30,0.2)';ctx.lineWidth=1;
-    ctx.beginPath();ctx.ellipse(cx,cy,mR,mR*0.35,0,0,Math.PI*2);ctx.stroke();
-    // Orbit label
-    ctx.fillStyle='rgba(255,80,30,0.25)';ctx.font='8px Courier New';
-    ctx.fillText('Mars Orbit · 228M km',cx+mR+6,cy-4);
-
-    // === SUN ===
-    var sunG=ctx.createRadialGradient(cx,cy,4,cx,cy,45);
-    sunG.addColorStop(0,'rgba(255,230,100,1)');sunG.addColorStop(0.2,'rgba(255,200,60,0.6)');
-    sunG.addColorStop(0.5,'rgba(255,160,30,0.15)');sunG.addColorStop(1,'rgba(255,120,20,0)');
-    ctx.fillStyle=sunG;ctx.beginPath();ctx.arc(cx,cy,45,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,230,100,0.95)';ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='bold 9px Courier New';ctx.textAlign='center';
-    ctx.fillText('\u2600 Sun',cx,cy+24);
-
-    // === EARTH — slow orbit ===
-    var eAngle=frame*0.002; // very slow
-    var ex=cx+Math.cos(eAngle)*eR,ey=cy+Math.sin(eAngle)*eR*0.35;
-    // Earth glow
-    ctx.fillStyle='rgba(60,120,255,0.1)';ctx.beginPath();ctx.arc(ex,ey,20,0,Math.PI*2);ctx.fill();
-    // Earth body
-    ctx.fillStyle='#4488ff';ctx.beginPath();ctx.arc(ex,ey,9,0,Math.PI*2);ctx.fill();
-    // Continent hint
-    ctx.fillStyle='rgba(80,180,80,0.4)';ctx.beginPath();ctx.arc(ex+2,ey-2,4,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='bold 11px Courier New';ctx.textAlign='center';
-    ctx.fillText('\uD83C\uDF0D Earth',ex,ey+26);
-
-    // === MARS — slower orbit ===
-    var mAngle=frame*0.001+1.2;
-    var mx=cx+Math.cos(mAngle)*mR,my=cy+Math.sin(mAngle)*mR*0.35;
-    // Mars glow
-    ctx.fillStyle='rgba(255,60,20,0.08)';ctx.beginPath();ctx.arc(mx,my,18,0,Math.PI*2);ctx.fill();
-    // Mars body
-    ctx.fillStyle='#ff5014';ctx.beginPath();ctx.arc(mx,my,8,0,Math.PI*2);ctx.fill();
-    // Polar cap
-    ctx.fillStyle='rgba(220,220,230,0.3)';ctx.beginPath();ctx.arc(mx,my-5,3,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='bold 11px Courier New';
-    ctx.fillText('\uD83D\uDD34 Mars',mx,my+24);
-
-    // Mars satellites
-    for(var ms=0;ms<3;ms++){
-      var msa=frame*0.008+ms*2.1,msr=14+ms*5;
-      var msx=mx+Math.cos(msa)*msr,msy=my+Math.sin(msa)*msr*0.4;
-      ctx.fillStyle='rgba(200,200,220,0.5)';ctx.fillRect(msx-2,msy-1,4,2);
-      ctx.strokeStyle='rgba(100,150,255,0.2)';ctx.lineWidth=0.5;
-      ctx.beginPath();ctx.moveTo(msx-5,msy);ctx.lineTo(msx+5,msy);ctx.stroke();
-    }
-
-    // === TRANSFER ORBIT — slow, smooth ===
-    var tP=(frame%1200)/1200; // 20 seconds per cycle at 60fps
-    // Full transfer path (faint)
-    ctx.strokeStyle='rgba(255,200,50,0.08)';ctx.lineWidth=1;
-    ctx.beginPath();
-    for(var tf=0;tf<=1;tf+=0.005){
-      var tfr=eR+(mR-eR)*tf,tfa=eAngle+Math.PI*tf;
-      var tfx=cx+Math.cos(tfa)*tfr,tfy=cy+Math.sin(tfa)*tfr*0.35;
-      tf===0?ctx.moveTo(tfx,tfy):ctx.lineTo(tfx,tfy);
-    }
-    ctx.stroke();
-    // Active path (bright)
-    ctx.strokeStyle='rgba(255,200,50,0.5)';ctx.lineWidth=2;
-    ctx.beginPath();
-    for(var t=0;t<=tP;t+=0.003){
-      var r=eR+(mR-eR)*t,a=eAngle+Math.PI*t;
-      var tx=cx+Math.cos(a)*r,ty=cy+Math.sin(a)*r*0.35;
-      t===0?ctx.moveTo(tx,ty):ctx.lineTo(tx,ty);
-    }
-    ctx.stroke();
-
-    // Ship on path
-    var sR=eR+(mR-eR)*tP,sA=eAngle+Math.PI*tP;
-    var sx=cx+Math.cos(sA)*sR,sy=cy+Math.sin(sA)*sR*0.35;
-    // Ship trail
-    ctx.strokeStyle='rgba(255,200,50,0.15)';ctx.lineWidth=1;
-    var trailLen=0.03;
-    ctx.beginPath();
-    for(var tr=Math.max(0,tP-trailLen);tr<=tP;tr+=0.002){
-      var trr=eR+(mR-eR)*tr,tra=eAngle+Math.PI*tr;
-      var trx=cx+Math.cos(tra)*trr,try2=cy+Math.sin(tra)*trr*0.35;
-      tr===Math.max(0,tP-trailLen)?ctx.moveTo(trx,try2):ctx.lineTo(trx,try2);
-    }
-    ctx.stroke();
-    // Ship icon
-    ctx.fillStyle='#fff';ctx.font='16px serif';ctx.textAlign='center';ctx.fillText('\uD83D\uDE80',sx,sy+5);
-
-    // Distance line ship to Mars
-    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;ctx.setLineDash([2,6]);
-    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(mx,my);ctx.stroke();ctx.setLineDash([]);
-
-    // === MISSION DATA PANEL ===
-    var months=(tP*7);
-    var kmTraveled=Math.floor(tP*480);
-    var kmLeft=480-kmTraveled;
-
-    ctx.fillStyle='rgba(0,0,0,0.65)';ctx.fillRect(w-230,14,216,165);
-    ctx.strokeStyle='rgba(255,80,20,0.25)';ctx.lineWidth=1;ctx.strokeRect(w-230,14,216,165);
-
-    ctx.fillStyle='#ff5014';ctx.font='bold 10px Courier New';ctx.textAlign='left';
-    ctx.fillText('\u25CF LIVE MISSION DATA',w-220,32);
-
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
-    ctx.fillText('Time Elapsed',w-220,50);
-    ctx.fillStyle='#fff';ctx.font='bold 18px Courier New';
-    ctx.fillText(months.toFixed(1)+' months',w-220,70);
-
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
-    ctx.fillText('Distance Covered',w-220,90);
-    ctx.fillStyle='#fff';ctx.font='bold 18px Courier New';
-    ctx.fillText(kmTraveled+'M km',w-220,110);
-
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
-    ctx.fillText('Remaining to Mars',w-220,130);
-    ctx.fillStyle=kmLeft<100?'#ff5014':'#fff';ctx.font='bold 18px Courier New';
-    ctx.fillText(kmLeft+'M km',w-220,150);
-
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
-    ctx.fillText('Cruise Speed: 11.6 km/s \u00b7 41,760 km/h',w-220,172);
-
-    // Bottom info
-    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px Courier New';ctx.textAlign='left';
-    ctx.fillText('Hohmann Transfer Orbit \u00b7 Elliptical trajectory \u00b7 Minimum energy path',12,h-14);
-    ctx.textAlign='right';
-    ctx.fillText('Total: 480M km \u00b7 ~7 months \u00b7 Next window: Nov 2026',w-12,h-14);
-
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
+// Journey loaded from external file
 
 // Mars Surface Scene 1 — ground level view with rocks, mountains, sky
 (function(){
@@ -677,5 +509,6 @@ setInterval(function(){document.getElementById('live-dist').textContent=getMarsD
   for(var gy=0;gy<h;gy+=40){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
 })();
 </script>
+<script src="js/mars-journey.js"></script>
 </body>
 </html>
