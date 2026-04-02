@@ -421,6 +421,7 @@ function startGame() {
   glow.style.width = '200px'; glow.style.height = '200px'; glow.style.bottom = '-200px'; glow.style.opacity = '0.2';
   resize(); initGame(); running = true;
   if (raf) cancelAnimationFrame(raf);
+  showGameTip();
   loop();
 }
 
@@ -502,14 +503,23 @@ canvas.addEventListener('touchend', function(e) {
   touchDx = 0; touchDy = 0;
 }, { passive: false });
 
-// Mobile tooltip
-if ('ontouchstart' in window) {
+// Tooltip shown after game starts, not on page load
+function showGameTip() {
+  var isMobile = 'ontouchstart' in window;
   var tip = document.createElement('div');
-  tip.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,80,20,0.15);border:1px solid rgba(255,80,20,0.4);padding:12px 20px;font-family:Courier New,monospace;font-size:.7rem;color:rgba(255,255,255,.7);text-align:center;letter-spacing:.06em;line-height:1.6;max-width:320px;transition:opacity .5s;';
-  tip.innerHTML = 'Tap = Shoot \u00b7 Hold + Slide = Move<br>Slide up/down = vertical movement';
+  tip.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;background:rgba(0,0,0,0.9);border:1px solid rgba(255,80,20,0.5);padding:20px 28px;font-family:Courier New,monospace;font-size:.8rem;color:rgba(255,255,255,.85);text-align:center;letter-spacing:.06em;line-height:1.8;max-width:340px;border-radius:8px;';
+  if (isMobile) {
+    tip.innerHTML = '<div style="color:#ff5014;font-weight:700;font-size:.7rem;letter-spacing:.2em;margin-bottom:8px">MOBILE CONTROLS</div>' +
+      'Tap = Shoot<br>Hold + Slide Left/Right = Move<br>Hold + Slide Up/Down = Vertical<br>' +
+      '<div style="margin-top:10px;font-size:.6rem;color:rgba(255,255,255,.4)">Tip disappears in 4 seconds</div>';
+  } else {
+    tip.innerHTML = '<div style="color:#ff5014;font-weight:700;font-size:.7rem;letter-spacing:.2em;margin-bottom:8px">KEYBOARD CONTROLS</div>' +
+      '\u2190 \u2192 \u2191 \u2193 or WASD = Move<br>SPACE = Shoot<br>' +
+      '<div style="margin-top:10px;font-size:.6rem;color:rgba(255,255,255,.4)">Tip disappears in 4 seconds</div>';
+  }
   document.body.appendChild(tip);
-  setTimeout(function() { tip.style.opacity = '0'; }, 4000);
-  setTimeout(function() { tip.remove(); }, 4600);
+  setTimeout(function() { tip.style.opacity = '0'; tip.style.transition = 'opacity .5s'; }, 3500);
+  setTimeout(function() { tip.remove(); }, 4100);
 }
 
 

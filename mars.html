@@ -36,9 +36,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-links a:hover{color:#ff5014}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px;overflow:hidden}
+.hero{position:relative;min-height:100vh;display:flex;align-items:flex-end;justify-content:flex-start;text-align:left;padding:0 50px 80px;overflow:hidden}
+.hero::after{content:'';position:absolute;left:0;top:0;bottom:0;width:55%;background:linear-gradient(to right,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.4) 60%,rgba(0,0,0,0) 100%);z-index:1;pointer-events:none}
 .hero-bg{position:absolute;inset:0;z-index:0;width:100%;height:100%}
-.hero-content{position:relative;z-index:2;max-width:700px}
+.hero-content{position:relative;z-index:2;max-width:420px}
 .hero-tag{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#ff5014;margin-bottom:16px;font-weight:600}
 .hero h1{font-size:clamp(2rem,5vw,3.8rem);font-weight:800;line-height:1.1;margin-bottom:16px;letter-spacing:-.02em}
 .hero h1 em{color:#ff5014;font-style:normal}
@@ -109,6 +110,9 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
   nav{padding:12px 18px}
   .nav-links{display:none}
   .mobile-menu-btn{display:block}
+  .hero{padding:0 24px 60px}
+  .hero-content{max-width:280px}
+  .hero::after{width:70%}
   .section{padding:56px 18px}
   .facts-grid{grid-template-columns:repeat(2,1fr)}
   .wow-grid{grid-template-columns:1fr}

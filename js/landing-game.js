@@ -341,15 +341,27 @@ function setupTouch() {
     isHolding = false;
   }, { passive: false });
 
-  // Mobile tooltip — auto disappear
-  if ('ontouchstart' in window) {
+  // Tooltip shown after game starts
+  function showLandingTip() {
+    var isMobile = 'ontouchstart' in window;
     var tip = document.createElement('div');
-    tip.style.cssText = 'position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,80,20,0.15);border:1px solid rgba(255,80,20,0.4);padding:12px 20px;font-family:Courier New,monospace;font-size:.7rem;color:rgba(255,255,255,.7);text-align:center;letter-spacing:.06em;line-height:1.6;max-width:300px;transition:opacity .5s;border-radius:6px;';
-    tip.innerHTML = 'Hold = Thrust \u00b7 Slide Left/Right = Rotate<br>Land slow & level on the green pad';
+    tip.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:200;background:rgba(0,0,0,0.9);border:1px solid rgba(255,80,20,0.5);padding:20px 28px;font-family:Courier New,monospace;font-size:.8rem;color:rgba(255,255,255,.85);text-align:center;letter-spacing:.06em;line-height:1.8;max-width:340px;border-radius:8px;';
+    if (isMobile) {
+      tip.innerHTML = '<div style="color:#ff5014;font-weight:700;font-size:.7rem;letter-spacing:.2em;margin-bottom:8px">MOBILE CONTROLS</div>' +
+        'Hold Screen = Thrust<br>Slide Left/Right = Rotate<br>Release = Stop<br>' +
+        '<div style="margin-top:8px;font-size:.65rem;color:rgba(255,200,100,.6)">Land slow (&lt;2 m/s) &amp; level (&lt;10\u00b0) on green pad</div>' +
+        '<div style="margin-top:8px;font-size:.6rem;color:rgba(255,255,255,.35)">Tip disappears in 5 seconds</div>';
+    } else {
+      tip.innerHTML = '<div style="color:#ff5014;font-weight:700;font-size:.7rem;letter-spacing:.2em;margin-bottom:8px">KEYBOARD CONTROLS</div>' +
+        '\u2191 or W or SPACE = Thrust<br>\u2190 \u2192 or A/D = Rotate<br>\u2193 or S = Push Down<br>' +
+        '<div style="margin-top:8px;font-size:.65rem;color:rgba(255,200,100,.6)">Land slow (&lt;2 m/s) &amp; level (&lt;10\u00b0) on green pad</div>' +
+        '<div style="margin-top:8px;font-size:.6rem;color:rgba(255,255,255,.35)">Tip disappears in 5 seconds</div>';
+    }
     document.body.appendChild(tip);
-    setTimeout(function() { tip.style.opacity = '0'; }, 4000);
-    setTimeout(function() { tip.remove(); }, 4600);
+    setTimeout(function() { tip.style.opacity = '0'; tip.style.transition = 'opacity .5s'; }, 4500);
+    setTimeout(function() { tip.remove(); }, 5100);
   }
+  window._showLandingTip = showLandingTip;
 }
 
 function update(time, delta) {
@@ -582,6 +594,7 @@ window.startMission = function() {
   coins = []; coinTimer = 0; coinScore = 0;
   var coinEl = document.getElementById('h-coins');
   if (coinEl) coinEl.textContent = '0';
+  if (window._showLandingTip) window._showLandingTip();
 };
 
 // Reset to zone 1
