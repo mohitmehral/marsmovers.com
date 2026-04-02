@@ -288,45 +288,63 @@ function resetState() {
 }
 
 function setupTouch() {
-  var btnThrust = document.getElementById('btn-thrust');
-  var btnLeft = document.getElementById('btn-left');
-  var btnRight = document.getElementById('btn-right');
+  // Hide button controls
+  var btns = document.getElementById('touch-controls');
+  if (btns) btns.style.display = 'none';
 
-  function addTouchEvents(el, stateKey) {
-    el.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); gameState[stateKey] = true; }, { passive: false });
-    el.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); gameState[stateKey] = false; }, { passive: false });
-    el.addEventListener('touchcancel', function(e) { gameState[stateKey] = false; });
-    el.addEventListener('mousedown', function(e) { e.preventDefault(); gameState[stateKey] = true; });
-    el.addEventListener('mouseup', function(e) { gameState[stateKey] = false; });
-    el.addEventListener('mouseleave', function(e) { gameState[stateKey] = false; });
-  }
-
-  addTouchEvents(btnThrust, 'thrusting');
-  addTouchEvents(btnLeft, 'rotLeft');
-  addTouchEvents(btnRight, 'rotRight');
-
-  // Also support full-screen touch zones as fallback
   var canvas = document.querySelector('#game-container canvas');
-  if (canvas) {
-    canvas.addEventListener('touchstart', function(e) {
-      e.preventDefault();
-      for (var i = 0; i < e.touches.length; i++) {
-        var t = e.touches[i];
-        var x = t.clientX / W;
-        var y = t.clientY / H;
-        if (y < 0.6) gameState.thrusting = true;
-        if (x < 0.3) gameState.rotLeft = true;
-        if (x > 0.7) gameState.rotRight = true;
-      }
-    }, { passive: false });
-    canvas.addEventListener('touchend', function(e) {
-      e.preventDefault();
-      if (e.touches.length === 0) {
-        gameState.thrusting = false;
-        gameState.rotLeft = false;
-        gameState.rotRight = false;
-      }
-    }, { passive: false });
+  if (!canvas) return;
+
+  var tStartX = 0, tStartY = 0, tStartTime = 0, isHolding = false, holdTimer = null;
+
+  canvas.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    var t = e.touches[0];
+    tStartX = t.clientX;
+    tStartY = t.clientY;
+    tStartTime = Date.now();
+    isHolding = false;
+    // Long press = thrust (after 150ms)
+    holdTimer = setTimeout(function() {
+      isHolding = true;
+      gameState.thrusting = true;
+    }, 150);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var t = e.touches[0];
+    var dx = t.clientX - tStartX;
+    // Slide left/right = rotate
+    if (dx > 25) {
+      gameState.rotRight = true;
+      gameState.rotLeft = false;
+    } else if (dx < -25) {
+      gameState.rotLeft = true;
+      gameState.rotRight = false;
+    } else {
+      gameState.rotLeft = false;
+      gameState.rotRight = false;
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    clearTimeout(holdTimer);
+    gameState.thrusting = false;
+    gameState.rotLeft = false;
+    gameState.rotRight = false;
+    isHolding = false;
+  }, { passive: false });
+
+  // Mobile tooltip — auto disappear
+  if ('ontouchstart' in window) {
+    var tip = document.createElement('div');
+    tip.style.cssText = 'position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,80,20,0.15);border:1px solid rgba(255,80,20,0.4);padding:12px 20px;font-family:Courier New,monospace;font-size:.7rem;color:rgba(255,255,255,.7);text-align:center;letter-spacing:.06em;line-height:1.6;max-width:300px;transition:opacity .5s;border-radius:6px;';
+    tip.innerHTML = 'Hold = Thrust \u00b7 Slide Left/Right = Rotate<br>Land slow & level on the green pad';
+    document.body.appendChild(tip);
+    setTimeout(function() { tip.style.opacity = '0'; }, 4000);
+    setTimeout(function() { tip.remove(); }, 4600);
   }
 }
 

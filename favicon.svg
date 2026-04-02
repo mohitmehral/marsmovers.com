@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Mars surface -->
+  <path d="M0 28 Q8 24 16 26 Q24 28 32 25 L32 32 L0 32Z" fill="#8b3a1a"/>
+  <!-- Rocket body -->
+  <rect x="13" y="6" width="6" height="16" rx="3" fill="#d0d0d0"/>
+  <!-- Nose cone -->
+  <path d="M13 8 Q16 1 19 8Z" fill="#ff5014"/>
+  <!-- Window -->
+  <circle cx="16" cy="12" r="1.5" fill="#66ccff"/>
+  <!-- Fins -->
+  <path d="M13 20 L10 24 L13 22Z" fill="#999"/>
+  <path d="M19 20 L22 24 L19 22Z" fill="#999"/>
+  <!-- Engine flame -->
+  <path d="M14 22 L16 28 L18 22Z" fill="#ffcc33" opacity="0.9"/>
+  <path d="M15 22 L16 26 L17 22Z" fill="#ff5014" opacity="0.7"/>
+</svg>

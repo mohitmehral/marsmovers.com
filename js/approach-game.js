@@ -21,7 +21,7 @@ var score, lives, level, frame, kills, ammo, running, raf;
 var levelTimer, levelFrame, gameTime;
 var totalPts = parseInt(localStorage.getItem('mm_pts') || '0');
 var best = parseInt(localStorage.getItem('mm_best') || '0');
-var keys = {}, lastTap = 0, touchDx = 0, touchDy = 0;
+var keys = {}, touchDx = 0, touchDy = 0, touchStartX = 0, touchStartY = 0, touchStartTime = 0, touchFired = false;
 
 document.getElementById('nav-pts').textContent = totalPts + ' pts';
 if (best > 0) document.getElementById('h-kills').textContent = best;
@@ -463,30 +463,52 @@ document.addEventListener('keydown', function(e) {
 document.addEventListener('keyup', function(e) { keys[e.key] = false; });
 
 // === TOUCH ===
+// === TOUCH — tap=shoot, hold+slide=move ===
 canvas.addEventListener('touchstart', function(e) {
   e.preventDefault(); if (!running) return;
-  var now = Date.now();
-  if (now - lastTap < 300) { shoot(); lastTap = 0; return; }
-  lastTap = now;
   var t = e.touches[0];
+  touchStartX = t.clientX;
+  touchStartY = t.clientY;
+  touchStartTime = Date.now();
+  touchFired = false;
   touchDx = 0; touchDy = 0;
-  if (t.clientX < W * 0.33) touchDx = -ship.spd;
-  else if (t.clientX > W * 0.67) touchDx = ship.spd;
-  if (t.clientY < H * 0.4) touchDy = -ship.spd * 0.7;
-  else if (t.clientY > H * 0.7) touchDy = ship.spd * 0.7;
 }, { passive: false });
 canvas.addEventListener('touchmove', function(e) {
   e.preventDefault(); if (!running) return;
   var t = e.touches[0];
-  touchDx = 0; touchDy = 0;
-  if (t.clientX < W * 0.33) touchDx = -ship.spd;
-  else if (t.clientX > W * 0.67) touchDx = ship.spd;
-  if (t.clientY < H * 0.4) touchDy = -ship.spd * 0.7;
-  else if (t.clientY > H * 0.7) touchDy = ship.spd * 0.7;
+  var dx = t.clientX - touchStartX;
+  var dy = t.clientY - touchStartY;
+  // Slide threshold
+  if (Math.abs(dx) > 20) {
+    touchDx = dx > 0 ? ship.spd : -ship.spd;
+  } else {
+    touchDx = 0;
+  }
+  if (Math.abs(dy) > 20) {
+    touchDy = dy > 0 ? ship.spd * 0.7 : -ship.spd * 0.7;
+  } else {
+    touchDy = 0;
+  }
 }, { passive: false });
 canvas.addEventListener('touchend', function(e) {
-  e.preventDefault(); touchDx = 0; touchDy = 0;
+  e.preventDefault();
+  var elapsed = Date.now() - touchStartTime;
+  // Quick tap (< 200ms, no slide) = shoot
+  if (elapsed < 200 && touchDx === 0 && touchDy === 0 && !touchFired) {
+    shoot();
+  }
+  touchDx = 0; touchDy = 0;
 }, { passive: false });
+
+// Mobile tooltip
+if ('ontouchstart' in window) {
+  var tip = document.createElement('div');
+  tip.style.cssText = 'position:fixed;bottom:40px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(255,80,20,0.15);border:1px solid rgba(255,80,20,0.4);padding:12px 20px;font-family:Courier New,monospace;font-size:.7rem;color:rgba(255,255,255,.7);text-align:center;letter-spacing:.06em;line-height:1.6;max-width:320px;transition:opacity .5s;';
+  tip.innerHTML = 'Tap = Shoot \u00b7 Hold + Slide = Move<br>Slide up/down = vertical movement';
+  document.body.appendChild(tip);
+  setTimeout(function() { tip.style.opacity = '0'; }, 4000);
+  setTimeout(function() { tip.remove(); }, 4600);
+}
 
 
 // === AMMO POPUP ===
