@@ -19,8 +19,8 @@
     var isMed = w < 900;
     var shipW = isSmall ? w * 0.1 : isMed ? w * 0.09 : Math.min(w * 0.08, 80);
     var shipX = isSmall ? w * 0.78 : isMed ? w * 0.75 : w * 0.72;
-    var shipTop = h * 0.03;
-    var shipBot = h * 0.91;
+    var shipTop = h * 0.15;
+    var shipBot = h * 0.88;
     var shipH = shipBot - shipTop;
 
     // === MARS SKY ===
