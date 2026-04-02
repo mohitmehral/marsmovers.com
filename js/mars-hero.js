@@ -17,10 +17,10 @@
     // Responsive ship sizing
     var isSmall = w < 600;
     var isMed = w < 900;
-    var shipW = isSmall ? w * 0.1 : isMed ? w * 0.09 : Math.min(w * 0.08, 80);
-    var shipX = isSmall ? w * 0.78 : isMed ? w * 0.75 : w * 0.72;
-    var shipTop = h * 0.25;
-    var shipBot = h * 0.85;
+    var shipW = isSmall ? w * 0.06 : isMed ? w * 0.05 : Math.min(w * 0.045, 50);
+    var shipX = isSmall ? w * 0.72 : isMed ? w * 0.68 : w * 0.65;
+    var shipTop = h * 0.12;
+    var shipBot = h * 0.82;
     var shipH = shipBot - shipTop;
 
     // === MARS SKY ===
@@ -96,30 +96,30 @@
 
     // Forward flaps
     var flapY = shipTop + shipH * 0.18;
-    var flapW = isSmall ? 20 : 35;
+    var flapW = isSmall ? 12 : 22;
     ctx.fillStyle = '#909098'; ctx.beginPath();
-    ctx.moveTo(shipX - shipW, flapY); ctx.lineTo(shipX - shipW - flapW, flapY + 15);
-    ctx.lineTo(shipX - shipW - flapW + 5, flapY + 50); ctx.lineTo(shipX - shipW, flapY + 40);
+    ctx.moveTo(shipX - shipW, flapY); ctx.lineTo(shipX - shipW - flapW, flapY + 10);
+    ctx.lineTo(shipX - shipW - flapW + 3, flapY + 35); ctx.lineTo(shipX - shipW, flapY + 28);
     ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#a0a0a8'; ctx.beginPath();
-    ctx.moveTo(shipX + shipW, flapY); ctx.lineTo(shipX + shipW + flapW, flapY + 15);
-    ctx.lineTo(shipX + shipW + flapW - 5, flapY + 50); ctx.lineTo(shipX + shipW, flapY + 40);
+    ctx.moveTo(shipX + shipW, flapY); ctx.lineTo(shipX + shipW + flapW, flapY + 10);
+    ctx.lineTo(shipX + shipW + flapW - 3, flapY + 35); ctx.lineTo(shipX + shipW, flapY + 28);
     ctx.closePath(); ctx.fill();
 
     // Aft fins
     var aftY = shipBot - shipH * 0.15;
-    var aftW = isSmall ? 25 : 45;
+    var aftW = isSmall ? 15 : 28;
     ctx.fillStyle = '#808088'; ctx.beginPath();
-    ctx.moveTo(shipX - shipW, aftY); ctx.lineTo(shipX - shipW - aftW, shipBot + 10);
-    ctx.lineTo(shipX - shipW - aftW + 20, shipBot + 15); ctx.lineTo(shipX - shipW, shipBot);
+    ctx.moveTo(shipX - shipW, aftY); ctx.lineTo(shipX - shipW - aftW, shipBot + 6);
+    ctx.lineTo(shipX - shipW - aftW + 12, shipBot + 10); ctx.lineTo(shipX - shipW, shipBot);
     ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#909098'; ctx.beginPath();
-    ctx.moveTo(shipX + shipW, aftY); ctx.lineTo(shipX + shipW + aftW, shipBot + 10);
-    ctx.lineTo(shipX + shipW + aftW - 20, shipBot + 15); ctx.lineTo(shipX + shipW, shipBot);
+    ctx.moveTo(shipX + shipW, aftY); ctx.lineTo(shipX + shipW + aftW, shipBot + 6);
+    ctx.lineTo(shipX + shipW + aftW - 12, shipBot + 10); ctx.lineTo(shipX + shipW, shipBot);
     ctx.closePath(); ctx.fill();
 
     // Raptor engines
-    var engSize = isSmall ? 6 : 10;
+    var engSize = isSmall ? 4 : 6;
     for (var ei = -1; ei <= 1; ei++) {
       var engX = shipX + ei * shipW * 0.5;
       ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(engX, shipBot - 3, engSize, 0, Math.PI); ctx.fill();
@@ -140,8 +140,8 @@
 
     // Launch tower — left of ship
     if (!isSmall) {
-      var towerX = shipX - shipW - (isMed ? 40 : 60);
-      ctx.fillStyle = '#444'; ctx.fillRect(towerX, h * 0.1, 10, h * 0.85);
+      var towerX = shipX - shipW - (isMed ? 30 : 45);
+      ctx.fillStyle = '#444'; ctx.fillRect(towerX, h * 0.15, 7, h * 0.75);
       ctx.strokeStyle = '#555'; ctx.lineWidth = 1;
       for (var tb = h * 0.15; tb < h * 0.9; tb += 40) {
         ctx.beginPath(); ctx.moveTo(towerX, tb); ctx.lineTo(towerX + 10, tb + 20); ctx.stroke();
