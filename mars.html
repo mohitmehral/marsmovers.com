@@ -390,7 +390,7 @@ setInterval(function(){document.getElementById('live-dist').textContent=getMarsD
   draw();
 })();
 
-// Journey animation — with inline facts
+// Journey animation — slow, clean, visible orbits
 (function(){
   var c=document.getElementById('journey-canvas'),ctx=c.getContext('2d');
   function resize(){c.width=c.offsetWidth;c.height=c.offsetHeight;}
@@ -398,106 +398,160 @@ setInterval(function(){document.getElementById('live-dist').textContent=getMarsD
   var frame=0;
   function draw(){
     var w=c.width,h=c.height;
-    ctx.fillStyle='#050505';ctx.fillRect(0,0,w,h);
-    var cx=w*0.32,cy=h*0.48;
     frame++;
+    ctx.fillStyle='#030303';ctx.fillRect(0,0,w,h);
 
-    // Sun with glow
-    var sunGlow=ctx.createRadialGradient(cx,cy,5,cx,cy,50);
-    sunGlow.addColorStop(0,'rgba(255,220,80,1)');sunGlow.addColorStop(0.3,'rgba(255,180,40,0.3)');sunGlow.addColorStop(1,'rgba(255,150,20,0)');
-    ctx.fillStyle=sunGlow;ctx.beginPath();ctx.arc(cx,cy,50,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,220,80,0.95)';ctx.beginPath();ctx.arc(cx,cy,14,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='bold 10px Courier New';ctx.textAlign='center';ctx.fillText('Sun',cx,cy+28);
+    // Background stars
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    for(var si=0;si<50;si++){
+      var sx2=((si*137.5)%w),sy2=((si*97.3)%h);
+      ctx.beginPath();ctx.arc(sx2,sy2,0.6,0,Math.PI*2);ctx.fill();
+    }
 
-    // Earth orbit
+    var cx=w*0.38,cy=h*0.5;
+
+    // === ORBIT RINGS — solid, visible ===
+    // Mercury orbit (decorative)
+    var mercR=Math.min(w,h)*0.08;
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.ellipse(cx,cy,mercR,mercR*0.35,0,0,Math.PI*2);ctx.stroke();
+
+    // Venus orbit (decorative)
+    var venR=Math.min(w,h)*0.14;
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.ellipse(cx,cy,venR,venR*0.35,0,0,Math.PI*2);ctx.stroke();
+
+    // Earth orbit — visible blue
     var eR=Math.min(w,h)*0.22;
-    ctx.strokeStyle='rgba(100,150,255,0.12)';ctx.lineWidth=1;
-    ctx.setLineDash([3,6]);ctx.beginPath();ctx.ellipse(cx,cy,eR,eR*0.38,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle='rgba(80,130,255,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.ellipse(cx,cy,eR,eR*0.35,0,0,Math.PI*2);ctx.stroke();
+    // Orbit label
+    ctx.fillStyle='rgba(80,130,255,0.25)';ctx.font='8px Courier New';ctx.textAlign='left';
+    ctx.fillText('Earth Orbit · 150M km',cx+eR+6,cy-4);
 
-    // Mars orbit
-    var mR=Math.min(w,h)*0.42;
-    ctx.strokeStyle='rgba(255,100,50,0.12)';ctx.lineWidth=1;
-    ctx.setLineDash([3,6]);ctx.beginPath();ctx.ellipse(cx,cy,mR,mR*0.38,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+    // Mars orbit — visible red
+    var mR=Math.min(w,h)*0.38;
+    ctx.strokeStyle='rgba(255,80,30,0.2)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.ellipse(cx,cy,mR,mR*0.35,0,0,Math.PI*2);ctx.stroke();
+    // Orbit label
+    ctx.fillStyle='rgba(255,80,30,0.25)';ctx.font='8px Courier New';
+    ctx.fillText('Mars Orbit · 228M km',cx+mR+6,cy-4);
 
-    // Earth
-    var eAngle=frame*0.006;
-    var ex=cx+Math.cos(eAngle)*eR,ey=cy+Math.sin(eAngle)*eR*0.38;
-    ctx.fillStyle='#4488ff';ctx.beginPath();ctx.arc(ex,ey,8,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(68,136,255,0.12)';ctx.beginPath();ctx.arc(ex,ey,18,0,Math.PI*2);ctx.fill();
+    // === SUN ===
+    var sunG=ctx.createRadialGradient(cx,cy,4,cx,cy,45);
+    sunG.addColorStop(0,'rgba(255,230,100,1)');sunG.addColorStop(0.2,'rgba(255,200,60,0.6)');
+    sunG.addColorStop(0.5,'rgba(255,160,30,0.15)');sunG.addColorStop(1,'rgba(255,120,20,0)');
+    ctx.fillStyle=sunG;ctx.beginPath();ctx.arc(cx,cy,45,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,230,100,0.95)';ctx.beginPath();ctx.arc(cx,cy,10,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='bold 9px Courier New';ctx.textAlign='center';
+    ctx.fillText('\u2600 Sun',cx,cy+24);
+
+    // === EARTH — slow orbit ===
+    var eAngle=frame*0.002; // very slow
+    var ex=cx+Math.cos(eAngle)*eR,ey=cy+Math.sin(eAngle)*eR*0.35;
+    // Earth glow
+    ctx.fillStyle='rgba(60,120,255,0.1)';ctx.beginPath();ctx.arc(ex,ey,20,0,Math.PI*2);ctx.fill();
+    // Earth body
+    ctx.fillStyle='#4488ff';ctx.beginPath();ctx.arc(ex,ey,9,0,Math.PI*2);ctx.fill();
+    // Continent hint
+    ctx.fillStyle='rgba(80,180,80,0.4)';ctx.beginPath();ctx.arc(ex+2,ey-2,4,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='bold 11px Courier New';ctx.textAlign='center';
-    ctx.fillText('\uD83C\uDF0D Earth',ex,ey+24);
+    ctx.fillText('\uD83C\uDF0D Earth',ex,ey+26);
 
-    // Mars
-    var mAngle=frame*0.003+1;
-    var mx=cx+Math.cos(mAngle)*mR,my=cy+Math.sin(mAngle)*mR*0.38;
-    ctx.fillStyle='#ff5014';ctx.beginPath();ctx.arc(mx,my,7,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='rgba(255,80,20,0.1)';ctx.beginPath();ctx.arc(mx,my,16,0,Math.PI*2);ctx.fill();
+    // === MARS — slower orbit ===
+    var mAngle=frame*0.001+1.2;
+    var mx=cx+Math.cos(mAngle)*mR,my=cy+Math.sin(mAngle)*mR*0.35;
+    // Mars glow
+    ctx.fillStyle='rgba(255,60,20,0.08)';ctx.beginPath();ctx.arc(mx,my,18,0,Math.PI*2);ctx.fill();
+    // Mars body
+    ctx.fillStyle='#ff5014';ctx.beginPath();ctx.arc(mx,my,8,0,Math.PI*2);ctx.fill();
+    // Polar cap
+    ctx.fillStyle='rgba(220,220,230,0.3)';ctx.beginPath();ctx.arc(mx,my-5,3,0,Math.PI*2);ctx.fill();
     ctx.fillStyle='rgba(255,255,255,0.8)';ctx.font='bold 11px Courier New';
-    ctx.fillText('\uD83D\uDD34 Mars',mx,my+22);
+    ctx.fillText('\uD83D\uDD34 Mars',mx,my+24);
 
-    // Transfer orbit path
-    var tP=(frame%600)/600;
-    ctx.strokeStyle='rgba(255,200,50,0.5)';ctx.lineWidth=2;ctx.setLineDash([5,5]);
+    // Mars satellites
+    for(var ms=0;ms<3;ms++){
+      var msa=frame*0.008+ms*2.1,msr=14+ms*5;
+      var msx=mx+Math.cos(msa)*msr,msy=my+Math.sin(msa)*msr*0.4;
+      ctx.fillStyle='rgba(200,200,220,0.5)';ctx.fillRect(msx-2,msy-1,4,2);
+      ctx.strokeStyle='rgba(100,150,255,0.2)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.moveTo(msx-5,msy);ctx.lineTo(msx+5,msy);ctx.stroke();
+    }
+
+    // === TRANSFER ORBIT — slow, smooth ===
+    var tP=(frame%1200)/1200; // 20 seconds per cycle at 60fps
+    // Full transfer path (faint)
+    ctx.strokeStyle='rgba(255,200,50,0.08)';ctx.lineWidth=1;
     ctx.beginPath();
-    for(var t=0;t<=tP;t+=0.005){
+    for(var tf=0;tf<=1;tf+=0.005){
+      var tfr=eR+(mR-eR)*tf,tfa=eAngle+Math.PI*tf;
+      var tfx=cx+Math.cos(tfa)*tfr,tfy=cy+Math.sin(tfa)*tfr*0.35;
+      tf===0?ctx.moveTo(tfx,tfy):ctx.lineTo(tfx,tfy);
+    }
+    ctx.stroke();
+    // Active path (bright)
+    ctx.strokeStyle='rgba(255,200,50,0.5)';ctx.lineWidth=2;
+    ctx.beginPath();
+    for(var t=0;t<=tP;t+=0.003){
       var r=eR+(mR-eR)*t,a=eAngle+Math.PI*t;
-      var tx=cx+Math.cos(a)*r,ty=cy+Math.sin(a)*r*0.38;
+      var tx=cx+Math.cos(a)*r,ty=cy+Math.sin(a)*r*0.35;
       t===0?ctx.moveTo(tx,ty):ctx.lineTo(tx,ty);
     }
-    ctx.stroke();ctx.setLineDash([]);
+    ctx.stroke();
 
     // Ship on path
     var sR=eR+(mR-eR)*tP,sA=eAngle+Math.PI*tP;
-    var sx=cx+Math.cos(sA)*sR,sy=cy+Math.sin(sA)*sR*0.38;
-    ctx.fillStyle='#fff';ctx.font='18px serif';ctx.fillText('\uD83D\uDE80',sx-9,sy+6);
+    var sx=cx+Math.cos(sA)*sR,sy=cy+Math.sin(sA)*sR*0.35;
+    // Ship trail
+    ctx.strokeStyle='rgba(255,200,50,0.15)';ctx.lineWidth=1;
+    var trailLen=0.03;
+    ctx.beginPath();
+    for(var tr=Math.max(0,tP-trailLen);tr<=tP;tr+=0.002){
+      var trr=eR+(mR-eR)*tr,tra=eAngle+Math.PI*tr;
+      var trx=cx+Math.cos(tra)*trr,try2=cy+Math.sin(tra)*trr*0.35;
+      tr===Math.max(0,tP-trailLen)?ctx.moveTo(trx,try2):ctx.lineTo(trx,try2);
+    }
+    ctx.stroke();
+    // Ship icon
+    ctx.fillStyle='#fff';ctx.font='16px serif';ctx.textAlign='center';ctx.fillText('\uD83D\uDE80',sx,sy+5);
 
-    // Distance line from ship to Mars
-    ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=0.5;ctx.setLineDash([2,4]);
+    // Distance line ship to Mars
+    ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=0.5;ctx.setLineDash([2,6]);
     ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(mx,my);ctx.stroke();ctx.setLineDash([]);
 
-    // Satellites around Mars
-    for(var si=0;si<4;si++){
-      var sa=frame*0.018+si*1.6,sr=14+si*5;
-      var satx=mx+Math.cos(sa)*sr,saty=my+Math.sin(sa)*sr*0.4;
-      ctx.fillStyle='rgba(200,200,220,0.5)';ctx.fillRect(satx-2,saty-1,4,2);
-      ctx.strokeStyle='rgba(100,150,255,0.25)';ctx.lineWidth=0.5;
-      ctx.beginPath();ctx.moveTo(satx-5,saty);ctx.lineTo(satx+5,saty);ctx.stroke();
-    }
-
-    // === FACTS ON CANVAS ===
-    var months=Math.floor(tP*7*10)/10;
+    // === MISSION DATA PANEL ===
+    var months=(tP*7);
     var kmTraveled=Math.floor(tP*480);
     var kmLeft=480-kmTraveled;
-    var speed=(11.6).toFixed(1);
 
-    // Fact box — top right
-    ctx.fillStyle='rgba(0,0,0,0.6)';ctx.fillRect(w-220,16,204,140);
-    ctx.strokeStyle='rgba(255,80,20,0.3)';ctx.lineWidth=1;ctx.strokeRect(w-220,16,204,140);
+    ctx.fillStyle='rgba(0,0,0,0.65)';ctx.fillRect(w-230,14,216,165);
+    ctx.strokeStyle='rgba(255,80,20,0.25)';ctx.lineWidth=1;ctx.strokeRect(w-230,14,216,165);
 
     ctx.fillStyle='#ff5014';ctx.font='bold 10px Courier New';ctx.textAlign='left';
-    ctx.fillText('MISSION DATA',w-210,34);
+    ctx.fillText('\u25CF LIVE MISSION DATA',w-220,32);
 
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='9px Courier New';
-    ctx.fillText('Time Elapsed',w-210,52);
-    ctx.fillStyle='#fff';ctx.font='bold 16px Courier New';
-    ctx.fillText(months.toFixed(1)+' months',w-210,68);
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
+    ctx.fillText('Time Elapsed',w-220,50);
+    ctx.fillStyle='#fff';ctx.font='bold 18px Courier New';
+    ctx.fillText(months.toFixed(1)+' months',w-220,70);
 
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='9px Courier New';
-    ctx.fillText('Distance Traveled',w-210,86);
-    ctx.fillStyle='#fff';ctx.font='bold 16px Courier New';
-    ctx.fillText(kmTraveled+'M km',w-210,102);
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
+    ctx.fillText('Distance Covered',w-220,90);
+    ctx.fillStyle='#fff';ctx.font='bold 18px Courier New';
+    ctx.fillText(kmTraveled+'M km',w-220,110);
 
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='9px Courier New';
-    ctx.fillText('Remaining',w-210,120);
-    ctx.fillStyle=kmLeft<100?'#ff5014':'#fff';ctx.font='bold 16px Courier New';
-    ctx.fillText(kmLeft+'M km',w-210,136);
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
+    ctx.fillText('Remaining to Mars',w-220,130);
+    ctx.fillStyle=kmLeft<100?'#ff5014':'#fff';ctx.font='bold 18px Courier New';
+    ctx.fillText(kmLeft+'M km',w-220,150);
 
-    ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='9px Courier New';
-    ctx.fillText('Speed: '+speed+' km/s',w-210,152);
+    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px Courier New';
+    ctx.fillText('Cruise Speed: 11.6 km/s \u00b7 41,760 km/h',w-220,172);
 
-    // Bottom labels
-    ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='10px Courier New';ctx.textAlign='left';
-    ctx.fillText('Hohmann Transfer Orbit \u00b7 Elliptical Path',12,h-14);
+    // Bottom info
+    ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px Courier New';ctx.textAlign='left';
+    ctx.fillText('Hohmann Transfer Orbit \u00b7 Elliptical trajectory \u00b7 Minimum energy path',12,h-14);
     ctx.textAlign='right';
     ctx.fillText('Total: 480M km \u00b7 ~7 months \u00b7 Next window: Nov 2026',w-12,h-14);
 
