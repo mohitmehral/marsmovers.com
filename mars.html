@@ -99,9 +99,16 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
 .footer-r a{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
 .footer-r a:hover{color:#ff5014}
 
+.mobile-menu-btn{display:none;background:none;border:none;color:#ff5014;font-size:1.4rem;cursor:pointer;padding:4px 8px}
+.mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,0.95);flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.mobile-nav.open{display:flex}
+.mobile-nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;padding:10px 20px}
+.mobile-nav a:hover{color:#ff5014}
+.mobile-nav .close-btn{position:absolute;top:16px;right:20px;background:none;border:none;color:#ff5014;font-size:1.5rem;cursor:pointer}
 @media(max-width:768px){
   nav{padding:12px 18px}
   .nav-links{display:none}
+  .mobile-menu-btn{display:block}
   .section{padding:56px 18px}
   .facts-grid{grid-template-columns:repeat(2,1fr)}
   .wow-grid{grid-template-columns:1fr}
@@ -123,7 +130,17 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
     <a href="mars.html" style="color:#ff5014">Mars Intel</a>
   </div>
   <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014;font-size:.68rem;letter-spacing:.12em;text-decoration:none">❤️</a>
+  <button class="mobile-menu-btn" onclick="document.getElementById('mobile-nav').classList.add('open')">☰</button>
 </nav>
+
+<div class="mobile-nav" id="mobile-nav">
+  <button class="close-btn" onclick="this.parentElement.classList.remove('open')">✕</button>
+  <a href="/">Home</a>
+  <a href="game.html">Approach Game</a>
+  <a href="landing.html">Landing Game</a>
+  <a href="mars.html" style="color:#ff5014">Mars Intel</a>
+  <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014">❤️ Support</a>
+</div>
 
 <!-- MODULE 2, 3, 4 CONTENT GOES BELOW -->
 
@@ -298,9 +315,11 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
   </div>
   <div class="footer-r">
     <a href="/">Home</a>
-    <a href="game.html">Play</a>
+    <a href="game.html">Approach</a>
+    <a href="landing.html">Landing</a>
     <a href="mars.html">Mars Intel</a>
-    <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener">❤️ Support</a>
+    <a href="mailto:ceo@apnok.com">Contact</a>
+    <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014">❤️ Support</a>
   </div>
 </footer>
 

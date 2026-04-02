@@ -99,7 +99,8 @@ function spawnRock() {
 // === DRAW STARSHIP ===
 function drawStarship() {
   if (ship.inv > 0 && Math.floor(frame / 4) % 2 === 0) return;
-  var sw = 12, sh = 42;
+  var scale = Math.min(W, H) < 500 ? 0.65 : Math.min(W, H) < 800 ? 0.8 : 1.0;
+  var sw = 12 * scale, sh = 42 * scale;
   ctx.save(); ctx.translate(ship.x, ship.y);
   // Fuselage
   ctx.fillStyle = '#d0d0d0';
@@ -179,8 +180,9 @@ function shoot() {
 
 // === HIT CHECK ===
 function hitShip(a) {
+  var hitR = Math.min(W, H) < 500 ? 10 : Math.min(W, H) < 800 ? 13 : 16;
   var dx = ship.x - a.x, dy = ship.y - a.y;
-  return Math.sqrt(dx * dx + dy * dy) < a.r + 16;
+  return Math.sqrt(dx * dx + dy * dy) < a.r + hitR;
 }
 
 // === UPDATE HUD ===
