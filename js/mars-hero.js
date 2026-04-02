@@ -19,8 +19,8 @@
     var isMed = w < 900;
     var shipW = isSmall ? w * 0.1 : isMed ? w * 0.09 : Math.min(w * 0.08, 80);
     var shipX = isSmall ? w * 0.78 : isMed ? w * 0.75 : w * 0.72;
-    var shipTop = h * 0.15;
-    var shipBot = h * 0.88;
+    var shipTop = h * 0.25;
+    var shipBot = h * 0.85;
     var shipH = shipBot - shipTop;
 
     // === MARS SKY ===
@@ -51,10 +51,10 @@
 
     // === STARSHIP — right side, full height ===
     var bodyG = ctx.createLinearGradient(shipX - shipW, 0, shipX + shipW, 0);
-    bodyG.addColorStop(0, '#888890'); bodyG.addColorStop(0.15, '#b0b0b8');
-    bodyG.addColorStop(0.3, '#d0d0d8'); bodyG.addColorStop(0.5, '#e0e0e8');
-    bodyG.addColorStop(0.65, '#c8c8d0'); bodyG.addColorStop(0.85, '#a0a0a8');
-    bodyG.addColorStop(1, '#707078');
+    bodyG.addColorStop(0, '#9a9aa5'); bodyG.addColorStop(0.1, '#c0c0cc');
+    bodyG.addColorStop(0.25, '#dcdce8'); bodyG.addColorStop(0.4, '#eeeef5');
+    bodyG.addColorStop(0.55, '#e8e8f0'); bodyG.addColorStop(0.7, '#d0d0dc');
+    bodyG.addColorStop(0.85, '#b0b0bc'); bodyG.addColorStop(1, '#808090');
 
     ctx.fillStyle = bodyG; ctx.beginPath();
     ctx.moveTo(shipX - shipW, shipBot);
@@ -134,8 +134,8 @@
 
     // Steel reflection
     var refG = ctx.createLinearGradient(shipX - shipW * 0.3, 0, shipX + shipW * 0.1, 0);
-    refG.addColorStop(0, 'rgba(255,255,255,0)'); refG.addColorStop(0.5, 'rgba(255,255,255,0.04)');
-    refG.addColorStop(1, 'rgba(255,255,255,0)');
+    refG.addColorStop(0, 'rgba(255,255,255,0)'); refG.addColorStop(0.4, 'rgba(255,255,255,0.08)');
+    refG.addColorStop(0.6, 'rgba(255,255,255,0.1)'); refG.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = refG; ctx.fillRect(shipX - shipW * 0.3, shipTop + shipH * 0.05, shipW * 0.4, shipH * 0.9);
 
     // Launch tower — left of ship
