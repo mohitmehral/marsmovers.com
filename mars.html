@@ -27,6 +27,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden}
+#page-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(0,0,0,.92);border-bottom:1px solid rgba(255,80,20,.25)}
 .logo{color:#ff5014;font-size:1rem;font-weight:700;letter-spacing:.2em;text-decoration:none;text-transform:uppercase;font-family:'Courier New',monospace}
@@ -44,10 +45,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-sub{font-size:1rem;color:rgba(255,255,255,.6);line-height:1.8;font-weight:300}
 
 /* SECTIONS */
-.section{padding:80px 40px;max-width:1100px;margin:0 auto}
+.section{padding:80px 40px;max-width:1100px;margin:0 auto;position:relative;z-index:1}
 .section-tag{font-size:.58rem;letter-spacing:.35em;text-transform:uppercase;color:#ff5014;margin-bottom:32px;display:block;font-weight:600}
 .section-title{font-size:clamp(1.5rem,3.5vw,2.5rem);font-weight:800;margin-bottom:48px;letter-spacing:-.02em;line-height:1.15}
-.divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin:0}
+.divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin:0;position:relative;z-index:1}
 
 /* FACTS GRID */
 .facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
@@ -67,7 +68,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .wow-src{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-top:8px}
 
 /* JOURNEY */
-.journey-canvas{width:100%;height:520px;border:1px solid rgba(255,255,255,.06);margin-bottom:32px}
+.journey-canvas{width:100%;height:600px;border:1px solid rgba(255,80,20,.1);margin-bottom:32px;background:#020202}
 .journey-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
 .j-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:20px 16px;text-align:center}
 .j-stat-n{font-size:1.3rem;font-weight:800;color:#ff5014;margin-bottom:4px}
@@ -91,7 +92,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nasa-img .caption{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(transparent,rgba(0,0,0,.8));font-size:.6rem;color:rgba(255,255,255,.5);letter-spacing:.1em}
 
 /* FOOTER */
-footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;background:rgba(255,40,0,.03)}
+footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;background:rgba(255,40,0,.03);position:relative;z-index:1}
 .footer-l p{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.9}
 .footer-l a{color:#ff5014;text-decoration:none}
 .footer-r{display:flex;gap:22px}
@@ -105,12 +106,13 @@ footer{padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;j
   .facts-grid{grid-template-columns:repeat(2,1fr)}
   .wow-grid{grid-template-columns:1fr}
   .journey-stats{grid-template-columns:repeat(2,1fr)}
-  .journey-canvas{height:360px}
+  .journey-canvas{height:420px}
   footer{padding:28px 18px;flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
 <body>
+<canvas id="page-bg"></canvas>
 
 <nav>
   <a href="/" class="logo">⬡ Mars Movers</a>
@@ -390,7 +392,26 @@ setInterval(function(){document.getElementById('live-dist').textContent=getMarsD
   draw();
 })();
 
-// Journey animation — slow, clean, visible orbits
+// Page background — animated starfield
+(function(){
+  var c=document.getElementById('page-bg'),ctx=c.getContext('2d');
+  var stars=[];
+  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  for(var i=0;i<200;i++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.2+.2,o:Math.random(),s:Math.random()*.01+.002});
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(function(s){
+      s.o+=s.s;if(s.o>0.5||s.o<0.05)s.s*=-1;
+      ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')';
+      ctx.beginPath();ctx.arc(s.x*c.width,s.y*c.height,s.r,0,Math.PI*2);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Journey animation — ship reaches Mars, bigger, smoother
 (function(){
   var c=document.getElementById('journey-canvas'),ctx=c.getContext('2d');
   function resize(){c.width=c.offsetWidth;c.height=c.offsetHeight;}
