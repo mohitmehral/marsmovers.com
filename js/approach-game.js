@@ -8,7 +8,7 @@ var W, H;
 // === 5 APPROACH ZONES ===
 var LEVELS = [
   { name:'Outer Belt',       desc:'Light debris — warm up',           dur:70,  spawnRate:50, rockSpd:1.0, rockMax:22, sideChance:0.05, ammoRefill:4, speedMult:1.0, bgTint:[0,0,0] },
-  { name:'Dense Field',      desc:'Heavier traffic — stay sharp',     dur:75,  spawnRate:38, rockSpd:1.4, rockMax:26, sideChance:0.10, ammoRefill:3, speedMult:1.3, bgTint:[5,0,0] },
+  { name:'Dense Field',      desc:'Heavier traffic — stay sharp',     dur:65,  spawnRate:38, rockSpd:1.4, rockMax:26, sideChance:0.10, ammoRefill:3, speedMult:1.3, bgTint:[5,0,0] },
   { name:'Debris Storm',     desc:'Fragments everywhere — shoot!',    dur:80,  spawnRate:28, rockSpd:1.8, rockMax:28, sideChance:0.15, ammoRefill:3, speedMult:1.6, bgTint:[10,2,0] },
   { name:'Gravity Well',     desc:'Rocks pulled toward you',          dur:85,  spawnRate:22, rockSpd:2.2, rockMax:30, sideChance:0.20, ammoRefill:2, speedMult:2.0, bgTint:[15,4,2] },
   { name:'Mars Orbit Entry', desc:'Final push — maximum intensity',   dur:90,  spawnRate:16, rockSpd:2.8, rockMax:32, sideChance:0.25, ammoRefill:2, speedMult:2.5, bgTint:[20,6,3] }
@@ -225,8 +225,20 @@ function loop() {
 
   // Stars — speed scales with level
   var starSpeedMult = lv.speedMult;
+  // Speed lines — illusion of forward movement
+  if (starSpeedMult > 1) {
+    var lineCount = Math.floor(starSpeedMult * 4);
+    for (var sl = 0; sl < lineCount; sl++) {
+      var sx = Math.random() * W;
+      var sy = Math.random() * H;
+      var sLen = 3 + starSpeedMult * 8;
+      ctx.strokeStyle = 'rgba(255,255,255,' + (0.03 + starSpeedMult * 0.02).toFixed(2) + ')';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx, sy + sLen); ctx.stroke();
+    }
+  }
   stars.forEach(function(s) {
-    s.y += (s.layer + 1) * 0.15 * starSpeedMult + 0.1;
+    s.y += (s.layer + 1) * 0.2 * starSpeedMult + 0.15;
     if (s.y > H) { s.y = -2; s.x = Math.random() * W; }
     ctx.fillStyle = 'rgba(255,255,255,' + s.o.toFixed(2) + ')';
     ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
