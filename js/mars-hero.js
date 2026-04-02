@@ -17,10 +17,11 @@
     // Responsive ship sizing
     var isSmall = w < 600;
     var isMed = w < 900;
-    var shipW = isSmall ? w * 0.06 : isMed ? w * 0.05 : Math.min(w * 0.045, 50);
-    var shipX = isSmall ? w * 0.72 : isMed ? w * 0.68 : w * 0.65;
-    var shipTop = h * 0.12;
-    var shipBot = h * 0.82;
+    var shipW = isSmall ? w * 0.08 : isMed ? w * 0.07 : Math.min(w * 0.065, 70);
+    var shipX = isSmall ? w * 0.75 : isMed ? w * 0.7 : w * 0.68;
+    var groundY = h * 0.87;
+    var shipBot = groundY;
+    var shipTop = h * 0.08;
     var shipH = shipBot - shipTop;
 
     // === MARS SKY ===
@@ -43,10 +44,10 @@
 
     // Mars terrain at bottom
     ctx.fillStyle = '#2a0e06'; ctx.beginPath(); ctx.moveTo(0, h);
-    for (var t = 0; t <= w; t += 6) ctx.lineTo(t, h * 0.88 + Math.sin(t * 0.008) * 15 + Math.sin(t * 0.003) * 25);
+    for (var t = 0; t <= w; t += 6) ctx.lineTo(t, h * 0.87 + Math.sin(t * 0.008) * 12 + Math.sin(t * 0.003) * 20);
     ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#1a0804'; ctx.beginPath(); ctx.moveTo(0, h);
-    for (var f = 0; f <= w; f += 4) ctx.lineTo(f, h * 0.93 + Math.sin(f * 0.012) * 8 + Math.sin(f * 0.005) * 12);
+    for (var f = 0; f <= w; f += 4) ctx.lineTo(f, h * 0.92 + Math.sin(f * 0.012) * 6 + Math.sin(f * 0.005) * 10);
     ctx.lineTo(w, h); ctx.closePath(); ctx.fill();
 
     // === STARSHIP — right side, full height ===
@@ -96,30 +97,30 @@
 
     // Forward flaps
     var flapY = shipTop + shipH * 0.18;
-    var flapW = isSmall ? 12 : 22;
+    var flapW = isSmall ? 18 : 30;
     ctx.fillStyle = '#909098'; ctx.beginPath();
-    ctx.moveTo(shipX - shipW, flapY); ctx.lineTo(shipX - shipW - flapW, flapY + 10);
-    ctx.lineTo(shipX - shipW - flapW + 3, flapY + 35); ctx.lineTo(shipX - shipW, flapY + 28);
+    ctx.moveTo(shipX - shipW, flapY); ctx.lineTo(shipX - shipW - flapW, flapY + 12);
+    ctx.lineTo(shipX - shipW - flapW + 4, flapY + 45); ctx.lineTo(shipX - shipW, flapY + 35);
     ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#a0a0a8'; ctx.beginPath();
-    ctx.moveTo(shipX + shipW, flapY); ctx.lineTo(shipX + shipW + flapW, flapY + 10);
-    ctx.lineTo(shipX + shipW + flapW - 3, flapY + 35); ctx.lineTo(shipX + shipW, flapY + 28);
+    ctx.moveTo(shipX + shipW, flapY); ctx.lineTo(shipX + shipW + flapW, flapY + 12);
+    ctx.lineTo(shipX + shipW + flapW - 4, flapY + 45); ctx.lineTo(shipX + shipW, flapY + 35);
     ctx.closePath(); ctx.fill();
 
     // Aft fins
     var aftY = shipBot - shipH * 0.15;
-    var aftW = isSmall ? 15 : 28;
+    var aftW = isSmall ? 20 : 38;
     ctx.fillStyle = '#808088'; ctx.beginPath();
-    ctx.moveTo(shipX - shipW, aftY); ctx.lineTo(shipX - shipW - aftW, shipBot + 6);
-    ctx.lineTo(shipX - shipW - aftW + 12, shipBot + 10); ctx.lineTo(shipX - shipW, shipBot);
+    ctx.moveTo(shipX - shipW, aftY); ctx.lineTo(shipX - shipW - aftW, shipBot + 8);
+    ctx.lineTo(shipX - shipW - aftW + 16, shipBot + 12); ctx.lineTo(shipX - shipW, shipBot);
     ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#909098'; ctx.beginPath();
-    ctx.moveTo(shipX + shipW, aftY); ctx.lineTo(shipX + shipW + aftW, shipBot + 6);
-    ctx.lineTo(shipX + shipW + aftW - 12, shipBot + 10); ctx.lineTo(shipX + shipW, shipBot);
+    ctx.moveTo(shipX + shipW, aftY); ctx.lineTo(shipX + shipW + aftW, shipBot + 8);
+    ctx.lineTo(shipX + shipW + aftW - 16, shipBot + 12); ctx.lineTo(shipX + shipW, shipBot);
     ctx.closePath(); ctx.fill();
 
     // Raptor engines
-    var engSize = isSmall ? 4 : 6;
+    var engSize = isSmall ? 5 : 8;
     for (var ei = -1; ei <= 1; ei++) {
       var engX = shipX + ei * shipW * 0.5;
       ctx.fillStyle = '#333'; ctx.beginPath(); ctx.arc(engX, shipBot - 3, engSize, 0, Math.PI); ctx.fill();
@@ -140,8 +141,8 @@
 
     // Launch tower — left of ship
     if (!isSmall) {
-      var towerX = shipX - shipW - (isMed ? 30 : 45);
-      ctx.fillStyle = '#444'; ctx.fillRect(towerX, h * 0.15, 7, h * 0.75);
+      var towerX = shipX - shipW - (isMed ? 35 : 55);
+      ctx.fillStyle = '#444'; ctx.fillRect(towerX, h * 0.12, 9, h * 0.78);
       ctx.strokeStyle = '#555'; ctx.lineWidth = 1;
       for (var tb = h * 0.15; tb < h * 0.9; tb += 40) {
         ctx.beginPath(); ctx.moveTo(towerX, tb); ctx.lineTo(towerX + 10, tb + 20); ctx.stroke();
@@ -153,8 +154,11 @@
       ctx.beginPath(); ctx.arc(towerX + 5, h * 0.08, 3, 0, Math.PI * 2); ctx.fill();
     }
 
-    // Ground pad
-    ctx.fillStyle = '#1a0c0a'; ctx.fillRect(0, h * 0.93, w, h * 0.07);
+    // Ground pad — flat area under ship
+    ctx.fillStyle = '#1a0c0a'; ctx.fillRect(0, h * 0.92, w, h * 0.08);
+    // Pad marking under ship
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    ctx.fillRect(shipX - shipW * 2, groundY - 2, shipW * 4, 3);
 
     // Vapor
     vapor.forEach(function(vp) {
