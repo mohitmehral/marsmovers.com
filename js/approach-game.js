@@ -283,7 +283,7 @@ function loop() {
   // Bullets
   for (var bi = bullets.length - 1; bi >= 0; bi--) {
     var b = bullets[bi]; b.y += b.vy;
-    if (b.y < -10) { bullets.splice(bi, 1); ammo = Math.max(0, ammo - 1); continue; }
+    if (b.y < -10) { bullets.splice(bi, 1); continue; }
     drawBullet(b);
     for (var ri = rocks.length - 1; ri >= 0; ri--) {
       var a = rocks[ri];

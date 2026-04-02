@@ -1,5 +1,4 @@
-// Mars Journey — Cinematic Earth to Mars Animation
-// Milky way background, nebula, visible orbits, 30-second smooth transit
+// Mars Journey — Centered orbits, visible, ship reaches Mars
 (function(){
   var c = document.getElementById('journey-canvas');
   if (!c) return;
@@ -7,298 +6,219 @@
   function resize() { c.width = c.offsetWidth; c.height = c.offsetHeight; }
   resize(); window.addEventListener('resize', resize);
 
-  var frame = 0;
-  var CYCLE = 1800; // 30 seconds at 60fps
-
-  // Pre-generate background elements
-  var bgStars = [], nebula = [];
-  for (var i = 0; i < 500; i++) {
-    bgStars.push({
-      x: Math.random(), y: Math.random(),
-      r: Math.random() * 1.6 + 0.2,
-      base: Math.random(),
-      color: Math.random() > 0.92 ? 'blue' : Math.random() > 0.88 ? 'warm' : 'white'
-    });
-  }
-  for (var n = 0; n < 60; n++) {
-    nebula.push({
-      x: 0.15 + Math.random() * 0.7,
-      y: 0.1 + Math.random() * 0.8,
-      r: Math.random() * 80 + 20,
-      o: Math.random() * 0.025 + 0.005,
-      hue: Math.random() > 0.5 ? 'purple' : 'blue'
-    });
-  }
+  var frame = 0, CYCLE = 1800;
+  var stars = [], neb = [];
+  for (var i = 0; i < 400; i++) stars.push({ x: Math.random(), y: Math.random(), r: Math.random() * 1.4 + 0.2, b: Math.random(), t: Math.random() > 0.92 ? 1 : Math.random() > 0.88 ? 2 : 0 });
+  for (var n = 0; n < 40; n++) neb.push({ x: 0.1 + Math.random() * 0.8, y: 0.1 + Math.random() * 0.8, r: Math.random() * 60 + 20, o: Math.random() * 0.02 + 0.005, p: Math.random() > 0.5 });
 
   function draw() {
     var w = c.width, h = c.height;
     frame++;
-    var tP = (frame % CYCLE) / CYCLE; // 0→1 over 30 seconds
+    var tP = (frame % CYCLE) / CYCLE;
 
-    // === BACKGROUND — deep space + milky way ===
-    var bg = ctx.createRadialGradient(w * 0.4, h * 0.5, 0, w * 0.4, h * 0.5, w * 0.8);
-    bg.addColorStop(0, '#080812'); bg.addColorStop(0.4, '#040408'); bg.addColorStop(1, '#010102');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+    // === BACKGROUND ===
+    ctx.fillStyle = '#040408'; ctx.fillRect(0, 0, w, h);
 
-    // Milky way band — diagonal glow
-    ctx.save();
-    ctx.translate(w * 0.5, h * 0.5); ctx.rotate(-0.35);
+    // Milky way
+    ctx.save(); ctx.translate(w * 0.5, h * 0.5); ctx.rotate(-0.3);
     var mw = ctx.createLinearGradient(-w * 0.7, 0, w * 0.7, 0);
-    mw.addColorStop(0, 'rgba(0,0,0,0)'); mw.addColorStop(0.25, 'rgba(50,40,70,0.035)');
-    mw.addColorStop(0.45, 'rgba(70,60,100,0.06)'); mw.addColorStop(0.55, 'rgba(80,70,110,0.07)');
-    mw.addColorStop(0.75, 'rgba(50,40,70,0.035)'); mw.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = mw; ctx.fillRect(-w * 0.8, -h * 0.18, w * 1.6, h * 0.36);
-    ctx.restore();
+    mw.addColorStop(0, 'rgba(0,0,0,0)'); mw.addColorStop(0.35, 'rgba(50,40,80,0.04)');
+    mw.addColorStop(0.5, 'rgba(70,60,110,0.06)'); mw.addColorStop(0.65, 'rgba(50,40,80,0.04)');
+    mw.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = mw; ctx.fillRect(-w, -h * 0.2, w * 2, h * 0.4); ctx.restore();
 
-    // Nebula clouds
-    nebula.forEach(function(np) {
-      var col = np.hue === 'purple' ? 'rgba(80,40,120,' : 'rgba(40,60,130,';
-      ctx.fillStyle = col + np.o + ')';
+    neb.forEach(function(np) {
+      ctx.fillStyle = (np.p ? 'rgba(70,35,120,' : 'rgba(35,55,130,') + np.o + ')';
       ctx.beginPath(); ctx.arc(np.x * w, np.y * h, np.r, 0, Math.PI * 2); ctx.fill();
     });
 
-    // Stars — twinkling, some colored, bright ones get cross-shine
-    bgStars.forEach(function(s) {
-      var twinkle = 0.25 + Math.sin(frame * 0.015 + s.base * 200) * 0.25;
-      var col;
-      if (s.color === 'blue') col = 'rgba(150,180,255,';
-      else if (s.color === 'warm') col = 'rgba(255,210,170,';
-      else col = 'rgba(255,255,255,';
-      ctx.fillStyle = col + twinkle.toFixed(2) + ')';
+    stars.forEach(function(s) {
+      var tw = 0.2 + Math.sin(frame * 0.012 + s.b * 200) * 0.2;
+      var cl = s.t === 1 ? 'rgba(140,170,255,' : s.t === 2 ? 'rgba(255,210,170,' : 'rgba(255,255,255,';
+      ctx.fillStyle = cl + tw.toFixed(2) + ')';
       ctx.beginPath(); ctx.arc(s.x * w, s.y * h, s.r, 0, Math.PI * 2); ctx.fill();
-      if (s.r > 1.4) {
-        ctx.strokeStyle = col + (twinkle * 0.25).toFixed(2) + ')';
-        ctx.lineWidth = 0.4;
-        ctx.beginPath(); ctx.moveTo(s.x * w - 5, s.y * h); ctx.lineTo(s.x * w + 5, s.y * h); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(s.x * w, s.y * h - 5); ctx.lineTo(s.x * w, s.y * h + 5); ctx.stroke();
-      }
     });
 
-    // === SOLAR SYSTEM ===
-    var cx = w * 0.38, cy = h * 0.48;
-    var eR = Math.min(w, h) * 0.22;
-    var mR = Math.min(w, h) * 0.43;
+    // === CENTERED SOLAR SYSTEM ===
+    var cx = w * 0.5, cy = h * 0.5;
+    var scale = Math.min(w, h);
+    var eR = scale * 0.18;       // Earth orbit radius
+    var mR = scale * 0.38;       // Mars orbit radius
+    var FLAT = 0.55;              // Ellipse ratio — rounder than before
 
-    // Orbit rings — glowing
-    // Earth orbit
-    ctx.strokeStyle = 'rgba(80,140,255,0.12)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.ellipse(cx, cy, eR, eR * 0.38, 0, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = 'rgba(80,140,255,0.04)'; ctx.lineWidth = 6;
-    ctx.beginPath(); ctx.ellipse(cx, cy, eR, eR * 0.38, 0, 0, Math.PI * 2); ctx.stroke();
-    // Earth orbit label
-    ctx.fillStyle = 'rgba(80,140,255,0.2)'; ctx.font = '10px Courier New'; ctx.textAlign = 'left';
-    ctx.fillText('Earth Orbit · 150M km', cx + eR * 0.7, cy - eR * 0.32);
+    // === ORBIT RINGS — bright, clearly visible ===
+    // Earth orbit — blue
+    ctx.strokeStyle = 'rgba(70,140,255,0.08)'; ctx.lineWidth = 12;
+    ctx.beginPath(); ctx.ellipse(cx, cy, eR, eR * FLAT, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(70,140,255,0.3)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.ellipse(cx, cy, eR, eR * FLAT, 0, 0, Math.PI * 2); ctx.stroke();
 
-    // Mars orbit
-    ctx.strokeStyle = 'rgba(255,90,40,0.12)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.ellipse(cx, cy, mR, mR * 0.38, 0, 0, Math.PI * 2); ctx.stroke();
-    ctx.strokeStyle = 'rgba(255,90,40,0.04)'; ctx.lineWidth = 6;
-    ctx.beginPath(); ctx.ellipse(cx, cy, mR, mR * 0.38, 0, 0, Math.PI * 2); ctx.stroke();
-    ctx.fillStyle = 'rgba(255,90,40,0.2)'; ctx.font = '10px Courier New';
-    ctx.fillText('Mars Orbit · 228M km', cx + mR * 0.65, cy - mR * 0.33);
+    // Mars orbit — red
+    ctx.strokeStyle = 'rgba(255,80,30,0.06)'; ctx.lineWidth = 12;
+    ctx.beginPath(); ctx.ellipse(cx, cy, mR, mR * FLAT, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,80,30,0.28)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.ellipse(cx, cy, mR, mR * FLAT, 0, 0, Math.PI * 2); ctx.stroke();
 
-    // === SUN ===
-    var sunG = ctx.createRadialGradient(cx, cy, 2, cx, cy, 55);
-    sunG.addColorStop(0, 'rgba(255,240,120,1)'); sunG.addColorStop(0.1, 'rgba(255,210,70,0.7)');
-    sunG.addColorStop(0.3, 'rgba(255,170,40,0.15)'); sunG.addColorStop(1, 'rgba(255,120,20,0)');
-    ctx.fillStyle = sunG; ctx.beginPath(); ctx.arc(cx, cy, 55, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#ffe880'; ctx.beginPath(); ctx.arc(cx, cy, 10, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = 'bold 11px Courier New'; ctx.textAlign = 'center';
-    ctx.fillText('☀ Sun', cx, cy + 26);
+    // Orbit distance labels — on the rings
+    ctx.fillStyle = 'rgba(70,140,255,0.4)'; ctx.font = 'bold 10px Courier New'; ctx.textAlign = 'center';
+    ctx.fillText('Earth Orbit · 150M km', cx, cy + eR * FLAT + 16);
+    ctx.fillStyle = 'rgba(255,80,30,0.4)';
+    ctx.fillText('Mars Orbit · 228M km', cx, cy + mR * FLAT + 16);
 
-    // === EARTH ===
-    var eAngle = frame * 0.0012;
-    var ex = cx + Math.cos(eAngle) * eR, ey = cy + Math.sin(eAngle) * eR * 0.38;
-    // Glow
-    ctx.fillStyle = 'rgba(60,130,255,0.08)'; ctx.beginPath(); ctx.arc(ex, ey, 28, 0, Math.PI * 2); ctx.fill();
-    // Planet
-    ctx.fillStyle = '#3377ee'; ctx.beginPath(); ctx.arc(ex, ey, 12, 0, Math.PI * 2); ctx.fill();
-    // Continents
-    ctx.fillStyle = 'rgba(60,180,60,0.35)'; ctx.beginPath(); ctx.arc(ex + 3, ey - 3, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = 'rgba(60,160,60,0.25)'; ctx.beginPath(); ctx.arc(ex - 4, ey + 2, 3, 0, Math.PI * 2); ctx.fill();
-    // Ice caps
-    ctx.fillStyle = 'rgba(220,230,255,0.3)'; ctx.beginPath(); ctx.arc(ex, ey - 10, 4, 0, Math.PI * 2); ctx.fill();
-    // Label
-    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = 'bold 13px Courier New'; ctx.textAlign = 'center';
-    ctx.fillText('🌍 Earth', ex, ey + 30);
+    // === SUN — center ===
+    var sg = ctx.createRadialGradient(cx, cy, 2, cx, cy, 45);
+    sg.addColorStop(0, 'rgba(255,240,120,1)'); sg.addColorStop(0.12, 'rgba(255,210,70,0.5)');
+    sg.addColorStop(0.4, 'rgba(255,170,40,0.1)'); sg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(cx, cy, 45, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#ffe880'; ctx.beginPath(); ctx.arc(cx, cy, 9, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,0.6)'; ctx.font = 'bold 11px Courier New';
+    ctx.fillText('Sun', cx, cy + 22);
 
-    // === MARS ===
-    var mAngle = frame * 0.0006 + 1.8;
-    var mx = cx + Math.cos(mAngle) * mR, my = cy + Math.sin(mAngle) * mR * 0.38;
-    // Glow
-    ctx.fillStyle = 'rgba(255,70,20,0.06)'; ctx.beginPath(); ctx.arc(mx, my, 26, 0, Math.PI * 2); ctx.fill();
-    // Planet
-    ctx.fillStyle = '#e84420'; ctx.beginPath(); ctx.arc(mx, my, 11, 0, Math.PI * 2); ctx.fill();
-    // Dark features
-    ctx.fillStyle = 'rgba(100,30,10,0.3)'; ctx.beginPath(); ctx.arc(mx + 3, my + 2, 4, 0, Math.PI * 2); ctx.fill();
-    // Polar cap
-    ctx.fillStyle = 'rgba(220,225,235,0.3)'; ctx.beginPath(); ctx.arc(mx, my - 8, 4, 0, Math.PI * 2); ctx.fill();
-    // Label
-    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = 'bold 13px Courier New';
-    ctx.fillText('🔴 Mars', mx, my + 28);
+    // === EARTH — fixed position on left of orbit ===
+    var eAng = Math.PI * 0.85;
+    var ex = cx + Math.cos(eAng) * eR, ey = cy + Math.sin(eAng) * eR * FLAT;
 
-    // Satellites orbiting Mars
-    for (var si = 0; si < 4; si++) {
-      var sa = frame * 0.005 + si * 1.6, sr = 18 + si * 6;
+    ctx.fillStyle = 'rgba(60,130,255,0.1)'; ctx.beginPath(); ctx.arc(ex, ey, 26, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#3377ee'; ctx.beginPath(); ctx.arc(ex, ey, 14, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(50,180,50,0.35)'; ctx.beginPath(); ctx.arc(ex + 3, ey - 3, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(220,230,255,0.3)'; ctx.beginPath(); ctx.arc(ex, ey - 11, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Courier New';
+    ctx.fillText('\uD83C\uDF0D Earth', ex, ey + 32);
+
+    // === MARS — fixed position on right of orbit ===
+    var mAng = -Math.PI * 0.15;
+    var mx = cx + Math.cos(mAng) * mR, my = cy + Math.sin(mAng) * mR * FLAT;
+
+    ctx.fillStyle = 'rgba(255,60,20,0.08)'; ctx.beginPath(); ctx.arc(mx, my, 24, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#e84420'; ctx.beginPath(); ctx.arc(mx, my, 13, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(100,30,10,0.3)'; ctx.beginPath(); ctx.arc(mx + 4, my + 2, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = 'rgba(220,225,235,0.3)'; ctx.beginPath(); ctx.arc(mx, my - 10, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 14px Courier New';
+    ctx.fillText('\uD83D\uDD34 Mars', mx, my + 30);
+
+    // Mars satellites
+    for (var si = 0; si < 3; si++) {
+      var sa = frame * 0.005 + si * 2.1, sr = 20 + si * 6;
       var satx = mx + Math.cos(sa) * sr, saty = my + Math.sin(sa) * sr * 0.4;
       ctx.fillStyle = 'rgba(200,210,230,0.5)'; ctx.fillRect(satx - 2, saty - 1, 4, 2);
-      ctx.strokeStyle = 'rgba(100,160,255,0.2)'; ctx.lineWidth = 0.5;
-      ctx.beginPath(); ctx.moveTo(satx - 6, saty); ctx.lineTo(satx + 6, saty); ctx.stroke();
     }
 
-    // === TRANSFER ORBIT — ship travels Earth → Mars ===
-    var launchA = eAngle - tP * Math.PI * 0.25;
+    // Launch label
+    if (tP < 0.08) {
+      ctx.fillStyle = 'rgba(100,200,255,' + (0.7 - tP * 8).toFixed(2) + ')';
+      ctx.font = 'bold 11px Courier New';
+      ctx.fillText('\u25B2 LAUNCH', ex, ey - 28);
+    }
+    // Arrival label
+    if (tP > 0.88) {
+      ctx.fillStyle = 'rgba(255,200,50,' + ((tP - 0.88) / 0.12 * 0.8).toFixed(2) + ')';
+      ctx.font = 'bold 12px Courier New';
+      ctx.fillText('\u2605 ARRIVING', mx, my - 26);
+    }
 
-    // Ghost path (full trajectory, always visible)
-    ctx.strokeStyle = 'rgba(255,200,60,0.05)'; ctx.lineWidth = 1.5;
+    // === BEZIER PATH — Earth to Mars exactly ===
+    var cpx = cx + (mx - ex) * 0.4 - (ey - my) * 0.5;
+    var cpy = cy - scale * 0.22;
+
+    function pathAt(t) {
+      var u = 1 - t;
+      return { x: u * u * ex + 2 * u * t * cpx + t * t * mx, y: u * u * ey + 2 * u * t * cpy + t * t * my };
+    }
+
+    // Ghost path — full trajectory
+    ctx.strokeStyle = 'rgba(255,200,60,0.07)'; ctx.lineWidth = 2;
     ctx.beginPath();
-    for (var g = 0; g <= 1; g += 0.004) {
-      var gr = eR + (mR - eR) * g, ga = launchA + Math.PI * g;
-      var gx = cx + Math.cos(ga) * gr, gy2 = cy + Math.sin(ga) * gr * 0.38;
-      g === 0 ? ctx.moveTo(gx, gy2) : ctx.lineTo(gx, gy2);
-    }
+    for (var g = 0; g <= 1; g += 0.004) { var gp = pathAt(g); g === 0 ? ctx.moveTo(gp.x, gp.y) : ctx.lineTo(gp.x, gp.y); }
     ctx.stroke();
 
-    // Active path — bright golden line
-    ctx.strokeStyle = 'rgba(255,210,70,0.5)'; ctx.lineWidth = 3;
-    ctx.shadowColor = 'rgba(255,200,50,0.3)'; ctx.shadowBlur = 8;
+    // Active path — bright
+    ctx.strokeStyle = 'rgba(255,210,70,0.55)'; ctx.lineWidth = 3;
+    ctx.shadowColor = 'rgba(255,200,50,0.3)'; ctx.shadowBlur = 10;
     ctx.beginPath();
-    for (var t = 0; t <= tP; t += 0.002) {
-      var tr = eR + (mR - eR) * t, ta = launchA + Math.PI * t;
-      var tx = cx + Math.cos(ta) * tr, ty = cy + Math.sin(ta) * tr * 0.38;
-      t === 0 ? ctx.moveTo(tx, ty) : ctx.lineTo(tx, ty);
-    }
-    ctx.stroke();
-    ctx.shadowBlur = 0;
+    for (var t = 0; t <= tP; t += 0.003) { var tp = pathAt(t); t === 0 ? ctx.moveTo(tp.x, tp.y) : ctx.lineTo(tp.x, tp.y); }
+    ctx.stroke(); ctx.shadowBlur = 0;
 
-    // Ship position on path
-    var shipR = eR + (mR - eR) * tP;
-    var shipA = launchA + Math.PI * tP;
-    var sx = cx + Math.cos(shipA) * shipR, sy = cy + Math.sin(shipA) * shipR * 0.38;
+    // Ship position
+    var sp = pathAt(tP);
+    var spN = pathAt(Math.min(1, tP + 0.01));
+    var ang = Math.atan2(spN.y - sp.y, spN.x - sp.x) + Math.PI / 2;
 
-    // Engine trail — fading glow behind ship
-    for (var tr = 0; tr < 8; tr++) {
-      var trT = Math.max(0, tP - tr * 0.006);
-      var trR = eR + (mR - eR) * trT, trA = launchA + Math.PI * trT;
-      var trx = cx + Math.cos(trA) * trR, try2 = cy + Math.sin(trA) * trR * 0.38;
-      var trAlpha = (1 - tr / 8) * 0.3;
-      ctx.fillStyle = 'rgba(255,200,50,' + trAlpha.toFixed(2) + ')';
-      ctx.beginPath(); ctx.arc(trx, try2, 3 - tr * 0.3, 0, Math.PI * 2); ctx.fill();
+    // Engine trail
+    for (var tr = 0; tr < 12; tr++) {
+      var trP = pathAt(Math.max(0, tP - tr * 0.007));
+      ctx.fillStyle = 'rgba(255,200,50,' + ((1 - tr / 12) * 0.3).toFixed(2) + ')';
+      ctx.beginPath(); ctx.arc(trP.x, trP.y, Math.max(0.5, 4 - tr * 0.3), 0, Math.PI * 2); ctx.fill();
     }
 
-    // Ship — drawn rocket instead of emoji for clarity
-    ctx.save(); ctx.translate(sx, sy);
-    // Body
+    // Ship — rotated along path
+    ctx.save(); ctx.translate(sp.x, sp.y); ctx.rotate(ang);
     ctx.fillStyle = '#ddd';
-    ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(5, 6); ctx.lineTo(-5, 6); ctx.closePath(); ctx.fill();
-    // Nose
+    ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(7, 10); ctx.lineTo(-7, 10); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#ff5014';
-    ctx.beginPath(); ctx.moveTo(-3, -8); ctx.quadraticCurveTo(0, -16, 3, -8); ctx.fill();
-    // Window
-    ctx.fillStyle = 'rgba(100,200,255,0.8)'; ctx.beginPath(); ctx.arc(0, -4, 1.5, 0, Math.PI * 2); ctx.fill();
-    // Flame
-    var fl = 4 + Math.random() * 5;
+    ctx.beginPath(); ctx.moveTo(-4, -12); ctx.quadraticCurveTo(0, -22, 4, -12); ctx.fill();
+    ctx.fillStyle = 'rgba(100,200,255,0.8)'; ctx.beginPath(); ctx.arc(0, -5, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#999';
+    ctx.beginPath(); ctx.moveTo(-7, 8); ctx.lineTo(-11, 13); ctx.lineTo(-7, 10); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(7, 8); ctx.lineTo(11, 13); ctx.lineTo(7, 10); ctx.fill();
+    var fl = 6 + Math.random() * 8;
     ctx.fillStyle = 'rgba(255,200,50,0.9)';
-    ctx.beginPath(); ctx.moveTo(-3, 6); ctx.lineTo(3, 6); ctx.lineTo(0, 6 + fl); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-5, 10); ctx.lineTo(5, 10); ctx.lineTo(0, 10 + fl); ctx.closePath(); ctx.fill();
     ctx.restore();
 
-    // Distance line to Mars (fades as ship approaches)
-    var dist = Math.sqrt((sx - mx) * (sx - mx) + (sy - my) * (sy - my));
-    if (dist > 25) {
-      var lineAlpha = Math.min(0.1, dist / 1000);
-      ctx.strokeStyle = 'rgba(255,255,255,' + lineAlpha.toFixed(3) + ')';
-      ctx.lineWidth = 0.5; ctx.setLineDash([3, 8]);
-      ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(mx, my); ctx.stroke();
-      ctx.setLineDash([]);
-    }
-
-    // === ARRIVAL EFFECT ===
-    if (tP > 0.9) {
-      var arrivalT = (tP - 0.9) / 0.1;
-      // Golden pulse around Mars
-      ctx.strokeStyle = 'rgba(255,200,50,' + (arrivalT * 0.3).toFixed(2) + ')';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(mx, my, 20 + arrivalT * 25, 0, Math.PI * 2); ctx.stroke();
-      // Inner glow
-      ctx.fillStyle = 'rgba(255,200,50,' + (arrivalT * 0.08).toFixed(2) + ')';
-      ctx.beginPath(); ctx.arc(mx, my, 30 + arrivalT * 15, 0, Math.PI * 2); ctx.fill();
-    }
-    if (tP > 0.97) {
-      // "ARRIVED" flash
-      ctx.fillStyle = 'rgba(255,220,80,' + ((tP - 0.97) / 0.03 * 0.12).toFixed(2) + ')';
-      ctx.beginPath(); ctx.arc(mx, my, 50, 0, Math.PI * 2); ctx.fill();
-    }
-
-    // === MONTH MARKERS along path ===
+    // Month markers
     for (var m = 1; m <= 6; m++) {
-      var mT = m / 7;
-      var mmR = eR + (mR - eR) * mT, mmA = launchA + Math.PI * mT;
-      var mmx = cx + Math.cos(mmA) * mmR, mmy = cy + Math.sin(mmA) * mmR * 0.38;
-      if (mT < tP) {
-        ctx.fillStyle = 'rgba(255,200,50,0.25)';
-        ctx.beginPath(); ctx.arc(mmx, mmy, 2, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = '8px Courier New'; ctx.textAlign = 'center';
-        ctx.fillText(m + 'mo', mmx, mmy - 8);
+      var mp = pathAt(m / 7);
+      ctx.fillStyle = m / 7 <= tP ? 'rgba(255,200,50,0.4)' : 'rgba(255,255,255,0.07)';
+      ctx.beginPath(); ctx.arc(mp.x, mp.y, m / 7 <= tP ? 3 : 1.5, 0, Math.PI * 2); ctx.fill();
+      if (m / 7 <= tP) {
+        ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '9px Courier New'; ctx.textAlign = 'center';
+        ctx.fillText(m + ' mo', mp.x, mp.y - 10);
       }
     }
 
-    // === MISSION DATA PANEL ===
-    var months = tP * 7;
-    var kmDone = Math.floor(tP * 480);
-    var kmLeft = 480 - kmDone;
-    var pW = 240, pH = 200;
-
-    ctx.fillStyle = 'rgba(0,0,0,0.75)';
-    ctx.fillRect(w - pW - 16, 16, pW, pH);
-    ctx.strokeStyle = 'rgba(255,80,20,0.2)'; ctx.lineWidth = 1;
-    ctx.strokeRect(w - pW - 16, 16, pW, pH);
-
-    var px = w - pW - 6;
-    ctx.fillStyle = '#ff5014'; ctx.font = 'bold 11px Courier New'; ctx.textAlign = 'left';
-    ctx.fillText('● LIVE MISSION DATA', px, 36);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '9px Courier New';
-    ctx.fillText('Time Elapsed', px, 56);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 22px Courier New';
-    ctx.fillText(months.toFixed(1) + ' months', px, 80);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '9px Courier New';
-    ctx.fillText('Distance Covered', px, 100);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 22px Courier New';
-    ctx.fillText(kmDone + 'M km', px, 124);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '9px Courier New';
-    ctx.fillText('Remaining to Mars', px, 144);
-    ctx.fillStyle = kmLeft < 60 ? '#ff5014' : '#fff'; ctx.font = 'bold 22px Courier New';
-    ctx.fillText(kmLeft + 'M km', px, 168);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '9px Courier New';
-    ctx.fillText('Speed: 11.6 km/s · 41,760 km/h', px, 190);
-
-    // Progress bar inside panel
-    ctx.fillStyle = 'rgba(255,255,255,0.06)';
-    ctx.fillRect(px, 198, pW - 20, 4);
-    ctx.fillStyle = '#ff5014';
-    ctx.fillRect(px, 198, (pW - 20) * tP, 4);
-
-    // === STATUS TEXT ===
-    ctx.textAlign = 'center';
-    if (tP < 0.04) {
-      ctx.fillStyle = 'rgba(100,200,255,0.7)'; ctx.font = 'bold 14px Courier New';
-      ctx.fillText('▲ LAUNCH FROM EARTH', w / 2, h - 36);
-    } else if (tP > 0.93) {
-      ctx.fillStyle = 'rgba(255,120,50,0.9)'; ctx.font = 'bold 16px Courier New';
-      ctx.fillText('★ ARRIVING AT MARS ★', w / 2, h - 36);
-    } else {
-      ctx.fillStyle = 'rgba(255,200,50,0.3)'; ctx.font = '11px Courier New';
-      ctx.fillText('In transit · Hohmann Transfer Orbit · Minimum energy path', w / 2, h - 36);
+    // Arrival effect
+    if (tP > 0.88) {
+      var aT = (tP - 0.88) / 0.12;
+      ctx.strokeStyle = 'rgba(255,200,50,' + (aT * 0.4).toFixed(2) + ')'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(mx, my, 22 + aT * 30, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = 'rgba(255,200,50,' + (aT * 0.06).toFixed(2) + ')';
+      ctx.beginPath(); ctx.arc(mx, my, 35 + aT * 20, 0, Math.PI * 2); ctx.fill();
     }
 
-    // Bottom info
-    ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = '9px Courier New'; ctx.textAlign = 'left';
-    ctx.fillText('Earth → Mars · Elliptical Transfer', 14, h - 12);
-    ctx.textAlign = 'right';
-    ctx.fillText('480M km · 7 months · Next window: Nov 2026', w - 14, h - 12);
+    // === DATA PANEL ===
+    var mo = tP * 7, kmD = Math.floor(tP * 480), kmL = 480 - kmD;
+    var pW = 220, pH = 200, px = w - pW - 12;
+    ctx.fillStyle = 'rgba(0,0,0,0.8)'; ctx.fillRect(px - 6, 12, pW, pH);
+    ctx.strokeStyle = 'rgba(255,80,20,0.15)'; ctx.lineWidth = 1; ctx.strokeRect(px - 6, 12, pW, pH);
+
+    ctx.fillStyle = '#ff5014'; ctx.font = 'bold 10px Courier New'; ctx.textAlign = 'left';
+    ctx.fillText('\u25CF MISSION DATA', px, 30);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '8px Courier New'; ctx.fillText('Time', px, 48);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 22px Courier New'; ctx.fillText(mo.toFixed(1) + ' months', px, 70);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '8px Courier New'; ctx.fillText('Covered', px, 88);
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 22px Courier New'; ctx.fillText(kmD + 'M km', px, 110);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '8px Courier New'; ctx.fillText('Remaining', px, 128);
+    ctx.fillStyle = kmL < 60 ? '#ff5014' : '#fff'; ctx.font = 'bold 22px Courier New'; ctx.fillText(kmL + 'M km', px, 150);
+
+    ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '8px Courier New';
+    ctx.fillText('Speed: 11.6 km/s', px, 170);
+    ctx.fillText('41,760 km/h', px, 182);
+
+    // Progress bar
+    ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fillRect(px, 192, pW - 18, 4);
+    ctx.fillStyle = '#ff5014'; ctx.fillRect(px, 192, (pW - 18) * tP, 4);
+
+    // Status
+    ctx.textAlign = 'center';
+    if (tP < 0.05) { ctx.fillStyle = 'rgba(100,200,255,0.8)'; ctx.font = 'bold 14px Courier New'; ctx.fillText('\u25B2 LAUNCH FROM EARTH', w / 2, h - 30); }
+    else if (tP > 0.92) { ctx.fillStyle = 'rgba(255,120,50,0.9)'; ctx.font = 'bold 16px Courier New'; ctx.fillText('\u2605 ARRIVING AT MARS \u2605', w / 2, h - 30); }
+    else { ctx.fillStyle = 'rgba(255,200,50,0.3)'; ctx.font = '11px Courier New'; ctx.fillText('In transit \u00b7 ' + kmD + 'M of 480M km', w / 2, h - 30); }
+
+    ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.font = '9px Courier New'; ctx.textAlign = 'left';
+    ctx.fillText('Hohmann Transfer \u00b7 ~7 months \u00b7 Next window: Nov 2026', 14, h - 10);
 
     requestAnimationFrame(draw);
   }

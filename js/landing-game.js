@@ -115,9 +115,11 @@ function create() {
   padMarkerL = scene.add.rectangle(padX - z.padW/2 - 5, pad.y - 8, 4, 16, 0x00ff88).setDepth(3);
   padMarkerR = scene.add.rectangle(padX + z.padW/2 + 5, pad.y - 8, 4, 16, 0x00ff88).setDepth(3);
 
-  // Ship — Starship-style lander (bigger, cylindrical, fins)
+  // Ship — Starship-style lander, responsive size
   ship = scene.add.container(W / 2, 60);
   ship.setDepth(5);
+  var shipScale = Math.min(W, H) < 500 ? 0.6 : Math.min(W, H) < 800 ? 0.8 : 1.0;
+  ship.setScale(shipScale);
 
   var body = scene.add.graphics();
   // Main fuselage — tall rounded rectangle
@@ -190,6 +192,8 @@ function generateTerrain(scene) {
 
   var z = getZone(gameState.level);
   var groundY = H * 0.78;
+  // Reduce roughness on small screens
+  var screenFactor = Math.min(W, H) < 500 ? 0.5 : Math.min(W, H) < 800 ? 0.75 : 1.0;
   var points = [];
   var segments = 40;
   var segW = W / segments;
@@ -200,7 +204,7 @@ function generateTerrain(scene) {
 
   for (var i = 0; i <= segments; i++) {
     var x = i * segW;
-    var variation = (Math.sin(i*0.5)*30 + Math.sin(i*1.3)*15 + Math.random()*20) * r;
+    var variation = (Math.sin(i*0.5)*30 + Math.sin(i*1.3)*15 + Math.random()*20) * r * screenFactor;
     var y = groundY + variation;
     points.push({ x: x, y: y });
   }
@@ -432,7 +436,8 @@ function update(time, delta) {
   if (ship.x > W + 20) ship.x = -20;
 
   // Update HUD
-  var alt = Math.max(0, getTerrainY(ship.x) - ship.y - 30);
+  var altH = 30 * (ship.scaleX || 1);
+  var alt = Math.max(0, getTerrainY(ship.x) - ship.y - altH);
   document.getElementById('h-alt').textContent = Math.floor(alt) + 'm';
   document.getElementById('h-vspd').textContent = gameState.vy.toFixed(1);
   document.getElementById('h-hspd').textContent = Math.abs(gameState.vx).toFixed(1);
@@ -525,7 +530,8 @@ function update(time, delta) {
 
   // Check landing / crash
   var terrainY = getTerrainY(ship.x);
-  var shipBottom = ship.y + 30;
+  var shipH = 30 * (ship.scaleX || 1);
+  var shipBottom = ship.y + shipH;
 
   if (shipBottom >= terrainY) {
     var onPad = Math.abs(ship.x - pad.x) < 40;
@@ -535,7 +541,7 @@ function update(time, delta) {
 
     if (onPad && absVy < GOOD_VSPD && absAngle < GOOD_ANGLE) {
       gameState.landed = true;
-      ship.y = terrainY - 30;
+      ship.y = terrainY - shipH;
       // Advance level on success
       if (gameState.level < 5) {
         gameState.level++;
