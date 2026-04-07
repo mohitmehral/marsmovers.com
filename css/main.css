@@ -104,23 +104,16 @@ button { font-family: inherit; cursor: pointer; }
 .why-source { font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); margin-top: 16px; }
 
 /* SERVICES */
-.services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 64px; }
-.service-card { background: rgba(0,0,0,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); padding: 24px 22px; transition: all 0.3s var(--ease); position: relative; border-radius: 4px; }
-.service-card:hover { border-color: rgba(255,80,20,0.4); transform: translateY(-3px); background: rgba(0,0,0,0.55); }
-.service-num { font-size: 1.8rem; font-weight: 800; color: rgba(255,80,20,0.2); line-height: 1; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
-.service-card h3 { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; margin-bottom: 8px; }
-.service-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 12px; }
-.service-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.service-tag { font-size: 0.48rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid rgba(255,80,20,0.2); color: var(--primary); border-radius: 2px; }
+.services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 24px; }
+.service-card { background: var(--bg-card); border: 1px solid var(--border); padding: 32px 28px; transition: all 0.3s var(--ease); position: relative; }
+.service-card:hover { border-color: var(--border-accent); transform: translateY(-3px); }
+.service-num { font-size: 2rem; font-weight: 800; color: rgba(255,80,20,0.15); line-height: 1; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+.service-card h3 { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 8px; }
+.service-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 14px; }
+.service-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.service-tag { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border-accent); color: var(--primary); }
 
 /* TECH ARCHITECTURE */
-.tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 64px; }
-.tech-card { background: var(--bg-card); border: 1px solid var(--border); padding: 32px 24px; text-align: center; transition: all 0.3s; }
-.tech-card:hover { border-color: var(--border-accent); }
-.tech-icon { font-size: 2.4rem; margin-bottom: 16px; }
-.tech-card h4 { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-.tech-card p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
-.tech-spec { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-top: 12px; }
 
 /* STATS */
 .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-top: 64px; }
@@ -185,7 +178,7 @@ button { font-family: inherit; cursor: pointer; }
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .why-grid, .invest-grid { grid-template-columns: repeat(2, 1fr); }
-  .tech-grid, .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
@@ -200,7 +193,7 @@ button { font-family: inherit; cursor: pointer; }
   .hero-content { padding-top: 80px; }
   .section { padding: 80px 20px; }
   .why-grid, .services-grid, .invest-grid { grid-template-columns: 1fr; }
-  .tech-grid, .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-actions { flex-direction: column; }
   .btn-primary, .btn-outline { width: 100%; justify-content: center; }
   .cta-form { flex-direction: column; }
@@ -210,6 +203,6 @@ button { font-family: inherit; cursor: pointer; }
   .footer-bottom { flex-direction: column; text-align: center; }
 }
 @media (max-width: 480px) {
-  .tech-grid, .stats-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
   .partners-row { gap: 16px; }
 }
