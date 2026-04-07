@@ -191,9 +191,13 @@ button { font-family: inherit; cursor: pointer; }
   .nav { padding: 0 20px; }
   .nav-links { display: none; }
   .mobile-toggle { display: block; }
-  .hero { padding: 0 24px; }
+  .hero { padding: 0 24px; min-height: 100vh; }
   .hero h1 { font-size: clamp(1.8rem, 7vw, 2.8rem); }
-  .hero-stats { flex-direction: column; gap: 20px; }
+  .hero-sub { font-size: 0.9rem; }
+  .hero-badge { font-size: 0.5rem; padding: 5px 12px; }
+  .hero-stats { flex-direction: column; gap: 16px; margin-top: 32px; padding-top: 24px; }
+  .hero-stat-value { font-size: 1.3rem; }
+  .hero-content { padding-top: 80px; }
   .section { padding: 80px 20px; }
   .why-grid, .services-grid, .invest-grid { grid-template-columns: 1fr; }
   .tech-grid, .stats-grid { grid-template-columns: repeat(2, 1fr); }

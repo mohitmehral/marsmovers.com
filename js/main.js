@@ -106,8 +106,26 @@
     camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(container.offsetWidth, container.offsetHeight);
+    // Responsive Mars position
+    var isMobile = container.offsetWidth < 768;
+    var isTablet = container.offsetWidth < 1024;
+    if (isMobile) {
+      mars.position.set(0.5, 0.8, -2);
+      camera.position.set(2, 2, 6);
+    } else if (isTablet) {
+      mars.position.set(1.5, 0.5, -2);
+      camera.position.set(3, 1.5, 5.5);
+    } else {
+      mars.position.set(2.5, 0, -2);
+      camera.position.set(3, 1, 5);
+    }
+    detail.position.copy(mars.position);
+    atmos.position.copy(mars.position);
+    cap.position.copy(mars.position);
+    orbit.position.copy(mars.position);
   }
   window.addEventListener('resize', onResize);
+  onResize(); // Call once on init
 
   let frame = 0;
   function animate() {
