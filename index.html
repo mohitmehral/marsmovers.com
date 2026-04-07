@@ -3,587 +3,458 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Mars Movers — Play. Land. Win Your Ticket.</title>
-<meta name="description" content="Mars Movers — Play. Land. Win Your Ticket. The first flight to Mars picks the best pilots. Play Mars approach and landing games, earn mission points, and secure your seat on Flight MM-2031."/>
-<meta name="keywords" content="mars game, space game, mars landing game, asteroid game, mars mission, citizen astronaut, mars movers, fly to mars, space pilot game, mars flight, browser game, free space game"/>
+<title>Mars Movers — Off-World Data Center Infrastructure for Mars</title>
+<meta name="description" content="Mars Movers builds autonomous data center infrastructure on Mars. Robotic deployment, Starlink relay backbone, nuclear-powered compute — preparing humanity's off-world digital infrastructure."/>
+<meta name="keywords" content="mars data center, off-world infrastructure, space data center, mars colony, starlink mars, autonomous deployment, space computing, mars movers, interplanetary data, robotic construction mars"/>
 <meta name="author" content="Apnok"/>
 <meta name="robots" content="index, follow"/>
 <meta name="theme-color" content="#ff5014"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>"/>
+<link rel="icon" href="favicon.svg"/>
 <link rel="canonical" href="https://www.marsmovers.com/"/>
+
+<!-- Open Graph -->
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://www.marsmovers.com/"/>
-<meta property="og:title" content="Mars Movers — Play. Land. Win Your Ticket."/>
-<meta property="og:description" content="The first flight to Mars picks the best pilots. Play Mars approach and landing games, earn your seat on Flight MM-2031."/>
+<meta property="og:title" content="Mars Movers — Off-World Data Center Infrastructure"/>
+<meta property="og:description" content="Building autonomous data center infrastructure on Mars. Robotic deployment, Starlink relay, nuclear-powered compute for the first Mars colonies."/>
+<meta property="og:site_name" content="Mars Movers"/>
+
+<!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="Mars Movers — Play. Land. Win Your Ticket."/>
-<meta name="twitter:description" content="The first flight to Mars picks the best pilots. Play Mars games and earn your seat."/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Mars Movers","url":"https://www.marsmovers.com","description":"Play Mars approach and landing games. Earn mission points and secure your seat on the first civilian Mars flight.","publisher":{"@type":"Organization","name":"Apnok","url":"https://www.marsmovers.com","contactPoint":{"@type":"ContactPoint","email":"ceo@apnok.com","contactType":"Customer Support"}},"potentialAction":{"@type":"PlayAction","target":"https://www.marsmovers.com/game.html"}}</script>
+<meta name="twitter:title" content="Mars Movers — Off-World Data Center Infrastructure"/>
+<meta name="twitter:description" content="Building autonomous data centers on Mars. Robotic deployment, Starlink relay backbone, nuclear-powered compute."/>
+
+<!-- Structured Data -->
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"Mars Movers",
+  "url":"https://www.marsmovers.com",
+  "description":"Off-world data center infrastructure company building autonomous compute facilities on Mars via robotic deployment and Starlink relay backbone.",
+  "foundingDate":"2024",
+  "publisher":{"@type":"Organization","name":"Apnok","url":"https://apnok.com"},
+  "contactPoint":{"@type":"ContactPoint","email":"ceo@apnok.com","contactType":"Business Inquiries"},
+  "sameAs":[]
+}</script>
+
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N9J8L4ZB0Q');</script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+<!-- AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5228411604893151" crossorigin="anonymous"></script>
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Inter','Courier New',Courier,monospace;background:#000;color:#fff;overflow-x:hidden}
 
-/* CANVAS STARS BG */
-#starfield{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:rgba(0,0,0,0.92);border-bottom:1px solid rgba(255,80,20,0.25)}
-.logo{color:#ff5014;font-size:1rem;font-weight:700;letter-spacing:.2em;text-decoration:none;text-transform:uppercase}
-.nav-links{display:flex;gap:28px}
-.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
-.nav-links a:hover{color:#ff5014}
-.btn-cta{background:#ff5014;color:#000;border:none;cursor:pointer;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:10px 22px;transition:background .2s;text-decoration:none;display:inline-block}
-.btn-cta:hover{background:#ff7040}
-
-/* MARS HERO SCENE */
-#mars-scene{position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-
-/* HERO GAMES — inline game cards in hero */
-.hero-games{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:520px;margin-top:32px}
-.hero-game{background:rgba(255,80,20,.08);border:1px solid rgba(255,80,20,.3);padding:16px 18px;text-decoration:none;color:#fff;display:flex;align-items:center;gap:14px;transition:all .25s}
-.hero-game:hover{background:rgba(255,80,20,.18);border-color:rgba(255,80,20,.6);transform:translateY(-2px)}
-.hero-game .hg-icon{font-size:1.8rem;flex-shrink:0}
-.hero-game .hg-text h4{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
-.hero-game .hg-text p{font-size:.6rem;color:rgba(255,255,255,.5);line-height:1.5}
-.hero-game .hg-live{font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:#00ff66}
-.hero-game .hg-arrow{color:#ff5014;font-size:1.2rem;margin-left:auto;flex-shrink:0;opacity:.6;transition:opacity .2s}
-.hero-game:hover .hg-arrow{opacity:1}
-@media(max-width:768px){.hero-games{grid-template-columns:1fr}}
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 60px 260px;overflow:hidden}
-.hero-inner{position:relative;z-index:2;max-width:700px}
-.hero-tag{font-size:.6rem;letter-spacing:.4em;text-transform:uppercase;color:#ff5014;margin-bottom:24px;font-weight:600}
-.hero h1{font-family:'Inter',sans-serif;font-size:clamp(2rem,5.5vw,4rem);font-weight:800;line-height:1.12;margin-bottom:20px;letter-spacing:-.03em;text-shadow:0 0 80px rgba(255,80,20,.2)}
-.hero h1 em{color:#ff5014;font-style:normal}
-.hero-sub{font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,.7);max-width:520px;line-height:1.9;margin-bottom:44px;font-weight:300}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-start}
-.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);cursor:pointer;font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:12px 28px;transition:all .2s;text-decoration:none;display:inline-block}
-.btn-outline:hover{border-color:#ff5014;color:#ff5014}
-
-/* TICKER */
-.ticker-wrap{position:relative;z-index:1;overflow:hidden;background:rgba(255,80,20,.07);border-top:1px solid rgba(255,80,20,.2);border-bottom:1px solid rgba(255,80,20,.2);padding:9px 0}
-.ticker-inner{display:flex;white-space:nowrap;animation:tick 55s linear infinite}
-.ticker-inner:hover{animation-play-state:paused}
-.ticker-inner span{padding:0 36px;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,140,80,.7)}
-@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* SECTIONS */
-.section{position:relative;z-index:1;padding:80px 40px}
-.section-tag{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:#ff5014;display:block;margin-bottom:36px}
-.section-title{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:700;margin-bottom:56px;line-height:1.1}
-.divider{border:none;border-top:1px solid rgba(255,255,255,.06);margin:0}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:960px;margin:0 auto}
-.stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);padding:28px 20px;text-align:center;transition:border-color .3s}
-.stat:hover{border-color:rgba(255,80,20,.4)}
-.stat-n{font-size:2.6rem;font-weight:700;color:#ff5014;font-variant-numeric:tabular-nums;line-height:1}
-.stat-l{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:8px}
-
-/* GAMES */
-.games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:960px;margin:0 auto}
-.game-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,80,20,.15);padding:24px 20px;transition:all .3s;text-decoration:none;display:block;color:#fff;position:relative}
-.game-card:hover{background:rgba(255,80,20,.12);border-color:rgba(255,80,20,.5);transform:translateY(-4px)}
-.game-card.locked{opacity:.45;cursor:not-allowed;pointer-events:none}
-.game-card .live-dot{display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:6px;animation:livePulse 1.5s infinite}
-@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
-.game-icon{font-size:2.2rem;margin-bottom:18px}
-.game-badge{display:inline-block;background:#ff5014;color:#000;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;margin-bottom:14px}
-.game-card h3{font-size:.9rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
-.game-card p{font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:18px}
-.game-pts{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:#ff5014}
-
-/* STEPS */
-.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;max-width:960px;margin:0 auto 56px}
-.step{border:1px solid rgba(255,255,255,.07);padding:28px 20px;text-align:center}
-.step-n{font-size:2rem;font-weight:700;color:rgba(255,80,20,.25);margin-bottom:14px}
-.step h4{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
-.step p{font-size:.75rem;color:rgba(255,255,255,.55);line-height:1.7}
-
-/* LEADERBOARD */
-.board{max-width:680px;margin:0 auto}
-.board-row{display:grid;grid-template-columns:52px 1fr 110px 90px;align-items:center;padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.05);transition:background .2s}
-.board-row:hover{background:rgba(255,80,20,.05)}
-.board-hdr{border-bottom:1px solid rgba(255,80,20,.2)!important}
-.board-hdr span{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.b-rank{font-size:.82rem;font-weight:700;color:rgba(255,80,20,.55)}
-.b-rank.top{color:#ff5014}
-.b-name{font-size:.82rem}
-.b-roster{font-size:.72rem;color:rgba(255,100,50,.7);font-weight:700;letter-spacing:.08em}
-.b-pts{font-size:.85rem;color:rgba(255,255,255,.6);text-align:right}
-.board-you{border:1px dashed rgba(255,80,20,.25)!important;margin-top:6px;background:rgba(255,80,20,.04)}
-
-/* NEWS */
-.news-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;max-width:960px;margin:0 auto}
-.news-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);padding:26px;transition:border-color .2s;cursor:pointer}
-.news-card:hover{border-color:rgba(255,80,20,.3)}
-.news-src{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:#ff5014;margin-bottom:10px}
-.news-card h3{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.5;letter-spacing:.04em}
-.news-card p{font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.7}
-
-/* FOOTER */
-footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(255,80,20,.15);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;background:rgba(255,40,0,.03)}
-.footer-l p{font-size:.75rem;color:rgba(255,255,255,.5);line-height:1.9}
-.footer-l a{color:#ff5014;text-decoration:none}
-.footer-r{display:flex;gap:22px}
-.footer-r a{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
-.footer-r a:hover{color:#ff5014}
-
-/* MOBILE MENU */
-.mobile-menu-btn{display:none;background:none;border:none;color:#ff5014;font-size:1.4rem;cursor:pointer;padding:4px 8px}
-.mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,0.95);flex-direction:column;align-items:center;justify-content:center;gap:24px}
-.mobile-nav.open{display:flex}
-.mobile-nav a{color:rgba(255,255,255,.8);text-decoration:none;font-size:1rem;letter-spacing:.15em;text-transform:uppercase;padding:10px 20px;transition:color .2s}
-.mobile-nav a:hover{color:#ff5014}
-.mobile-nav .close-btn{position:absolute;top:16px;right:20px;background:none;border:none;color:#ff5014;font-size:1.5rem;cursor:pointer}
-@media(max-width:768px){
-  nav{padding:12px 18px}
-  .nav-links{display:none}
-  .mobile-menu-btn{display:block}
-  .hero{padding:0 24px 60px}
-  .section{padding:56px 18px}
-  .stats-grid,.steps-grid{grid-template-columns:repeat(2,1fr)}
-  .games-grid,.news-grid{grid-template-columns:1fr}
-  footer{padding:28px 18px;flex-direction:column;align-items:flex-start}
-}
-</style>
+<link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
 
-<canvas id="starfield"></canvas>
-
-<nav>
-  <a href="/" class="logo">⬡ Mars Movers</a>
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="#ff5014" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="5" fill="#ff5014" opacity="0.3"/><circle cx="14" cy="14" r="2" fill="#ff5014"/></svg>
+    Mars Movers
+  </a>
   <div class="nav-links">
-    <a href="/">Home</a>
-    <a href="game.html">Approach</a>
-    <a href="landing.html">Landing</a>
-    <a href="mars.html">Mars Intel</a>
+    <a href="#why">Why Mars</a>
+    <a href="#services">Services</a>
+    <a href="#technology">Technology</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="mars-intel.html">Mars Intel</a>
+    <a href="#contact" class="nav-cta">Request Access</a>
   </div>
-  <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014;font-size:.68rem;letter-spacing:.12em;text-decoration:none">❤️</a>
-  <button class="mobile-menu-btn" onclick="document.getElementById('mobile-nav').classList.add('open')">☰</button>
+  <button class="mobile-toggle" onclick="openMobileNav()">☰</button>
 </nav>
 
+<!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobile-nav">
-  <button class="close-btn" onclick="this.parentElement.classList.remove('open')">✕</button>
-  <a href="/" onclick="this.parentElement.classList.remove('open')">Home</a>
-  <a href="game.html">Approach Game</a>
-  <a href="landing.html">Landing Game</a>
-  <a href="mars.html">Mars Intel</a>
-  <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014">❤️ Support</a>
+  <button class="close-btn" onclick="closeMobileNav()">✕</button>
+  <a href="#why" onclick="closeMobileNav()">Why Mars</a>
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#technology" onclick="closeMobileNav()">Technology</a>
+  <a href="#roadmap" onclick="closeMobileNav()">Roadmap</a>
+  <a href="mars-intel.html" onclick="closeMobileNav()">Mars Intel</a>
+  <a href="#contact" onclick="closeMobileNav()" style="color:var(--primary)">Request Access</a>
 </div>
 
 <!-- HERO -->
-<div class="hero">
-  <canvas id="mars-scene"></canvas>
-  <div class="hero-inner">
-    <p class="hero-tag">Only 1,000 Will Make It · Departure 2031</p>
-    <h1>Mars Is More<br>Than a Mission.<br><em>Play. Land. Win Your Ticket.</em></h1>
-    <p class="hero-sub">Can you land on Mars? Prove it. Two games. One shot. Dodge the asteroids, land the Starship, and your boarding number is locked. Play now.</p>
-    <div class="hero-games">
-      <a href="game.html" class="hero-game">
-        <div class="hg-icon">☄️</div>
-        <div class="hg-text">
-          <div class="hg-live"><span style="display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:4px;animation:livePulse 1.5s infinite"></span>Live</div>
-          <h4>Mars Approach</h4>
-          <p>5 asteroid levels → auto landing</p>
-        </div>
-        <div class="hg-arrow">›</div>
-      </a>
-      <a href="landing.html" class="hero-game">
-        <div class="hg-icon">🛸</div>
-        <div class="hg-text">
-          <div class="hg-live"><span style="display:inline-block;width:6px;height:6px;background:#00ff66;border-radius:50%;margin-right:4px;animation:livePulse 1.5s infinite"></span>Live</div>
-          <h4>Mars Landing</h4>
-          <p>Real physics · 5 zones · land the ship</p>
-        </div>
-        <div class="hg-arrow">›</div>
-      </a>
+<section class="hero">
+  <div class="hero-canvas" id="hero-canvas"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      Pre-Deployment Phase · Est. 2024
     </div>
-    <p style="font-size:.6rem;color:rgba(255,255,255,.4);margin-top:14px;letter-spacing:.06em;line-height:1.7">⌨️ Arrow keys to move · Space to shoot · Land slow &amp; level to win · Mobile: Tap to shoot, Hold + Slide to move</p>
+    <h1>Building Earth's First<br><span class="accent">Data Centers on Mars</span></h1>
+    <p class="hero-sub">Autonomous compute infrastructure deployed by robots, powered by nuclear energy, connected via Starlink relay — operational before the first humans arrive.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request Access →</a>
+      <a href="#why" class="btn-outline">Why Mars?</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-value" id="mars-dist">—</div>
+        <div class="hero-stat-label">Million km to Mars (Live)</div>
+      </div>
+      <div>
+        <div class="hero-stat-value" id="launch-days">—</div>
+        <div class="hero-stat-label">Days to Next Launch Window</div>
+      </div>
+      <div>
+        <div class="hero-stat-value">2028</div>
+        <div class="hero-stat-label">First Deployment Target</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- TICKER -->
-<div class="ticker-wrap">
+<div class="ticker">
   <div class="ticker-inner">
-    <span>● NASA Perseverance confirms organic compounds in Jezero Crater</span>
-    <span>● SpaceX Starship IFT-4 full mission success</span>
-    <span>● Next Mars launch window: November 2026</span>
-    <span>● ESA confirms water ice near Mars south pole</span>
-    <span>● 4,821 pilots currently in training</span>
-    <span>● Mission Roster #0001 claimed — 999 seats remaining</span>
-    <span>● Mars avg surface temp: −63°C</span>
-    <span>● Axiom Space announces Mars mission partnership</span>
-    <span>● NASA Perseverance confirms organic compounds in Jezero Crater</span>
-    <span>● SpaceX Starship IFT-4 full mission success</span>
-    <span>● Next Mars launch window: November 2026</span>
-    <span>● ESA confirms water ice near Mars south pole</span>
-    <span>● 4,821 pilots currently in training</span>
-    <span>● Mission Roster #0001 claimed — 999 seats remaining</span>
-    <span>● Mars avg surface temp: −63°C</span>
-    <span>● Axiom Space announces Mars mission partnership</span>
+    <span>● SpaceX Starship achieving full reusability — Mars cargo timeline accelerating</span>
+    <span>● Global data center market projected $344B by 2030 — off-world expansion inevitable</span>
+    <span>● NASA confirms subsurface water ice on Mars — critical for cooling infrastructure</span>
+    <span>● Starlink constellation approaching 6,000+ satellites — interplanetary relay feasible</span>
+    <span>● Mars colony estimates: 1M+ humans by 2050 — compute demand follows population</span>
+    <span>● Nuclear micro-reactors achieving 10MW+ output — powering remote facilities</span>
+    <span>● SpaceX Starship achieving full reusability — Mars cargo timeline accelerating</span>
+    <span>● Global data center market projected $344B by 2030 — off-world expansion inevitable</span>
+    <span>● NASA confirms subsurface water ice on Mars — critical for cooling infrastructure</span>
+    <span>● Starlink constellation approaching 6,000+ satellites — interplanetary relay feasible</span>
+    <span>● Mars colony estimates: 1M+ humans by 2050 — compute demand follows population</span>
+    <span>● Nuclear micro-reactors achieving 10MW+ output — powering remote facilities</span>
   </div>
 </div>
 
-<!-- STATS -->
-<section class="section" id="mission" style="text-align:center">
-  <span class="section-tag">Live Mission Intelligence</span>
-  <div class="stats-grid">
-    <div class="stat"><div class="stat-n" id="mars-dist">—</div><div class="stat-l">Million km to Mars</div></div>
-    <div class="stat"><div class="stat-n" id="launch-days">—</div><div class="stat-l">Days to Launch Window</div></div>
-    <div class="stat"><div class="stat-n">4,821</div><div class="stat-l">Pilots in Training</div></div>
-    <div class="stat"><div class="stat-n">999</div><div class="stat-l">Roster Seats Left</div></div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
-<!-- GAMES -->
-<section class="section" id="games">
-  <span class="section-tag">Mission Training Modules</span>
-  <div class="games-grid">
-    <a href="landing.html" class="game-card">
-      <div class="game-badge">Live Now</div>
-      <div class="game-icon">🛸</div>
-      <h3>Mars Landing</h3>
-      <p>Control thrust, manage fuel, fight wind gusts. Land on Mars using real physics — gravity at 3.72 m/s². One wrong move and it's over.</p>
-      <div class="game-pts">Up to 800 mission points per run</div>
-    </a>
-    <a href="game.html" class="game-card">
-      <div class="game-badge">Live Now</div>
-      <div class="game-icon">☄️</div>
-      <h3>Mars Approach</h3>
-      <p>Navigate asteroids, shoot debris, survive the approach. Complete the field and auto-transition to Mars Landing for the final descent.</p>
-      <div class="game-pts">Up to 1,500 mission points · Leads to Landing</div>
-    </a>
-    <div class="game-card locked">
-      <div class="game-icon">🧪</div>
-      <h3>Oxygen Ration</h3>
-      <p>Manage your colony's oxygen supply. Balance consumption, production and emergencies to survive.</p>
-      <div class="game-pts">Up to 600 mission points · Coming Soon</div>
+<!-- WHY MARS -->
+<section class="section" id="why">
+  <div class="section-inner">
+    <span class="section-tag reveal">The Business Case</span>
+    <h2 class="section-title reveal">Why Build Data Centers<br>on Mars?</h2>
+    <p class="section-desc reveal">It's not science fiction. It's infrastructure planning for the next decade. Every Mars colony, research station, and autonomous operation will need local compute, storage, and connectivity.</p>
+    <div class="why-grid">
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon">⏱️</div>
+        <h3>Latency Is a Dealbreaker</h3>
+        <p>Earth-to-Mars signal delay ranges from 4 to 24 minutes. Real-time operations — robotics, life support, navigation — require local compute. You cannot run a Mars colony from Earth.</p>
+        <div class="why-source">Physics · Speed of Light Constraint</div>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon">🛡️</div>
+        <h3>Planetary Disaster Recovery</h3>
+        <p>Earth faces existential risks — solar storms, asteroid impacts, climate collapse. Mars-based data centers provide true off-world backup for humanity's most critical data.</p>
+        <div class="why-source">NASA Planetary Defense · Risk Analysis</div>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon">🏗️</div>
+        <h3>Infrastructure Before Humans</h3>
+        <p>SpaceX plans robotic cargo missions before crewed flights. Data centers must be operational before colonists arrive — power, compute, and connectivity are day-one requirements.</p>
+        <div class="why-source">SpaceX Mars Architecture · 2026+ Roadmap</div>
+      </div>
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon">❄️</div>
+        <h3>Natural Cooling Advantage</h3>
+        <p>Mars average temperature: -63°C. Data centers spend 40% of energy on cooling on Earth. On Mars, the atmosphere is a free, infinite heat sink — massive operational savings.</p>
+        <div class="why-source">NASA Mars Climate Data</div>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon">📡</div>
+        <h3>Starlink Mars Relay</h3>
+        <p>SpaceX is building the interplanetary communication backbone. Starlink's Mars constellation will enable data relay between Earth and Mars — our infrastructure connects to it natively.</p>
+        <div class="why-source">SpaceX Starlink · Interplanetary Network</div>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon">📈</div>
+        <h3>$344B Market, Zero Competition</h3>
+        <p>The global data center market hits $344B by 2030. Off-world is the next frontier. First mover on Mars captures the entire interplanetary compute market — there are no competitors yet.</p>
+        <div class="why-source">Mordor Intelligence · Market Forecast 2030</div>
+      </div>
     </div>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- HOW IT WORKS -->
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-inner">
+    <span class="section-tag reveal">What We Build</span>
+    <h2 class="section-title reveal">End-to-End Mars<br>Data Infrastructure</h2>
+    <p class="section-desc reveal">From site selection to operational handoff — we handle every layer of deploying compute infrastructure on Mars.</p>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">01</div>
+        <h3>Autonomous Site Survey & Selection</h3>
+        <p>AI-driven analysis of Mars terrain data from NASA MRO and ESA Mars Express. We identify optimal locations based on subsurface ice access, solar exposure, geological stability, and Starlink relay line-of-sight.</p>
+        <div class="service-tags">
+          <span class="service-tag">HiRISE Data</span>
+          <span class="service-tag">SHARAD Radar</span>
+          <span class="service-tag">AI Terrain Analysis</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">02</div>
+        <h3>Robotic Construction & Deployment</h3>
+        <p>Pre-fabricated modular data center units shipped via SpaceX Starship. Autonomous robots handle landing, transport, assembly, and commissioning — no human presence required for initial deployment.</p>
+        <div class="service-tags">
+          <span class="service-tag">Modular Architecture</span>
+          <span class="service-tag">Starship Cargo</span>
+          <span class="service-tag">Autonomous Assembly</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">03</div>
+        <h3>Nuclear + Solar Power Infrastructure</h3>
+        <p>Kilopower-class nuclear micro-reactors (10kW–1MW) as primary power, supplemented by solar arrays. Redundant power architecture ensures 99.9% uptime even during Mars dust storms lasting months.</p>
+        <div class="service-tags">
+          <span class="service-tag">Kilopower Reactor</span>
+          <span class="service-tag">Solar Redundancy</span>
+          <span class="service-tag">Dust Storm Resilient</span>
+        </div>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">04</div>
+        <h3>Starlink Relay Connectivity</h3>
+        <p>Native integration with SpaceX's interplanetary Starlink network. Mars-orbit relay satellites provide continuous Earth-Mars data transfer. Local mesh networking connects surface facilities.</p>
+        <div class="service-tags">
+          <span class="service-tag">Interplanetary Link</span>
+          <span class="service-tag">Mesh Network</span>
+          <span class="service-tag">Store-and-Forward</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- TECHNOLOGY -->
+<section class="section" id="technology">
+  <div class="section-inner">
+    <span class="section-tag reveal">Architecture</span>
+    <h2 class="section-title reveal">Built for Mars.<br>Engineered for Autonomy.</h2>
+    <p class="section-desc reveal">Every component is designed to operate without human intervention for years. Self-healing, self-powered, self-cooling.</p>
+    <div class="tech-grid">
+      <div class="tech-card reveal reveal-delay-1">
+        <div class="tech-icon">⚛️</div>
+        <h4>Power</h4>
+        <p>Kilopower nuclear fission reactors. 10+ year fuel cycle. No refueling needed during initial deployment phase.</p>
+        <div class="tech-spec">10kW–1MW</div>
+      </div>
+      <div class="tech-card reveal reveal-delay-2">
+        <div class="tech-icon">❄️</div>
+        <h4>Cooling</h4>
+        <p>Passive atmospheric cooling at -63°C average. Zero energy cost. Mars atmosphere is 95% CO₂ — ideal heat dissipation medium.</p>
+        <div class="tech-spec">-63°C Ambient</div>
+      </div>
+      <div class="tech-card reveal reveal-delay-3">
+        <div class="tech-icon">📡</div>
+        <h4>Connectivity</h4>
+        <p>Starlink Mars relay constellation. Store-and-forward protocol for deep space. Local mesh for surface-to-surface.</p>
+        <div class="tech-spec">100+ Mbps</div>
+      </div>
+      <div class="tech-card reveal reveal-delay-4">
+        <div class="tech-icon">🤖</div>
+        <h4>Autonomy</h4>
+        <p>AI-driven operations. Self-diagnostics, automated failover, robotic maintenance. Designed for 5+ years unattended operation.</p>
+        <div class="tech-spec">99.9% Uptime</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- STATS -->
 <section class="section" style="text-align:center">
-  <span class="section-tag">How It Works</span>
-  <h2 class="section-title">Four Steps to<br>Your Mars Seat</h2>
-  <div class="steps-grid">
-    <div class="step"><div class="step-n">01</div><h4>Play Games</h4><p>Complete Mars training missions. Each game tests real astronaut skills.</p></div>
-    <div class="step"><div class="step-n">02</div><h4>Earn Points</h4><p>Score mission points every run. Higher skill = more points per session.</p></div>
-    <div class="step"><div class="step-n">03</div><h4>Climb Roster</h4><p>Your points rank you on the Mission Roster. Top 1,000 get a seat number.</p></div>
-    <div class="step"><div class="step-n">04</div><h4>Claim Seat</h4><p>Enter your name. Get your official boarding certificate. Share it.</p></div>
-  </div>
-  <a href="landing.html" class="btn-cta" style="padding:15px 48px;font-size:.82rem">Begin Descent →</a>
-</section>
-
-<hr class="divider"/>
-
-<!-- LEADERBOARD -->
-<section class="section" id="roster">
-  <span class="section-tag">Mission Roster — Top Pilots</span>
-  <div class="board">
-    <div class="board-row board-hdr"><span>Rank</span><span>Pilot</span><span>Roster No.</span><span style="text-align:right">Points</span></div>
-    <div class="board-row"><div class="b-rank top">01</div><div class="b-name">Commander Mohit</div><div class="b-roster">MM-0001</div><div class="b-pts">52,400</div></div>
-    <div class="board-row"><div class="b-rank top">02</div><div class="b-name">Pilot Zhang</div><div class="b-roster">MM-0002</div><div class="b-pts">44,750</div></div>
-    <div class="board-row"><div class="b-rank top">03</div><div class="b-name">Navigator Osei</div><div class="b-roster">MM-0003</div><div class="b-pts">41,100</div></div>
-    <div class="board-row"><div class="b-rank">04</div><div class="b-name">Cadet Müller</div><div class="b-roster">MM-0004</div><div class="b-pts">38,900</div></div>
-    <div class="board-row"><div class="b-rank">05</div><div class="b-name">Pilot Harkamal Chanda</div><div class="b-roster">MM-0005</div><div class="b-pts">35,400</div></div>
-    <div class="board-row"><div class="b-rank">06</div><div class="b-name">Cadet E Musk</div><div class="b-roster">MM-0006</div><div class="b-pts">31,200</div></div>
-    <div class="board-row"><div class="b-rank">07</div><div class="b-name">Pilot Hunar Anandpuria</div><div class="b-roster">MM-0007</div><div class="b-pts">28,800</div></div>
-    <div class="board-row"><div class="b-rank">08</div><div class="b-name">Pilot Santos</div><div class="b-roster">MM-0008</div><div class="b-pts">25,500</div></div>
-    <div class="board-row board-you"><div class="b-rank" style="color:rgba(255,255,255,.35)">—</div><div class="b-name" style="color:rgba(255,255,255,.5);font-style:italic">Your seat awaits...</div><div class="b-roster" style="color:rgba(255,255,255,.35)">MM-????</div><div class="b-pts" style="color:rgba(255,255,255,.35)">0</div></div>
+  <div class="section-inner">
+    <span class="section-tag reveal">By The Numbers</span>
+    <h2 class="section-title reveal" style="margin-left:auto;margin-right:auto">The Market Opportunity</h2>
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-value" data-count="344" data-suffix="B">0B</div>
+        <div class="stat-label">Global DC Market by 2030</div>
+        <div class="stat-sub">USD · Mordor Intelligence</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-value" data-count="40" data-suffix="%">0%</div>
+        <div class="stat-label">Energy Saved on Cooling</div>
+        <div class="stat-sub">Mars natural thermal advantage</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-value" data-count="1" data-suffix="M+" data-decimals="0">0</div>
+        <div class="stat-label">Projected Mars Population 2050</div>
+        <div class="stat-sub">SpaceX colonization roadmap</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-value">0</div>
+        <div class="stat-label">Current Competitors</div>
+        <div class="stat-sub">First mover advantage</div>
+      </div>
+    </div>
   </div>
 </section>
 
 <hr class="divider"/>
 
-<!-- NEWS -->
-<section class="section" id="intel">
-  <span class="section-tag">Mission Intelligence Feed</span>
-  <div class="news-grid">
-    <div class="news-card"><div class="news-src">NASA · 2 days ago</div><h3>Perseverance Confirms Organic Molecules in Ancient Lake Bed</h3><p>Complex organic compounds confirmed in Jezero Crater sedimentary rock, strengthening the case for past microbial life on Mars.</p></div>
-    <div class="news-card"><div class="news-src">SpaceX · 5 days ago</div><h3>Starship IFT-4 Achieves Full Mission Success</h3><p>Full reusability of Super Heavy booster and Starship upper stage demonstrated — critical milestone for the Mars transit timeline.</p></div>
-    <div class="news-card"><div class="news-src">ESA · 1 week ago</div><h3>Mars Express Maps Extensive Subsurface Water Ice</h3><p>New radar data reveals water ice deposits far beyond previously mapped regions — critical resource data for future habitation.</p></div>
-    <div class="news-card"><div class="news-src">Mars Movers · This week</div><h3>4,821 Pilots Now in Active Training — Roster Filling Fast</h3><p>Mission Roster seats are being claimed daily. Top 1,000 pilots secure their boarding certificate. Start training now.</p></div>
+<!-- ROADMAP -->
+<section class="section" id="roadmap">
+  <div class="section-inner">
+    <span class="section-tag reveal">Deployment Timeline</span>
+    <h2 class="section-title reveal">From Blueprint<br>to Mars Surface</h2>
+    <p class="section-desc reveal">Our roadmap is anchored to real SpaceX launch windows and NASA mission milestones. Every phase has a concrete dependency and delivery target.</p>
+    <div class="roadmap">
+      <div class="roadmap-item reveal">
+        <div class="roadmap-dot active"></div>
+        <div class="roadmap-year">2024–2025 · Current Phase</div>
+        <div class="roadmap-title">Architecture Design & Simulation</div>
+        <div class="roadmap-desc">Modular data center design optimized for Starship cargo bay dimensions. Thermal simulation in Mars atmospheric conditions. AI autonomy stack development. Partnership discussions with launch providers.</div>
+      </div>
+      <div class="roadmap-item reveal">
+        <div class="roadmap-dot active"></div>
+        <div class="roadmap-year">2026 · Launch Window</div>
+        <div class="roadmap-title">SpaceX Starship First Mars Cargo</div>
+        <div class="roadmap-desc">SpaceX targets uncrewed Starship landing on Mars. Our sensor and survey payload rides as secondary cargo — mapping deployment sites with ground-truth data.</div>
+        <div class="roadmap-source">SpaceX Announced · Nov 2026 Window</div>
+      </div>
+      <div class="roadmap-item reveal">
+        <div class="roadmap-dot future"></div>
+        <div class="roadmap-year">2028–2029</div>
+        <div class="roadmap-title">Prototype Deployment — Mars Surface</div>
+        <div class="roadmap-desc">First modular compute unit lands on Mars. Autonomous unboxing, power-on, and connectivity test via Starlink relay. Proof of concept: remote compute from Earth to Mars and back.</div>
+      </div>
+      <div class="roadmap-item reveal">
+        <div class="roadmap-dot future"></div>
+        <div class="roadmap-year">2030–2031</div>
+        <div class="roadmap-title">Phase 1 Facility — Operational</div>
+        <div class="roadmap-desc">Multi-rack facility with nuclear power, redundant connectivity, and robotic maintenance. Serving early Mars missions with local compute, storage, and relay services.</div>
+      </div>
+      <div class="roadmap-item reveal">
+        <div class="roadmap-dot future"></div>
+        <div class="roadmap-year">2032–2035</div>
+        <div class="roadmap-title">Scale — Colony-Grade Infrastructure</div>
+        <div class="roadmap-desc">Expanding to support 1,000+ colonists. Edge compute nodes across multiple Mars sites. Full data sovereignty for Mars-based organizations. Interplanetary cloud services operational.</div>
+      </div>
+    </div>
   </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- INVESTMENT THESIS -->
+<section class="section" id="invest">
+  <div class="section-inner">
+    <span class="section-tag reveal">For Investors</span>
+    <h2 class="section-title reveal">Why Now.<br>Why This.</h2>
+    <p class="section-desc reveal">The convergence of reusable rockets, autonomous robotics, and interplanetary communication creates a window that didn't exist 5 years ago — and won't stay open forever.</p>
+    <div class="invest-grid">
+      <div class="invest-card reveal reveal-delay-1">
+        <div class="invest-highlight">10x</div>
+        <h3>Cost Reduction in Launch</h3>
+        <p>Starship's full reusability drops Mars cargo cost from $1B+ to under $100M per mission. Infrastructure deployment becomes economically viable for the first time.</p>
+      </div>
+      <div class="invest-card reveal reveal-delay-2">
+        <div class="invest-highlight">100%</div>
+        <h3>Market Share at Entry</h3>
+        <p>There are zero off-world data center providers. First operational facility on Mars captures the entire addressable market — every colony, every mission, every organization.</p>
+      </div>
+      <div class="invest-card reveal reveal-delay-3">
+        <div class="invest-highlight">30yr</div>
+        <h3>Infrastructure Moat</h3>
+        <p>Physical infrastructure on Mars is the ultimate competitive moat. Once deployed, replication takes years and billions. First mover locks in decades of advantage.</p>
+      </div>
+      <div class="invest-card reveal reveal-delay-1">
+        <div class="invest-highlight">$2T+</div>
+        <h3>Space Economy by 2040</h3>
+        <p>Morgan Stanley projects the space economy exceeds $1.1T by 2040. Compute infrastructure is foundational to every space-based industry — mining, manufacturing, habitation.</p>
+      </div>
+      <div class="invest-card reveal reveal-delay-2">
+        <div class="invest-highlight">NASA</div>
+        <h3>Government Demand Signal</h3>
+        <p>NASA's Moon-to-Mars program, Artemis, and Mars Sample Return all require local compute. Government contracts provide anchor revenue before commercial demand scales.</p>
+      </div>
+      <div class="invest-card reveal reveal-delay-3">
+        <div class="invest-highlight">AI</div>
+        <h3>Autonomous Operations</h3>
+        <p>Our AI-first architecture means facilities operate without human presence. This isn't a staffing problem — it's a software problem, and software scales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- PARTNERS -->
+<section class="section" style="text-align:center">
+  <div class="section-inner">
+    <span class="section-tag reveal">Ecosystem</span>
+    <h2 class="section-title reveal" style="margin-left:auto;margin-right:auto">Built on Proven Technology</h2>
+    <p class="section-desc reveal" style="margin-left:auto;margin-right:auto">Our architecture leverages existing space-proven systems and partnerships with the organizations building humanity's path to Mars.</p>
+    <div class="partners-row reveal">
+      <div class="partner-logo">SpaceX Starship</div>
+      <div class="partner-logo">NASA Kilopower</div>
+      <div class="partner-logo">Starlink Network</div>
+      <div class="partner-logo">ESA Mars Express</div>
+      <div class="partner-logo">NVIDIA Edge AI</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <span class="section-tag reveal">Get Involved</span>
+  <h2 class="reveal">The First Data Center on Mars<br>Starts With a Conversation</h2>
+  <p class="reveal">Whether you're an investor, space agency, enterprise partner, or engineer — we want to hear from you. Request early access to our deployment roadmap and technical whitepaper.</p>
+  <form class="cta-form reveal" id="cta-form">
+    <input type="email" class="cta-input" placeholder="Enter your email" required/>
+    <button type="submit" class="cta-submit">Request Access</button>
+  </form>
+  <p class="cta-note reveal">Or reach us directly: <a href="mailto:ceo@apnok.com" style="color:var(--primary)">ceo@apnok.com</a></p>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-l">
-    <p style="font-size:.88rem;font-weight:700;color:#ff5014;letter-spacing:.2em;margin-bottom:5px">⬡ MARS MOVERS</p>
-    <p>Mars Is More Than a Mission. Play. Land. Win Your Ticket.</p>
-    <p>Contact: <a href="mailto:ceo@apnok.com">ceo@apnok.com</a></p>
-    <p style="margin-top:6px">Powered by <a href="https://apnok.com" target="_blank" rel="noopener">Apnok</a> © 2024 · All rights reserved.</p>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="#ff5014" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="5" fill="#ff5014" opacity="0.3"/><circle cx="14" cy="14" r="2" fill="#ff5014"/></svg>
+        Mars Movers
+      </a>
+      <p>Off-world data center infrastructure. Building the digital backbone for humanity's first Mars colonies.</p>
+      <p style="margin-top:8px">Contact: <a href="mailto:ceo@apnok.com" style="color:var(--primary)">ceo@apnok.com</a></p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#why">Why Mars</a>
+        <a href="#services">Services</a>
+        <a href="#technology">Technology</a>
+        <a href="#roadmap">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="mars-intel.html">Mars Intelligence</a>
+        <a href="#invest">Investors</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
   </div>
-  <div class="footer-r">
-    <a href="/">Home</a>
-    <a href="game.html">Approach</a>
-    <a href="landing.html">Landing</a>
-    <a href="mars.html">Mars Intel</a>
-    <a href="mailto:ceo@apnok.com">Contact</a>
-    <a href="https://paypal.me/mohitmehral" target="_blank" rel="noopener" style="color:#ff5014">❤️ Support</a>
+  <div class="footer-bottom">
+    <p>© 2024 Mars Movers · Powered by <a href="https://apnok.com" target="_blank" rel="noopener">Apnok</a> · All rights reserved.</p>
+    <p>Building infrastructure for the next planet.</p>
   </div>
 </footer>
 
-<script>
-// Mars Hero Scene — horizon, rovers, habitat, launch pad, dust
-(function(){
-  var mc=document.getElementById('mars-scene'),mx=mc.getContext('2d');
-  var dust=[],frame=0;
-  function mresize(){mc.width=mc.offsetWidth;mc.height=mc.offsetHeight;}
-  mresize();window.addEventListener('resize',mresize);
-  for(var i=0;i<60;i++)dust.push({x:Math.random()*2000,y:Math.random()*200,r:Math.random()*2+0.5,vx:Math.random()*0.4+0.1,o:Math.random()*0.3+0.1});
-
-  // Rovers
-  var rovers=[
-    {x:0.35,spd:0.15,dir:1,size:1},
-    {x:0.55,spd:0.10,dir:-1,size:0.6}
-  ];
-
-  function terrainY(x,w,h){
-    return h*0.85+Math.sin(x/w*Math.PI*5)*18+Math.sin(x/w*Math.PI*12)*9;
-  }
-
-  function drawRover(x,y,s,dir){
-    mx.save();mx.translate(x,y);mx.scale(s*dir,s);
-    // Wheels
-    mx.fillStyle='#444';mx.beginPath();mx.arc(-12,-2,5,0,Math.PI*2);mx.fill();
-    mx.beginPath();mx.arc(12,-2,5,0,Math.PI*2);mx.fill();
-    mx.fillStyle='#555';mx.beginPath();mx.arc(-12,-2,3,0,Math.PI*2);mx.fill();
-    mx.beginPath();mx.arc(12,-2,3,0,Math.PI*2);mx.fill();
-    // Body
-    mx.fillStyle='#c8c8c8';
-    mx.fillRect(-14,-10,28,8);
-    // Top box
-    mx.fillStyle='#aaa';
-    mx.fillRect(-8,-16,16,6);
-    // Solar panel
-    mx.fillStyle='#2244aa';
-    mx.fillRect(-18,-14,8,3);
-    mx.fillRect(10,-14,8,3);
-    // Mast
-    mx.strokeStyle='#999';mx.lineWidth=1;
-    mx.beginPath();mx.moveTo(0,-16);mx.lineTo(0,-24);mx.stroke();
-    // Camera head
-    mx.fillStyle='#ddd';mx.fillRect(-2,-26,4,3);
-    // Antenna
-    mx.strokeStyle='#888';mx.lineWidth=0.5;
-    mx.beginPath();mx.moveTo(4,-16);mx.lineTo(8,-28);mx.stroke();
-    mx.fillStyle='#ff3333';mx.beginPath();mx.arc(8,-28,1.5,0,Math.PI*2);mx.fill();
-    // Wheel tracks
-    mx.restore();
-  }
-
-  function drawHabitat(x,y,w,h){
-    mx.save();mx.translate(x,y);
-    // Main dome
-    mx.fillStyle='rgba(200,200,210,0.9)';
-    mx.beginPath();mx.ellipse(0,-20,40,22,0,Math.PI,0);mx.fill();
-    mx.fillStyle='rgba(180,180,190,0.8)';
-    mx.fillRect(-40,-2,80,4);
-    // Base
-    mx.fillStyle='#666';
-    mx.fillRect(-44,0,88,8);
-    // Windows — blink
-    var blink=Math.sin(frame*0.03)>0;
-    mx.fillStyle=blink?'rgba(100,200,255,0.8)':'rgba(60,120,180,0.5)';
-    mx.fillRect(-20,-14,8,6);
-    mx.fillRect(-6,-14,8,6);
-    mx.fillRect(10,-14,8,6);
-    // Airlock door
-    mx.fillStyle='#555';
-    mx.fillRect(30,-2,8,10);
-    mx.fillStyle='#777';
-    mx.fillRect(31,-1,6,8);
-    // Antenna array
-    mx.strokeStyle='#aaa';mx.lineWidth=1;
-    mx.beginPath();mx.moveTo(-30,-20);mx.lineTo(-30,-38);mx.stroke();
-    mx.beginPath();mx.moveTo(-34,-35);mx.lineTo(-26,-35);mx.stroke();
-    mx.beginPath();mx.moveTo(-34,-32);mx.lineTo(-26,-32);mx.stroke();
-    // Red light on top
-    var lightOn=Math.sin(frame*0.05)>0.3;
-    mx.fillStyle=lightOn?'rgba(255,50,20,0.9)':'rgba(255,50,20,0.2)';
-    mx.beginPath();mx.arc(0,-22,2,0,Math.PI*2);mx.fill();
-    // Solar panels on ground
-    mx.fillStyle='#223388';
-    mx.save();mx.translate(-65,2);mx.rotate(-0.1);
-    mx.fillRect(0,-2,20,4);mx.fillRect(0,-2,20,4);
-    mx.restore();
-    mx.save();mx.translate(55,2);mx.rotate(0.1);
-    mx.fillRect(0,-2,20,4);
-    mx.restore();
-    // Connecting tube to second module
-    mx.fillStyle='rgba(160,160,170,0.7)';
-    mx.fillRect(38,-1,25,6);
-    // Second smaller dome
-    mx.fillStyle='rgba(190,190,200,0.85)';
-    mx.beginPath();mx.ellipse(80,-12,22,14,0,Math.PI,0);mx.fill();
-    mx.fillStyle='#666';
-    mx.fillRect(58,0,44,6);
-    mx.fillStyle=blink?'rgba(255,200,50,0.7)':'rgba(200,150,30,0.3)';
-    mx.fillRect(72,-8,6,4);
-    mx.restore();
-  }
-
-  function drawLaunchPad(x,y){
-    mx.save();mx.translate(x,y);
-    // Pad base
-    mx.fillStyle='#555';
-    mx.fillRect(-30,0,60,5);
-    mx.fillStyle='#444';
-    mx.fillRect(-25,-2,50,4);
-    // Support legs
-    mx.strokeStyle='#666';mx.lineWidth=2;
-    mx.beginPath();mx.moveTo(-20,0);mx.lineTo(-25,8);mx.stroke();
-    mx.beginPath();mx.moveTo(20,0);mx.lineTo(25,8);mx.stroke();
-    // Rocket — Starship style
-    // Body
-    mx.fillStyle='#d0d0d0';
-    mx.beginPath();
-    mx.moveTo(-7,-2);mx.lineTo(-7,-65);mx.quadraticCurveTo(-7,-78,0,-82);
-    mx.quadraticCurveTo(7,-78,7,-65);mx.lineTo(7,-2);mx.closePath();
-    mx.fill();
-    // Dark band (heat shield)
-    mx.fillStyle='#222';
-    mx.fillRect(-7,-20,14,12);
-    // Nose tip
-    mx.fillStyle='#ff5014';
-    mx.beginPath();mx.moveTo(-5,-72);mx.quadraticCurveTo(0,-85,5,-72);mx.fill();
-    // Windows
-    mx.fillStyle='rgba(100,200,255,0.7)';
-    mx.beginPath();mx.arc(0,-60,2,0,Math.PI*2);mx.fill();
-    mx.beginPath();mx.arc(0,-52,1.8,0,Math.PI*2);mx.fill();
-    // Fins
-    mx.fillStyle='#999';
-    mx.beginPath();mx.moveTo(-7,-8);mx.lineTo(-14,2);mx.lineTo(-7,2);mx.closePath();mx.fill();
-    mx.beginPath();mx.moveTo(7,-8);mx.lineTo(14,2);mx.lineTo(7,2);mx.closePath();mx.fill();
-    // Engine glow — pulsing idle
-    var glow=0.15+Math.sin(frame*0.08)*0.1;
-    mx.fillStyle='rgba(255,150,50,'+glow.toFixed(2)+')';
-    mx.beginPath();mx.ellipse(0,4,5,3,0,0,Math.PI*2);mx.fill();
-    // Tower/gantry
-    mx.strokeStyle='#777';mx.lineWidth=1.5;
-    mx.beginPath();mx.moveTo(18,5);mx.lineTo(18,-70);mx.stroke();
-    mx.beginPath();mx.moveTo(16,-70);mx.lineTo(20,-70);mx.stroke();
-    mx.beginPath();mx.moveTo(16,-55);mx.lineTo(20,-55);mx.stroke();
-    // Arm connecting to rocket
-    mx.strokeStyle='#888';mx.lineWidth=1;
-    mx.beginPath();mx.moveTo(18,-55);mx.lineTo(8,-50);mx.stroke();
-    // Red warning light on tower
-    var tl=Math.sin(frame*0.06)>0;
-    mx.fillStyle=tl?'rgba(255,30,10,0.9)':'rgba(255,30,10,0.15)';
-    mx.beginPath();mx.arc(18,-72,2,0,Math.PI*2);mx.fill();
-    mx.restore();
-  }
-
-  function drawMars(){
-    var w=mc.width,h=mc.height;
-    frame++;
-    mx.clearRect(0,0,w,h);
-    // Sky
-    var sky=mx.createLinearGradient(0,0,0,h);
-    sky.addColorStop(0,'#000000');
-    sky.addColorStop(0.4,'#0a0204');
-    sky.addColorStop(0.6,'#1a0808');
-    sky.addColorStop(0.75,'#3d1510');
-    sky.addColorStop(0.85,'#6b2a15');
-    sky.addColorStop(1,'#8b3a1a');
-    mx.fillStyle=sky;mx.fillRect(0,0,w,h);
-    // Horizon glow
-    var glow=mx.createRadialGradient(w*0.5,h*0.85,0,w*0.5,h*0.85,w*0.55);
-    glow.addColorStop(0,'rgba(255,100,30,0.15)');
-    glow.addColorStop(0.5,'rgba(255,60,20,0.06)');
-    glow.addColorStop(1,'rgba(0,0,0,0)');
-    mx.fillStyle=glow;mx.fillRect(0,0,w,h);
-    // Back terrain
-    mx.fillStyle='#2a0e06';mx.beginPath();mx.moveTo(0,h);
-    for(var t=0;t<=w;t+=8){mx.lineTo(t,terrainY(t,w,h));}
-    mx.lineTo(w,h);mx.closePath();mx.fill();
-
-    // Back terrain done
-
-    // Launch pad — far right
-    var padX=w*0.92,padY=terrainY(padX,w,h);
-    drawLaunchPad(padX,padY);
-
-    // Foreground terrain
-    mx.fillStyle='#1a0804';mx.beginPath();mx.moveTo(0,h);
-    for(var f=0;f<=w;f+=6){mx.lineTo(f,h*0.92+Math.sin(f*0.012)*10+Math.sin(f*0.005)*15+Math.sin(f*0.03)*3);}
-    mx.lineTo(w,h);mx.closePath();mx.fill();
-
-    // Rovers — big one on foreground, small one near habitat on back terrain
-    // Big rover — foreground, right side
-    var rv1=rovers[0];
-    rv1.x+=rv1.spd*rv1.dir*0.0003;
-    if(rv1.x>0.85){rv1.dir=-1;rv1.x=0.85;}
-    if(rv1.x<0.35){rv1.dir=1;rv1.x=0.35;}
-    var rx1=rv1.x*w;
-    var ry1=h*0.9+Math.sin(rx1/w*Math.PI*5)*8+Math.sin(rx1/w*Math.PI*12)*4-4;
-    drawRover(rx1,ry1,rv1.size,rv1.dir);
-    mx.strokeStyle='rgba(100,60,30,0.15)';mx.lineWidth=1;
-    mx.beginPath();mx.moveTo(rx1-rv1.dir*60,ry1+3);mx.lineTo(rx1-rv1.dir*15,ry1+3);mx.stroke();
-
-    // Small rover — back terrain near habitat
-    var rv2=rovers[1];
-    rv2.x+=rv2.spd*rv2.dir*0.0003;
-    if(rv2.x>0.88){rv2.dir=-1;rv2.x=0.15;}
-    if(rv2.x<0.15){rv2.dir=1;rv2.x=0.88;}
-    var rx2=rv2.x*w;
-    var ry2=terrainY(rx2,w,h)-2;
-    drawRover(rx2,ry2,rv2.size,rv2.dir);
-    mx.strokeStyle='rgba(100,60,30,0.1)';mx.lineWidth=0.8;
-    mx.beginPath();mx.moveTo(rx2-rv2.dir*30,ry2+2);mx.lineTo(rx2-rv2.dir*8,ry2+2);mx.stroke();
-
-    // Dust particles
-    dust.forEach(function(d){
-      d.x+=d.vx;if(d.x>w+10){d.x=-10;d.y=Math.random()*200;}
-      mx.beginPath();mx.arc(d.x,d.y+h*0.65,d.r,0,Math.PI*2);
-      mx.fillStyle='rgba(200,120,60,'+d.o.toFixed(2)+')';mx.fill();
-    });
-    requestAnimationFrame(drawMars);
-  }
-  drawMars();
-})();
-
-// Starfield — pure canvas, no images
-(function(){
-  var c=document.getElementById('starfield'),ctx=c.getContext('2d'),stars=[];
-  function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
-  for(var i=0;i<180;i++)stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.4+.3,o:Math.random(),s:Math.random()*.015+.003});
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    stars.forEach(function(s){
-      s.o+=s.s;if(s.o>1||s.o<0)s.s*=-1;
-      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(255,255,255,'+s.o.toFixed(2)+')';ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// Live stats
-function getMarsDistance(){
-  var a=(Date.now()/1000/(686.97*86400))*2*Math.PI;
-  return(225+170*Math.sin(a)).toFixed(1);
-}
-function getDays(){
-  var d=Math.ceil((new Date('2026-11-01')-new Date())/86400000);
-  return d>0?d:0;
-}
-document.getElementById('mars-dist').textContent=getMarsDistance();
-document.getElementById('launch-days').textContent=getDays();
-</script>
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Main JS -->
+<script src="js/main.js"></script>
 </body>
 </html>

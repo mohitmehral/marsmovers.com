@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Mars Intelligence Report — Mars Movers</title>
+<meta name="description" content="Investor-grade Mars data: environment feasibility, infrastructure requirements, Earth-to-Mars transit analysis, and mission timeline for off-world data center deployment."/>
+<meta name="keywords" content="mars data, mars infrastructure, mars environment, mars temperature, mars gravity, earth mars distance, mars mission timeline, mars data center feasibility"/>
+<meta name="author" content="Apnok"/>
+<meta name="robots" content="index,follow"/>
+<meta name="theme-color" content="#ff5014"/>
+<link rel="icon" href="favicon.svg"/>
+<link rel="canonical" href="https://www.marsmovers.com/mars-intel.html"/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://www.marsmovers.com/mars-intel.html"/>
+<meta property="og:title" content="Mars Intelligence Report — Infrastructure Feasibility Data"/>
+<meta property="og:description" content="Real Mars environment data reframed for infrastructure planning. Live distance, transit analysis, mission timeline."/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Mars Intelligence Report — Mars Movers"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","name":"Mars Intelligence Report","url":"https://www.marsmovers.com/mars-intel.html","description":"Investor-grade Mars environment and infrastructure feasibility data.","publisher":{"@type":"Organization","name":"Apnok"}}</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N9J8L4ZB0Q"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-N9J8L4ZB0Q');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5228411604893151" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/main.css"/>
+<style>
+.intel-hero{position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 48px 80px;overflow:hidden;background:linear-gradient(180deg,#000 0%,#0a0204 40%,#1a0808 70%,#2a0e06 100%)}
+.intel-hero h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;margin-bottom:16px}
+.intel-hero h1 .accent{color:var(--primary)}
+.intel-hero p{font-size:1rem;color:var(--text-muted);max-width:520px;margin:0 auto;line-height:1.8;font-weight:300}
+.live-bar{background:rgba(255,80,20,0.05);border-top:1px solid var(--border-accent);border-bottom:1px solid var(--border-accent);padding:20px 48px;text-align:center}
+.live-bar .label{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-dim)}
+.live-bar .value{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--primary);margin-top:6px}
+.live-bar .unit{font-size:.65rem;color:var(--text-muted)}
+.env-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:48px}
+.env-card{background:var(--bg-card);border:1px solid var(--border);padding:32px 24px;text-align:center;transition:border-color .3s}
+.env-card:hover{border-color:var(--border-accent)}
+.env-icon{font-size:2.2rem;margin-bottom:12px}
+.env-val{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;color:var(--primary);margin-bottom:4px}
+.env-label{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px}
+.env-desc{font-size:.75rem;color:var(--text-dim);line-height:1.6}
+.env-infra{font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-top:10px;opacity:.7}
+.insight-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:48px}
+.insight-card{background:rgba(255,80,20,0.03);border:1px solid var(--border-accent);padding:32px 28px;transition:all .3s}
+.insight-card:hover{background:rgba(255,80,20,0.06)}
+.insight-num{font-size:1.6rem;font-weight:800;color:var(--primary);margin-bottom:6px}
+.insight-card h3{font-size:.9rem;font-weight:700;margin-bottom:8px}
+.insight-card p{font-size:.8rem;color:var(--text-muted);line-height:1.7}
+.insight-src{font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);margin-top:10px}
+.journey-wrap{margin-top:48px}
+.journey-canvas{width:100%;height:70vh;min-height:400px;max-height:700px;border:1px solid var(--border);background:#020204}
+.journey-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-top:2px}
+.j-stat{background:var(--bg-card);border:1px solid var(--border);padding:20px 16px;text-align:center}
+.j-val{font-size:1.2rem;font-weight:800;color:var(--primary);margin-bottom:4px}
+.j-label{font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.tl{position:relative;padding-left:48px;margin-top:48px}
+.tl::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--primary),rgba(255,80,20,0.1))}
+.tl-item{position:relative;margin-bottom:40px;padding-left:24px}
+.tl-dot{position:absolute;left:-38px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--primary);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--primary)}
+.tl-dot.future{background:transparent;box-shadow:0 0 0 2px rgba(255,80,20,0.3)}
+.tl-year{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--primary);font-weight:700;margin-bottom:4px}
+.tl-title{font-size:1rem;font-weight:700;margin-bottom:4px}
+.tl-desc{font-size:.8rem;color:var(--text-muted);line-height:1.7;max-width:500px}
+.tl-infra{font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-top:6px;opacity:.7}
+@media(max-width:768px){
+  .intel-hero{padding:100px 24px 60px}
+  .live-bar{padding:16px 20px}
+  .env-grid{grid-template-columns:repeat(2,1fr)}
+  .insight-grid{grid-template-columns:1fr}
+  .journey-stats{grid-template-columns:repeat(2,1fr)}
+  .journey-canvas{height:50vh;min-height:300px}
+}
+@media(max-width:480px){
+  .env-grid{grid-template-columns:1fr}
+  .journey-stats{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="#ff5014" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="5" fill="#ff5014" opacity="0.3"/><circle cx="14" cy="14" r="2" fill="#ff5014"/></svg>
+    Mars Movers
+  </a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/#why">Why Mars</a>
+    <a href="/#services">Services</a>
+    <a href="/#roadmap">Roadmap</a>
+    <a href="mars-intel.html" style="color:var(--primary)">Mars Intel</a>
+    <a href="/#contact" class="nav-cta">Request Access</a>
+  </div>
+  <button class="mobile-toggle" onclick="openMobileNav()">☰</button>
+</nav>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="close-btn" onclick="closeMobileNav()">✕</button>
+  <a href="/" onclick="closeMobileNav()">Home</a>
+  <a href="/#why" onclick="closeMobileNav()">Why Mars</a>
+  <a href="/#services" onclick="closeMobileNav()">Services</a>
+  <a href="/#roadmap" onclick="closeMobileNav()">Roadmap</a>
+  <a href="mars-intel.html" style="color:var(--primary)">Mars Intel</a>
+  <a href="/#contact" onclick="closeMobileNav()">Request Access</a>
+</div>
+
+<!-- HERO -->
+<section class="intel-hero">
+  <div>
+    <span class="section-tag">Mars Intelligence Report</span>
+    <h1>Infrastructure Feasibility<br><span class="accent">Data & Analysis</span></h1>
+    <p>Real Mars environment data reframed for infrastructure planning. Every number below is a design constraint or an operational advantage for off-world data centers.</p>
+  </div>
+</section>
+
+<!-- LIVE DISTANCE -->
+<div class="live-bar">
+  <div class="label">Current Earth → Mars Distance</div>
+  <div class="value" id="mars-dist">—</div>
+  <div class="unit">million kilometers · updates live</div>
+</div>
+
+<!-- ENVIRONMENT DATA -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Environment Assessment</span>
+    <h2 class="section-title reveal">Mars Surface Conditions<br>for Infrastructure</h2>
+    <p class="section-desc reveal">Each data point represents a design parameter for autonomous data center deployment.</p>
+    <div class="env-grid">
+      <div class="env-card reveal">
+        <div class="env-icon">🌡️</div>
+        <div class="env-val">-63°C</div>
+        <div class="env-label">Avg Temperature</div>
+        <div class="env-desc">Range: -140°C to +20°C. Eliminates 40% of cooling energy costs vs Earth facilities.</div>
+        <div class="env-infra">→ Free passive cooling</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">⚙️</div>
+        <div class="env-val">3.72 m/s²</div>
+        <div class="env-label">Surface Gravity</div>
+        <div class="env-desc">38% of Earth. Reduces structural load requirements. Lighter foundations, easier robotic assembly.</div>
+        <div class="env-infra">→ Lighter construction</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">💨</div>
+        <div class="env-val">0.6 kPa</div>
+        <div class="env-label">Atmospheric Pressure</div>
+        <div class="env-desc">1% of Earth. 95% CO₂. Requires pressurized enclosures but provides excellent thermal dissipation.</div>
+        <div class="env-infra">→ Natural heat sink</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">💧</div>
+        <div class="env-val">Ice Confirmed</div>
+        <div class="env-label">Water Status</div>
+        <div class="env-desc">Subsurface ice deposits confirmed by ESA radar. Critical for cooling loops and hydrogen fuel production.</div>
+        <div class="env-infra">→ Cooling resource</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">⏱️</div>
+        <div class="env-val">24h 37m</div>
+        <div class="env-label">Sol Duration</div>
+        <div class="env-desc">Nearly identical to Earth day. Solar power generation cycles align with Earth-based operational patterns.</div>
+        <div class="env-infra">→ Solar compatible</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">📡</div>
+        <div class="env-val">4–24 min</div>
+        <div class="env-label">Signal Delay</div>
+        <div class="env-desc">Speed of light constraint. Real-time remote control impossible. All operations must be autonomous.</div>
+        <div class="env-infra">→ Local compute required</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">☢️</div>
+        <div class="env-val">No Magnetosphere</div>
+        <div class="env-label">Radiation</div>
+        <div class="env-desc">~0.67 mSv/day surface radiation. Electronics require radiation-hardened design. Subsurface deployment preferred.</div>
+        <div class="env-infra">→ Shielded enclosures</div>
+      </div>
+      <div class="env-card reveal">
+        <div class="env-icon">🌋</div>
+        <div class="env-val">21.9 km</div>
+        <div class="env-label">Olympus Mons</div>
+        <div class="env-desc">Tallest mountain in solar system. Geologically stable regions identified for facility placement near volcanic plains.</div>
+        <div class="env-infra">→ Stable terrain available</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- INFRASTRUCTURE INSIGHTS -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Key Insights</span>
+    <h2 class="section-title reveal">Why These Numbers<br>Matter for Infrastructure</h2>
+    <div class="insight-grid">
+      <div class="insight-card reveal">
+        <div class="insight-num">7 months</div>
+        <h3>Transit Time — Supply Chain Constraint</h3>
+        <p>480M km Hohmann transfer. Every component must be self-sufficient for 2+ years between resupply windows. Modular, redundant architecture is non-negotiable.</p>
+        <div class="insight-src">NASA Trajectory Data</div>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-num">26 months</div>
+        <h3>Launch Window Cycle</h3>
+        <p>Earth-Mars alignment occurs every 26 months. Miss a window, wait 2+ years. Infrastructure deployment must be planned in multi-year cycles.</p>
+        <div class="insight-src">Orbital Mechanics</div>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-num">100 tons</div>
+        <h3>Starship Cargo Capacity</h3>
+        <p>SpaceX Starship delivers ~100 tons to Mars surface per mission. A single flight can carry multiple modular data center units plus power systems.</p>
+        <div class="insight-src">SpaceX Starship Specs</div>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-num">40%</div>
+        <h3>Cooling Energy Eliminated</h3>
+        <p>Earth data centers spend 40% of energy on cooling. Mars ambient temperature (-63°C) provides free passive cooling — the single largest operational cost advantage.</p>
+        <div class="insight-src">DOE Data Center Report</div>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-num">10+ years</div>
+        <h3>Nuclear Fuel Cycle</h3>
+        <p>Kilopower-class reactors operate 10+ years without refueling. Eliminates the solar dependency problem during Mars dust storms lasting months.</p>
+        <div class="insight-src">NASA Kilopower Program</div>
+      </div>
+      <div class="insight-card reveal">
+        <div class="insight-num">Blue sunsets</div>
+        <h3>Atmospheric Optics</h3>
+        <p>Fine dust scatters light differently than Earth. Optical communication systems must account for Mars atmospheric properties. Laser relay preferred over RF.</p>
+        <div class="insight-src">NASA Curiosity Imagery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- JOURNEY ANIMATION -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Transit Analysis</span>
+    <h2 class="section-title reveal">Earth to Mars<br>Transfer Orbit</h2>
+    <p class="section-desc reveal">Hohmann transfer orbit visualization. Every cargo mission — including data center modules — follows this 7-month trajectory.</p>
+    <div class="journey-wrap reveal">
+      <canvas class="journey-canvas" id="journey-canvas"></canvas>
+      <div class="journey-stats">
+        <div class="j-stat"><div class="j-val">480M km</div><div class="j-label">Total Distance</div></div>
+        <div class="j-stat"><div class="j-val">7 months</div><div class="j-label">Transit Time</div></div>
+        <div class="j-stat"><div class="j-val">11.6 km/s</div><div class="j-label">Transfer Speed</div></div>
+        <div class="j-stat"><div class="j-val">Nov 2026</div><div class="j-label">Next Window</div></div>
+        <div class="j-stat"><div class="j-val">~100 tons</div><div class="j-label">Cargo per Flight</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- MISSION TIMELINE -->
+<section class="section">
+  <div class="section-inner">
+    <span class="section-tag reveal">Infrastructure Timeline</span>
+    <h2 class="section-title reveal">Mars Infrastructure<br>Milestones</h2>
+    <p class="section-desc reveal">Key missions and milestones that enable off-world data center deployment.</p>
+    <div class="tl">
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-year">1976</div><div class="tl-title">Viking 1 & 2 — First Surface Data</div><div class="tl-desc">First surface environmental data from Mars. Temperature, pressure, and soil composition — the foundation of all infrastructure planning.</div><div class="tl-infra">→ Baseline environment data</div></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-year">2004</div><div class="tl-title">Spirit & Opportunity — Water Confirmation</div><div class="tl-desc">Definitive evidence of past liquid water. Opportunity's 15-year mission proved long-duration surface operations are feasible.</div><div class="tl-infra">→ Long-duration ops proven</div></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-year">2012</div><div class="tl-title">Curiosity — Habitable Environment</div><div class="tl-desc">Confirmed Mars had conditions suitable for life. Nuclear-powered (RTG) — proving nuclear power works on Mars surface for years.</div><div class="tl-infra">→ Nuclear power validated</div></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-year">2021</div><div class="tl-title">Perseverance & Ingenuity — Autonomous Ops</div><div class="tl-desc">Ingenuity proved autonomous flight. Perseverance operates with increasing autonomy. MOXIE produced oxygen from CO₂.</div><div class="tl-infra">→ Autonomous systems proven</div></div>
+      <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-year">2024</div><div class="tl-title">ESCAPADE — Space Weather Data</div><div class="tl-desc">Two spacecraft mapping Mars magnetosphere interactions. Critical data for protecting electronics and communication systems.</div><div class="tl-infra">→ Radiation shielding data</div></div>
+      <div class="tl-item reveal"><div class="tl-dot future"></div><div class="tl-year">2026</div><div class="tl-title">SpaceX Starship — First Cargo to Mars</div><div class="tl-desc">Uncrewed Starship landing. Testing landing systems, power generation, and resource extraction. Our survey payload rides as secondary cargo.</div><div class="tl-infra">→ Site survey deployment</div></div>
+      <div class="tl-item reveal"><div class="tl-dot future"></div><div class="tl-year">2028–2029</div><div class="tl-title">Prototype Data Center — Mars Surface</div><div class="tl-desc">First modular compute unit lands. Autonomous power-on, connectivity test via Starlink relay. Proof of concept for remote compute.</div><div class="tl-infra">→ First off-world compute</div></div>
+      <div class="tl-item reveal"><div class="tl-dot future"></div><div class="tl-year">2030–2035</div><div class="tl-title">Colony-Grade Infrastructure</div><div class="tl-desc">Multi-rack facilities supporting 1,000+ colonists. Edge compute across multiple sites. Interplanetary cloud services operational.</div><div class="tl-infra">→ Full commercial operations</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <span class="section-tag reveal">Access Full Report</span>
+  <h2 class="reveal">Want the Complete<br>Feasibility Analysis?</h2>
+  <p class="reveal">Request access to our detailed technical whitepaper covering power systems, thermal modeling, connectivity architecture, and deployment logistics.</p>
+  <form class="cta-form reveal" id="cta-form">
+    <input type="email" class="cta-input" placeholder="Enter your email" required/>
+    <button type="submit" class="cta-submit">Request Access</button>
+  </form>
+  <p class="cta-note reveal">Or reach us directly: <a href="mailto:ceo@apnok.com" style="color:var(--primary)">ceo@apnok.com</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="14,2 26,8 26,20 14,26 2,20 2,8" stroke="#ff5014" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="5" fill="#ff5014" opacity="0.3"/><circle cx="14" cy="14" r="2" fill="#ff5014"/></svg>
+        Mars Movers
+      </a>
+      <p>Off-world data center infrastructure for Mars.</p>
+      <p style="margin-top:8px">Contact: <a href="mailto:ceo@apnok.com" style="color:var(--primary)">ceo@apnok.com</a></p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="/#why">Why Mars</a>
+        <a href="/#services">Services</a>
+        <a href="/#technology">Technology</a>
+        <a href="/#roadmap">Roadmap</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="mars-intel.html">Mars Intelligence</a>
+        <a href="/#invest">Investors</a>
+        <a href="/#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Mars Movers · Powered by <a href="https://apnok.com" target="_blank" rel="noopener">Apnok</a></p>
+    <p>Building infrastructure for the next planet.</p>
+  </div>
+</footer>
+
+<script src="js/mars-journey.js"></script>
+<script>
+// Live distance
+function getMarsDistance(){var a=(Date.now()/1000/(686.97*86400))*2*Math.PI;return(225+170*Math.sin(a)).toFixed(1);}
+var distEl=document.getElementById('mars-dist');
+if(distEl){distEl.textContent=getMarsDistance();setInterval(function(){distEl.textContent=getMarsDistance();},5000);}
+
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+// Mobile nav
+window.openMobileNav=function(){document.getElementById('mobile-nav').classList.add('open');};
+window.closeMobileNav=function(){document.getElementById('mobile-nav').classList.remove('open');};
+
+// Nav scroll
+var nav=document.querySelector('.nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>50);});
+
+// CTA form
+var form=document.getElementById('cta-form');
+if(form)form.addEventListener('submit',function(e){e.preventDefault();var btn=form.querySelector('button');btn.textContent='✓ RECEIVED';btn.style.background='#00ff88';btn.style.color='#000';setTimeout(function(){btn.textContent='REQUEST ACCESS';btn.style.background='';btn.style.color='';form.reset();},3000);});
+</script>
+</body>
+</html>
